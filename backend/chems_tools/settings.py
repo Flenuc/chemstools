@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import dj_database_url
-import os # Asegúrate de que os también esté importado
+import os 
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ap11g%4tgv50-cf3bl(6+u8x2$e7s=jax4gxo^@j+nj-9)zqty'
+SECRET_KEY = 'No password'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
