@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import dj_database_url
+import os # Asegúrate de que os también esté importado
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_q7-=f*g*_d+@4^&vyc=u07o@(p$9f#wz3tv#gowd9me45%8z6'
+SECRET_KEY = 'ap11g%4tgv50-cf3bl(6+u8x2$e7s=jax4gxo^@j+nj-9)zqty'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -73,11 +74,8 @@ WSGI_APPLICATION = 'chems_tools.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
     }
-}
 
 
 # Password validation
