@@ -53,9 +53,12 @@ INSTALLED_APPS = [
     
     # users app for custom user model
     'users.apps.UsersConfig',
+    
+    'drf_spectacular',  # for API documentation
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -159,7 +162,11 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
+    # CORRECCIÓN: Añadir esta línea para que drf-spectacular funcione
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
+
+SPECTACULAR_SETTINGS = { 'TITLE': 'ChemsTools API' }
 
 # Logging configuration
 # Configuración de logging para registrar información en consola y archivo
