@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     # 3rd Party Apps
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
 
     # Local Apps
@@ -49,7 +50,12 @@ INSTALLED_APPS = [
     
     # core app for custom utilities
     'core',
+    
+    # users app for custom user model
+    'users.apps.UsersConfig',
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -137,6 +143,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
 ]
 
+# test settings 
 if 'test' in sys.argv:
     DATABASES = {
         'default': {
@@ -144,3 +151,41 @@ if 'test' in sys.argv:
             'NAME': ':memory:',
         }
     }
+
+# REST Framework settings
+# Configuración de autenticación JWT
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
+}
+
+# Logging configuration
+# Configuración de logging para registrar información en consola y archivo
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
+    },
+}
