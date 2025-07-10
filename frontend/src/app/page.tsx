@@ -1,21 +1,29 @@
-import HealthCheck from "@/components/features/HealthCheck";
-import MolecularWeightCalculator from "@/components/features/MolecularWeightCalculator";
+'use client';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import Header from '@/components/core/Header';
+import LoginForm from '@/components/features/LoginForm';
+import RegisterForm from '@/components/features/RegisterForm';
+import MolecularWeightCalculator from '@/components/features/MolecularWeightCalculator';
 
 export default function Home() {
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   return (
-    <main className="flex min-h-screen flex-col items-center p-12 sm:p-24 bg-gray-50">
-      <div className="z-10 w-full max-w-2xl items-center justify-between font-mono text-sm lg:flex mb-8">
-        <h1 className="text-4xl font-bold text-gray-800 tracking-tight">
-          ChemsTools
-        </h1>
-        <p className="text-gray-600">Pre-Alpha 0.0.3 - Prototipo Conceptual</p>
+    <main className="flex min-h-screen flex-col items-center p-6 md:p-12 bg-gray-50">
+      <Header />
+      <div className="w-full max-w-4xl">
+        {isAuthenticated ? (
+          <div className="w-full max-w-2xl mx-auto">
+            <MolecularWeightCalculator />
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-8">
+            <LoginForm />
+            <RegisterForm />
+          </div>
+        )}
       </div>
-
-      <div className="w-full max-w-2xl">
-        <HealthCheck />
-        <MolecularWeightCalculator />
-      </div>
-
     </main>
   );
 }
