@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import dj_database_url
 import os 
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,6 +46,9 @@ INSTALLED_APPS = [
 
     # Local Apps
     'api',
+    
+    # core app for custom utilities
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +136,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000", # Permitir peticiones desde frontend
     "http://127.0.0.1:3000",
 ]
+
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
