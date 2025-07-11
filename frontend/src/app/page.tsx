@@ -1,10 +1,12 @@
+// frontend/src/app/page.tsx
 'use client';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Header from '@/components/core/Header';
 import LoginForm from '@/components/features/LoginForm';
 import RegisterForm from '@/components/features/RegisterForm';
-import MolecularWeightCalculator from '@/components/features/MolecularWeightCalculator';
+import MoleculeList from '@/components/features/MoleculeList';
+import AddMoleculeForm from '@/components/features/AddMoleculeForm';
 
 export default function Home() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -14,8 +16,9 @@ export default function Home() {
       <Header />
       <div className="w-full max-w-4xl">
         {isAuthenticated ? (
-          <div className="w-full max-w-2xl mx-auto">
-            <MolecularWeightCalculator />
+          <div className="grid md:grid-cols-2 gap-8">
+            <AddMoleculeForm />
+            <MoleculeList />
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-8">
