@@ -4,6 +4,28 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[0.2.0] - 2025-07-11
+Added
+Backend: Se creó la app molecules para encapsular toda la lógica de negocio relacionada con la gestión de moléculas.
+
+Backend: Se definió el modelo de datos Molecule en la base de datos, vinculado a un owner (usuario), y se generaron las migraciones correspondientes.
+
+Backend: Se implementó un MoleculeViewSet que expone una API RESTful completa con operaciones CRUD (/api/molecules/) para las moléculas del usuario autenticado.
+
+Frontend: Se añadió un moleculesSlice a Redux para gestionar el estado de la lista de moléculas, incluyendo acciones asíncronas (fetchMolecules) para obtener los datos del backend.
+
+Frontend: Se desarrollaron los componentes de interfaz de usuario MoleculeList para mostrar las moléculas del usuario y AddMoleculeForm para permitir la creación de nuevas moléculas.
+
+Changed
+Frontend: La página principal (Home) ahora funciona como un "Dashboard" para usuarios autenticados, mostrando el formulario de creación y la lista de moléculas.
+
+Frontend: El servicio apiService fue mejorado para manejar de forma más robusta los errores del servidor, clonando la respuesta para poder inspeccionarla como JSON y como texto, evitando así el error body stream already read.
+
+Fixed
+Backend: Se solucionó el error crítico relation "molecules_molecule" does not exist al asegurar que las migraciones de la app molecules se apliquen correctamente para crear la tabla en la base de datos.
+
+Frontend: Se corrigió el error Unexpected token '<' que ocurría cuando el frontend intentaba interpretar una página de error HTML del backend como si fuera JSON.
+
 [0.1.2] - 2025-07-09
 Added
 Frontend: Se crearon los componentes de React LoginForm y RegisterForm para gestionar la autenticación del usuario desde la interfaz.
