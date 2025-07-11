@@ -54,7 +54,11 @@ INSTALLED_APPS = [
     # users app for custom user model
     'users.apps.UsersConfig',
     
-    'drf_spectacular',  # for API documentation
+    # for API documentation
+    'drf_spectacular',  
+    
+    # molecules app
+    'molecules.apps.MoleculesConfig'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
