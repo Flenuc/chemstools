@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import apiService from '@/services/api';
+import { setElementFilter } from '@/store/filterSlice';
+import { useDispatch } from 'react-redux';
 
 // Definimos el tipo para un elemento químico
 interface ElementData {
@@ -26,6 +28,7 @@ export default function PeriodicTable() {
   const [elements, setElements] = useState<ElementData[]>([]);
   const [selectedElement, setSelectedElement] = useState<ElementData | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +55,10 @@ export default function PeriodicTable() {
       .data(elements)
       .join('g')
       .attr('transform', d => `translate(${(d.xpos - 1) * (cellSize + margin)}, ${(d.ypos - 1) * (cellSize + margin)})`)
-      .on('click', (event, d) => setSelectedElement(d))
+      .on('click', (event, d) => {
+        setSelectedElement(d);
+        dispatch(setElementFilter(d.symbol));
+      })
       .style('cursor', 'pointer');
 
     elementGroups.append('rect')
@@ -77,7 +83,7 @@ export default function PeriodicTable() {
       .style('font-weight', 'bold')
       .text(d => d.symbol);
 
-  }, [elements]);
+  }, [elements, dispatch]);
 
   return (
     <div className="flex flex-col md:flex-row gap-4">
@@ -100,4 +106,8 @@ export default function PeriodicTable() {
       </div>
     </div>
   );
+}
+
+function dispatch(arg0: { payload: string | null; type: "filters/setElementFilter"; }) {
+  throw new Error('Function not implemented.');
 }
