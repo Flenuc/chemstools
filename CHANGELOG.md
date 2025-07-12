@@ -4,6 +4,23 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[0.2.1] - 2025-07-11
+Added
+Frontend: Se implementó el componente PeriodicTable utilizando D3.js para renderizar una tabla periódica interactiva y estática.
+
+Frontend: Se creó una nueva página (/periodic-table) para alojar la tabla periódica.
+
+Backend: Se añadió una nueva app data y un endpoint (/api/data/periodic-table/) para servir los datos de los elementos químicos desde un archivo JSON.
+
+Backend: Se implementó una validación de datos en el MoleculeSerializer para asegurar que las estructuras guardadas en formato SMILES sean químicamente válidas, utilizando RDKit.
+
+Testing: Se expandió la cobertura de pruebas del backend con tests unitarios para la nueva lógica de validación del MoleculeSerializer.
+
+Changed
+Frontend: Se mejoró la interfaz de usuario del formulario AddMoleculeForm para incluir estados visuales de carga y error, proporcionando un feedback más claro al usuario durante el envío de datos.
+
+Frontend: Se actualizó el componente Header para incluir un enlace de navegación a la nueva página de la Tabla Periódica.
+
 [0.2.0] - 2025-07-11
 Added
 Backend: Se creó la app molecules para encapsular toda la lógica de negocio relacionada con la gestión de moléculas.
