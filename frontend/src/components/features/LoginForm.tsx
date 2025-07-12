@@ -30,8 +30,8 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 border rounded-lg bg-white shadow-sm">
-      <h2 className="text-xl font-bold">Iniciar Sesión</h2>
+    <form onSubmit={handleSubmit} className="card space-y-4">
+      <h2 className="card-title">Iniciar Sesión</h2>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <div>
         <label className="block text-sm font-medium text-black-700">Usuario:</label>
