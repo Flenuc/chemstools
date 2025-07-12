@@ -33,15 +33,15 @@ export default function RegisterForm() {
       {error && <p className="text-red-500 text-sm">{error}</p>}
       {success && <p className="text-green-500 text-sm">{success}</p>}
       <div>
-        <label className="block text-sm font-medium text-gray-700">Usuario:</label>
+        <label className="block text-sm font-medium text-black-700">Usuario:</label>
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full p-2 border rounded mt-1" required />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Email:</label>
+        <label className="block text-sm font-medium text-black-700">Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2 border rounded mt-1" required />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Contraseña:</label>
+        <label className="block text-sm font-medium text-black-700">Contraseña:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-2 border rounded mt-1" required />
       </div>
       <button type="submit" className="w-full p-2 bg-green-600 text-white rounded hover:bg-green-700">Registrar</button>
