@@ -126,3 +126,19 @@ ERROR 2025-07-12 01:50:52,822 exceptions API Error: {'detail': ErrorDetail(strin
 WARNING 2025-07-12 01:50:52,823 log Unauthorized: /api/data/periodic-table/
 ERROR 2025-07-12 01:50:52,833 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
 WARNING 2025-07-12 01:50:52,834 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-07-12 02:56:28,716 exceptions API Error: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')], 'structure_data': [ErrorDetail(string='This field may not be blank.', code='blank')], 'status_code': 400}
+WARNING 2025-07-12 02:56:28,719 log Bad Request: /api/molecules/
+ERROR 2025-07-12 02:56:36,357 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 02:56:36,364 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-07-12 02:56:46,801 exceptions API Error: {'password': [ErrorDetail(string='This field may not be blank.', code='blank')], 'status_code': 400}
+WARNING 2025-07-12 02:56:46,802 log Bad Request: /api/auth/token/
+ERROR 2025-07-12 02:56:57,850 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-07-12 02:56:57,850 log Unauthorized: /api/auth/token/
+ERROR 2025-07-12 02:58:44,306 exceptions API Error: {'name': [ErrorDetail(string='This field may not be blank.', code='blank')], 'structure_data': [ErrorDetail(string='This field may not be blank.', code='blank')], 'status_code': 400}
+WARNING 2025-07-12 02:58:44,306 log Bad Request: /api/molecules/
+ERROR 2025-07-12 03:00:51,658 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 03:00:51,659 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-07-12 03:00:55,785 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 03:00:55,787 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-07-12 03:00:55,792 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 03:00:55,793 log Unauthorized: /api/data/periodic-table/
