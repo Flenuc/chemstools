@@ -118,3 +118,11 @@ ERROR 2025-07-10 02:24:03,383 exceptions API Error: {'detail': ErrorDetail(strin
 WARNING 2025-07-10 02:24:03,391 log Unauthorized: /api/auth/token/
 ERROR 2025-07-10 02:25:53,971 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
 WARNING 2025-07-10 02:25:53,971 log Unauthorized: /api/auth/me/
+ERROR 2025-07-12 01:04:53,161 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 01:04:53,162 log Unauthorized: /api/auth/me/
+ERROR 2025-07-12 01:50:43,244 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 01:50:43,251 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-07-12 01:50:52,822 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 01:50:52,823 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-07-12 01:50:52,833 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-12 01:50:52,834 log Unauthorized: /api/data/periodic-table/
