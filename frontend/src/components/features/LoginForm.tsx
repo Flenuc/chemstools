@@ -34,11 +34,11 @@ export default function LoginForm() {
       <h2 className="text-xl font-bold">Iniciar Sesión</h2>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <div>
-        <label className="block text-sm font-medium text-gray-700">Usuario:</label>
+        <label className="block text-sm font-medium text-black-700">Usuario:</label>
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full p-2 border rounded mt-1" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Contraseña:</label>
+        <label className="block text-sm font-medium text-black-700">Contraseña:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-2 border rounded mt-1" />
       </div>
       <button type="submit" className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700">Login</button>
