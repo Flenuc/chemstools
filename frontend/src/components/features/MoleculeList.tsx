@@ -24,9 +24,9 @@ export default function MoleculeList() {
       {items.length === 0 ? (
         <p>No tienes moléculas guardadas.</p>
       ) : (
-        <ul className="divide-y divide-gray-200">
+        <ul className="divide-y divide-black-200">
           {items.map((mol: Molecule) => (
-            <li key={mol.id} className="p-2 hover:bg-gray-50">
+            <li key={mol.id} className="p-2 hover:bg-black-50">
               {mol.name} ({mol.format}: {mol.structure_data})
             </li>
           ))}
