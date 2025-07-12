@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import apiService from '@/services/api';
+import { addNotification } from '@/store/notificationsSlice';
 
 export default function RegisterForm() {
   const [username, setUsername] = useState('');
@@ -8,6 +10,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,12 +21,12 @@ export default function RegisterForm() {
         method: 'POST',
         body: JSON.stringify({ username, email, password }),
       });
-      setSuccess('¡Usuario registrado con éxito! Ahora puedes iniciar sesión.');
+      dispatch(addNotification({ message: '¡Usuario registrado con éxito!', type: 'success' }));
       setUsername('');
       setEmail('');
       setPassword('');
     } catch (err: any) {
-      setError(err.message || 'Error al registrar el usuario.');
+      dispatch(addNotification({ message: err.message || 'Error al registrar.', type: 'error' }));
     }
   };
 
