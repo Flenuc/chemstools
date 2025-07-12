@@ -4,6 +4,32 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[0.2.2] - 2025-07-12
+Added
+Backend: Se implementó un mecanismo de seguridad de Rate Limiting para proteger la API contra ataques de fuerza bruta.
+
+Frontend: Se añadió un sistema de notificaciones globales utilizando Redux para proporcionar feedback al usuario de forma consistente en toda la aplicación.
+
+Frontend: Se implementó un filterSlice en Redux para gestionar los filtros de la aplicación, permitiendo la comunicación entre componentes no relacionados directamente.
+
+Changed
+Backend: Se optimizó la capa de datos implementando paginación en el endpoint de moléculas para mejorar el rendimiento y la escalabilidad.
+
+Backend: Se añadió una ordenación por defecto a la consulta de moléculas para resolver la advertencia UnorderedObjectListWarning y asegurar resultados de paginación consistentes.
+
+Frontend: Se refactorizó el componente MoleculeList para que sea capaz de interpretar y manejar la respuesta paginada de la API del backend.
+
+Integración: La Tabla Periódica ahora se comunica con la Lista de Moléculas a través del estado global de Redux. Al hacer clic en un elemento, se filtra la lista de moléculas para mostrar solo aquellas que contienen dicho elemento.
+
+Fixed
+Frontend: Se solucionó el error crítico de React Rendered more hooks than during the previous render al refactorizar el componente Notifications y crear un subcomponente NotificationItem, respetando así las Reglas de los Hooks.
+
+Frontend: Se corrigió el error que impedía añadir nuevas moléculas al restaurar los campos de entrada (input) que faltaban en el componente AddMoleculeForm.
+
+Frontend: Se solucionó el error filteredMolecules.map is not a function al ajustar el moleculesSlice para que extraiga correctamente el array results de la respuesta paginada de la API.
+
+Frontend: Se corrigió el error body stream already read en el servicio de API al clonar la respuesta de error antes de intentar leerla, permitiendo un manejo de errores más robusto.
+
 [0.2.1] - 2025-07-11
 Added
 Frontend: Se implementó el componente PeriodicTable utilizando D3.js para renderizar una tabla periódica interactiva y estática.
