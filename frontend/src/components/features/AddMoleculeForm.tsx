@@ -33,8 +33,8 @@ export default function AddMoleculeForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card space-y-4">
-      <h2 className="card-title">Agregar Molécula</h2>
+    <form onSubmit={handleSubmit} className="bg-white p-6 border rounded-lg shadow-sm space-y-4">
+      <h3 className="text-xl font-bold text-slate-900 mb-4">Añadir Nueva Molécula</h3>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <div>
         <label className="block text-sm font-medium text-gray-700">Nombre:</label>
