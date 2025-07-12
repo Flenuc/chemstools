@@ -30,12 +30,12 @@ export default function MoleculeList() {
   if (status === 'failed') return <p className="text-red-500">Error al cargar las moléculas: {error}</p>;
 
   return (
-    <div className="space-y-3 p-4 border rounded-lg bg-white shadow-sm">
-      <h3 className="text-lg font-semibold">
+    <div className="card">
+      <h2 className="card-title">
         {selectedElementSymbol 
           ? `Moléculas que contienen ${selectedElementSymbol}` 
           : 'Mis Moléculas'}
-      </h3>
+      </h2>
       {filteredMolecules.length === 0 ? (
         <p>No se encontraron moléculas.</p>
       ) : (
