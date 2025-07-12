@@ -1,19 +1,19 @@
-/* frontend/src/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background-start-rgb: 249 250 251; /* Un gris muy claro para el fondo */
+  --background-start-rgb: 249 250 251; /* Gris muy claro para el fondo */
   --background-end-rgb: 255 255 255;
-  --foreground-rgb: 17, 24, 39; /* Un gris oscuro (casi negro) para el texto principal */
+  /* Usamos un gris oscuro (casi negro) para el texto principal */
+  --foreground-rgb: 17, 24, 39; 
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-start-rgb: 17, 24, 39; /* Fondo oscuro */
+    --background-start-rgb: 17, 24, 39;
     --background-end-rgb: 17, 24, 39;
-    --foreground-rgb: 249, 250, 251; /* Texto claro */
+    --foreground-rgb: 249, 250, 251;
   }
 }
 
@@ -25,15 +25,4 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-}
-
-/* --- NUEVO --- */
-/* Definimos estilos base para las tarjetas y títulos para mantener consistencia */
-@layer components {
-  .card {
-    @apply bg-white p-4 sm:p-6 border rounded-lg shadow-sm text-slate-800; /* Aseguramos texto oscuro en las tarjetas */
-  }
-  .card-title {
-    @apply text-xl font-bold text-slate-900 mb-4; /* Títulos aún más oscuros */
-  }
 }
