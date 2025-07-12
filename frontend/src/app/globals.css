@@ -1,26 +1,39 @@
-@import "tailwindcss";
+/* frontend/src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background-start-rgb: 249 250 251; /* Un gris muy claro para el fondo */
+  --background-end-rgb: 255 255 255;
+  --foreground-rgb: 17, 24, 39; /* Un gris oscuro (casi negro) para el texto principal */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background-start-rgb: 17, 24, 39; /* Fondo oscuro */
+    --background-end-rgb: 17, 24, 39;
+    --foreground-rgb: 249, 250, 251; /* Texto claro */
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* --- NUEVO --- */
+/* Definimos estilos base para las tarjetas y títulos para mantener consistencia */
+@layer components {
+  .card {
+    @apply bg-white p-4 sm:p-6 border rounded-lg shadow-sm text-slate-800; /* Aseguramos texto oscuro en las tarjetas */
+  }
+  .card-title {
+    @apply text-xl font-bold text-slate-900 mb-4; /* Títulos aún más oscuros */
+  }
 }
