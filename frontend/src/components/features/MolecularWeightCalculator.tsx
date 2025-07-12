@@ -52,7 +52,7 @@ export default function MolecularWeightCalculator() {
           <button
             type="submit"
             disabled={isLoading}
-            className="px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+            className="px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:bg-black-400"
           >
             {isLoading ? 'Calculando...' : 'Calcular'}
           </button>
