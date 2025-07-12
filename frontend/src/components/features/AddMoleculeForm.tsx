@@ -33,27 +33,27 @@ export default function AddMoleculeForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded-lg bg-white shadow-sm space-y-4">
-      <h3 className="text-lg font-semibold">Añadir Nueva Molécula</h3>
+    <form onSubmit={handleSubmit} className="card space-y-4">
+      <h2 className="card-title">Agregar Molécula</h2>
       {error && <p className="text-red-500 text-sm">{error}</p>}
-            <div>
+      <div>
         <label className="block text-sm font-medium text-gray-700">Nombre:</label>
-        <input 
-          type="text" 
-          value={name} 
-          onChange={e => setName(e.target.value)} 
-          className="w-full p-2 border rounded mt-1" 
-          required 
+        <input
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          className="w-full p-2 border rounded mt-1"
+          required
         />
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700">Estructura (SMILES):</label>
-        <input 
-          type="text" 
-          value={structure} 
-          onChange={e => setStructure(e.target.value)} 
-          className="w-full p-2 border rounded mt-1" 
-          required 
+        <input
+          type="text"
+          value={structure}
+          onChange={e => setStructure(e.target.value)}
+          className="w-full p-2 border rounded mt-1"
+          required
         />
       </div>
       <button type="submit" disabled={isLoading} className="w-full p-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:bg-gray-400">
