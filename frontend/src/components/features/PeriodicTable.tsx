@@ -87,11 +87,12 @@ export default function PeriodicTable() {
 
   return (
     <div className="flex flex-col md:flex-row gap-4">
-      <div className="flex-grow">
-        <svg ref={svgRef} width="100%" height="500"></svg>
+      {/* --- CORRECCIÓN --- */}
+      <div className="flex-grow overflow-x-auto p-2 bg-slate-800 rounded-lg">
+        <svg ref={svgRef} width={18 * 55} height="500"></svg> {/* Ancho fijo para forzar el scroll si es necesario */}
       </div>
-      <div className="w-full md:w-1/3 p-4 border rounded-lg bg-white shadow-sm">
-        <h3 className="text-lg font-semibold">Detalles del Elemento</h3>
+      <div className="w-full md:w-1/3 card">
+        <h3 className="card-title">Detalles del Elemento</h3>
         {selectedElement ? (
           <div className="space-y-2 mt-2">
             <p><strong>Nombre:</strong> {selectedElement.name}</p>
