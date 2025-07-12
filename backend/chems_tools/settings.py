@@ -166,8 +166,21 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
-    # CORRECCIÓN: Añadir esta línea para que drf-spectacular funcione
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # Añadir esta nueva sección para el rate limiting
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    # Configuración de los límites de rate limiting
+    # Límite de peticiones por día para usuarios anónimos y autenticados
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day', # Límite para usuarios anónimos
+        'user': '1000/day' # Límite para usuarios autenticados
+    },
+    # Configuración de paginación
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10 # Número de items por página
 }
 
 SPECTACULAR_SETTINGS = { 'TITLE': 'ChemsTools API' }
