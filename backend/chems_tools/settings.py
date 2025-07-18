@@ -58,7 +58,10 @@ INSTALLED_APPS = [
     'drf_spectacular',  
     
     # molecules app
-    'molecules.apps.MoleculesConfig'
+    'molecules.apps.MoleculesConfig',
+    
+    # telemetry app for tracking usage
+    'telemetry.apps.TelemetryConfig'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
