@@ -13,9 +13,9 @@ export default function Home() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-6 md:p-12 bg-slate-50">
+    <main className="flex min-h-screen flex-col items-center p-6 md:p-12 bg-gray-100">
       <Header />
-      <div className="w-full max-w-5xl">
+      <div className="w-full max-w-7xl">
         {isAuthenticated ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
@@ -27,7 +27,7 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <LoginForm />
             <RegisterForm />
           </div>
@@ -36,3 +36,4 @@ export default function Home() {
     </main>
   );
 }
+
