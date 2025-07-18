@@ -1,28 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
-  --background-start-rgb: 249 250 251; /* Gris muy claro para el fondo */
-  --background-end-rgb: 255 255 255;
-  /* Usamos un gris oscuro (casi negro) para el texto principal */
-  --foreground-rgb: 17, 24, 39; 
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-start-rgb: 17, 24, 39;
-    --background-end-rgb: 17, 24, 39;
-    --foreground-rgb: 249, 250, 251;
+    --background: #0a0a0a;
+    --foreground: #ededed;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
