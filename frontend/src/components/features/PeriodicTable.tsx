@@ -86,15 +86,14 @@ export default function PeriodicTable() {
   }, [elements, dispatch]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
-      {/* --- CORRECCIÓN --- */}
-      <div className="flex-grow overflow-x-auto p-2 bg-slate-800 rounded-lg">
-        <svg ref={svgRef} width={18 * 55} height="500"></svg> {/* Ancho fijo para forzar el scroll si es necesario */}
-      </div>
-      <div className="w-full md:w-1/3 card">
-        <h3 className="card-title">Detalles del Elemento</h3>
+  <div className="flex flex-col lg:flex-row gap-6">
+    <div className="flex-grow overflow-x-auto p-4 bg-slate-800 rounded-xl shadow-inner">
+      <svg ref={svgRef} width={18 * 60} height="600"></svg>
+    </div>
+    <div className="w-full lg:w-1/3 p-6 border rounded-xl bg-white shadow-lg text-gray-900">
+      <h3 className="text-xl font-bold">Detalles del Elemento</h3>
         {selectedElement ? (
-          <div className="space-y-2 mt-2">
+          <div className="space-y-2 mt-2 text-gray-900">
             <p><strong>Nombre:</strong> {selectedElement.name}</p>
             <p><strong>Símbolo:</strong> {selectedElement.symbol}</p>
             <p><strong>Número Atómico:</strong> {selectedElement.number}</p>
@@ -102,7 +101,7 @@ export default function PeriodicTable() {
             <p><strong>Categoría:</strong> {selectedElement.category}</p>
           </div>
         ) : (
-          <p className="mt-2 text-black-500">Haz clic en un elemento para ver sus detalles.</p>
+          <p className="mt-2 text-black-500 text-gray-900">Haz clic en un elemento para ver sus detalles.</p>
         )}
       </div>
     </div>
