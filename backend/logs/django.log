@@ -148,3 +148,11 @@ ERROR 2025-07-12 16:30:21,452 exceptions API Error: {'detail': ErrorDetail(strin
 WARNING 2025-07-12 16:30:21,453 log Unauthorized: /api/data/periodic-table/
 ERROR 2025-07-12 16:30:33,935 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
 WARNING 2025-07-12 16:30:33,935 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-07-18 01:31:05,194 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-07-18 01:31:05,195 log Unauthorized: /api/auth/token/
+ERROR 2025-07-18 01:31:05,208 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-18 01:31:05,208 log Unauthorized: /api/telemetry/log/
+ERROR 2025-07-18 01:31:45,262 exceptions API Error: {'structure_data': [ErrorDetail(string='La cadena SMILES proporcionada no es válida.', code='invalid')], 'status_code': 400}
+WARNING 2025-07-18 01:31:45,262 log Bad Request: /api/molecules/
+WARNING 2025-07-18 01:32:09,622 log Bad Request: /api/calculate/molecular-weight/
+WARNING 2025-07-18 01:32:29,400 log Bad Request: /api/calculate/molecular-weight/
