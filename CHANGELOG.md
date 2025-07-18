@@ -4,6 +4,28 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[0.3.0] - 2025-07-12
+Added
+Funcionalidad: Se ha reintegrado la Calculadora de Masa Molar al dashboard principal, restaurando una de las herramientas clave del prototipo inicial.
+
+Telemetría: Se implementó un sistema de telemetría básica con un endpoint y modelo en el backend para registrar eventos de usuario clave (ej. login_success, molecule_created), sentando las bases para la analítica de uso futuro.
+
+Testing: Se amplió la cobertura de pruebas del frontend con una nueva suite de pruebas para el componente MolarMassCalculator.
+
+Changed
+UI/UX: Se realizó una mejora visual completa de la aplicación, ajustando los estilos de todos los componentes para mejorar drásticamente el contraste, la legibilidad y la estética general, resultando en una interfaz más moderna y profesional.
+
+UI/UX: Se rediseñó el layout del dashboard principal para una mejor organización del contenido, utilizando un sistema de columnas para las diferentes herramientas.
+
+Navegación: Se mejoró la navegación global al añadir un Header consistente en todas las páginas, permitiendo al usuario volver fácilmente al Dashboard desde la Tabla Periódica.
+
+Componentes: El formulario de registro (RegisterForm) fue refactorizado para utilizar el sistema de notificaciones global, unificando la experiencia de feedback al usuario.
+
+Fixed
+UI/UX: Se corrigió un problema de layout en la Tabla Periódica donde la última fila de elementos se cortaba, ajustando la altura del contenedor SVG.
+
+Frontend: Se solucionó un error crítico de renderizado del lado del servidor (Turbopack error) en el componente MoleculeList al hacerlo más robusto frente a estados iniciales no definidos.
+
 [0.2.1] - 2025-07-11
 Added
 Frontend: Se implementó el componente PeriodicTable utilizando D3.js para renderizar una tabla periódica interactiva y estática.
