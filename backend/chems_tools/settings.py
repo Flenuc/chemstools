@@ -179,7 +179,8 @@ REST_FRAMEWORK = {
     # Límite de peticiones por día para usuarios anónimos y autenticados
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/day', # Límite para usuarios anónimos
-        'user': '1000/day' # Límite para usuarios autenticados
+        'user': '1000/day', # Límite para usuarios autenticados
+        'auth': '5/min', # Límite estricto para login/registro
     },
     # Configuración de paginación
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -216,3 +217,7 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
