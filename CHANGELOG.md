@@ -4,6 +4,26 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[0.3.1] - 2025-07-18
+Added
+Funcionalidad: Se completó el ciclo CRUD para las moléculas en el frontend, añadiendo la funcionalidad de eliminar y sentando las bases para la edición.
+
+Seguridad: Se realizó una revisión integral de seguridad en el backend, añadiendo cabeceras de seguridad (XSS, nosniff) mediante django-secure.
+
+Seguridad: Se implementó una política de rate limiting más estricta y específica para los endpoints de autenticación (5/min), protegiéndolos contra ataques de fuerza bruta.
+
+Rendimiento: Se estableció un sistema para pruebas de carga y rendimiento básicas utilizando locust, incluyendo un locustfile.py para simular el comportamiento de usuarios reales.
+
+Documentación: Se creó una guía de usuario inicial (USER_GUIDE.md) para facilitar la incorporación de nuevos usuarios y la preparación para demostraciones internas.
+
+Changed
+Frontend: El estado global de Redux (moleculesSlice) fue expandido para manejar las acciones de deleteMolecule y updateMolecule.
+
+UI/UX: La interfaz de la lista de moléculas fue mejorada para incluir botones de "Editar" y "Eliminar", mejorando la interactividad.
+
+Fixed
+Rendimiento: Se corrigió un problema de configuración en locust que impedía el inicio de la interfaz web, asegurando que las pruebas de carga se puedan ejecutar correctamente.
+
 [0.3.0] - 2025-07-12
 Added
 Funcionalidad: Se ha reintegrado la Calculadora de Masa Molar al dashboard principal, restaurando una de las herramientas clave del prototipo inicial.
