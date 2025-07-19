@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
-import { fetchMolecules, Molecule } from '../../store/moleculesSlice';
+import { fetchMolecules, Molecule, deleteMolecule, updateMolecule } from '../../store/moleculesSlice';
 import { useMemo } from 'react';
 
 export default function MoleculeList() {
@@ -19,6 +19,12 @@ export default function MoleculeList() {
     const regex = new RegExp(selectedElementSymbol, 'i');
     return (items ?? []).filter(mol => regex.test(mol.structure_data));
   }, [items, selectedElementSymbol]);
+
+    const handleDelete = (id: number) => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta molécula?')) {
+      dispatch(deleteMolecule(id));
+    }
+  };
 
   useEffect(() => {
     if (isAuthenticated && status === 'idle') {
@@ -43,10 +49,15 @@ export default function MoleculeList() {
           {filteredMolecules.map((mol: Molecule) => (
             <li key={mol.id} className="p-2 hover:bg-black-50 text-gray-900">
               {mol.name} ({mol.format}: {mol.structure_data})
+                <div className="space-x-2">
+                  <button className="text-sm text-blue-600 hover:text-blue-800">Editar</button>
+                  <button onClick={() => handleDelete(mol.id)} className="text-sm text-red-600 hover:text-red-800">Eliminar</button>
+                </div>
             </li>
           ))}
         </ul>
       )}
     </div>
+    
   );
 }
