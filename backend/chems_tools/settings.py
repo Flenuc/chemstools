@@ -61,7 +61,10 @@ INSTALLED_APPS = [
     'molecules.apps.MoleculesConfig',
     
     # telemetry app for tracking usage
-    'telemetry.apps.TelemetryConfig'
+    'telemetry.apps.TelemetryConfig',
+    
+    # calculators app for chemical calculations
+    'calculators.apps.CalculatorsConfig',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -221,3 +224,14 @@ LOGGING = {
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "chemstools"
+    }
+}
