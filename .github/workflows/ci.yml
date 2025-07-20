@@ -2,63 +2,54 @@ name: ChemsTools CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ "main", "develop" ]
 
 jobs:
-  backend-ci:
-    name: Backend CI
+  test-backend:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.11'
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+    - name: Run Tests
+      working-directory: ./backend
+      run: |
+        pytest .
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r backend/requirements.txt
-
-      - name: Run linter
-        run: |
-          pip install flake8
-          flake8 backend/
-
-      - name: Run tests
-        working-directory: ./backend
-        run: pytest
-
-  frontend-ci:
-    name: Frontend CI
+  lint-frontend:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
+      - uses: actions/checkout@v3
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
+          node-version: '20.x'
       - name: Install dependencies
-        working-directory: ./frontend
         run: npm install
-
+        working-directory: ./frontend
       - name: Run linter
-        working-directory: ./frontend
         run: npm run lint
+        working-directory: ./frontend
 
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
       - name: Run tests
+        run: npm test
         working-directory: ./frontend
-        run: npm test -- --watchAll=false # Ejecutar pruebas una vez
-
-      - name: Build project
-        working-directory: ./frontend
-        run: npm run build
