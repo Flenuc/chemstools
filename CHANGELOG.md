@@ -4,6 +4,25 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[1.0.0-alpha] - 2025-07-19
+Added
+Backend: Se integró Redis al stack de docker-compose para ser utilizado como backend de caché.
+
+Backend: Se creó la nueva app calculators en Django para alojar la lógica de las futuras herramientas de cálculo.
+
+Frontend: Se desarrolló un conjunto inicial de componentes de UI base y reutilizables en src/components/common, incluyendo Button, Input, Card y Modal.
+
+Frontend: Se añadió la dependencia @headlessui/react para la creación de componentes de UI accesibles como el Modal.
+
+Changed
+Infraestructura: Se actualizó docker-compose.yml para incluir el nuevo servicio de redis y se añadió como dependencia del servicio backend.
+
+Backend: Se modificó chems_tools/settings.py para configurar django-redis como el sistema de caché por defecto.
+
+Backend: Se actualizó requirements.txt para incluir la dependencia django-redis.
+
+DevOps: Se revisó el pipeline de CI (.github/workflows/ci.yml) para asegurar que pytest ejecute las pruebas de todas las aplicaciones del backend, incluyendo la futura app calculators.
+
 [0.3.1] - 2025-07-18
 Added
 Funcionalidad: Se completó el ciclo CRUD para las moléculas en el frontend, añadiendo la funcionalidad de eliminar y sentando las bases para la edición.
