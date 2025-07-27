@@ -1,9 +1,10 @@
+
 'use client';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMolecule } from '../../store/moleculesSlice';
 import { addNotification } from '../../store/notificationsSlice';
-import apiService from '../../services/api';
+import { api } from '../../services/api'; // FIX: Import 'api' object instead of default
 import { logTelemetryEvent } from '@/services/telemetryService';
 
 export default function AddMoleculeForm() {
@@ -18,10 +19,8 @@ export default function AddMoleculeForm() {
     setIsLoading(true);
     setError('');
     try {
-      const newMolecule = await apiService('molecules/', {
-        method: 'POST',
-        body: JSON.stringify({ name, structure_data: structure, format: 'SMILES' }),
-      });
+      // FIX: Use api.post for creating a new molecule
+      const newMolecule = await api.post('molecules/', { name, structure_data: structure, format: 'SMILES' });
       dispatch(addMolecule(newMolecule));
       logTelemetryEvent('molecule_created', { name, structure });
       dispatch(addNotification({ message: `Molécula "${name}" guardada.`, type: 'success' }));
