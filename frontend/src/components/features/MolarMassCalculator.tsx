@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addNotification } from '@/store/notificationsSlice';
-import apiService from '@/services/api';
+import { api } from '@/services/api'; // FIX: Import 'api' object instead of default
 import { logTelemetryEvent } from '@/services/telemetryService';
 
 export default function MolarMassCalculator() {
@@ -16,10 +16,8 @@ export default function MolarMassCalculator() {
     setIsLoading(true);
     setResult(null);
     try {
-      const data = await apiService('calculate/molecular-weight/', {
-        method: 'POST',
-        body: JSON.stringify({ formula }),
-      });
+      // FIX: Use api.post for the calculation request
+      const data = await api.post('calculate/molecular-weight/', { formula });
       logTelemetryEvent('molar_mass_calculated', { formula });
       setResult(data.molecular_weight);
     } catch (err: any) {
