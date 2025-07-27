@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import apiService from '@/services/api';
+import { api } from '@/services/api'; // FIX: Import 'api' object instead of default
 import { addNotification } from '@/store/notificationsSlice';
 
 export default function RegisterForm() {
@@ -17,10 +17,8 @@ export default function RegisterForm() {
     setError('');
     setSuccess('');
     try {
-      await apiService('auth/register/', {
-        method: 'POST',
-        body: JSON.stringify({ username, email, password }),
-      });
+      // FIX: Use api.post for the registration request
+      await api.post('auth/register/', { username, email, password });
       dispatch(addNotification({ message: '¡Usuario registrado con éxito!', type: 'success' }));
       setUsername('');
       setEmail('');
