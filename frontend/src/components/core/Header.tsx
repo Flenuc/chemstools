@@ -16,6 +16,7 @@ export default function Header() {
       <nav className="flex items-center space-x-6">
         {pathname !== '/' && <Link href="/" className="text-base text-gray-600 hover:text-indigo-600">Dashboard</Link>}
         <Link href="/periodic-table" className="text-base text-gray-600 hover:text-indigo-600">Tabla Periódica</Link>
+        <Link href="/glossary" className="text-base text-gray-600 hover:text-indigo-600">Glosario</Link>
       </nav>
       <div>
         {isAuthenticated && user ? (
