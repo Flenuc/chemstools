@@ -8,6 +8,7 @@ import RegisterForm from '@/components/features/RegisterForm';
 import MoleculeList from '@/components/features/MoleculeList';
 import AddMoleculeForm from '@/components/features/AddMoleculeForm';
 import MolarMassCalculator from '@/components/features/MolarMassCalculator';
+import PHCalculator from '@/components/features/PHCalculator';
 
 export default function Home() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -24,6 +25,7 @@ export default function Home() {
             <div className="space-y-8">
               <AddMoleculeForm />
               <MolarMassCalculator />
+              <PHCalculator />
             </div>
           </div>
         ) : (
