@@ -1,4 +1,4 @@
-import apiService from './api';
+import { api } from './api';
 
 // Generamos un ID de sesión simple para agrupar eventos
 const sessionId = Date.now().toString(36) + Math.random().toString(36).substring(2);
@@ -10,7 +10,7 @@ const sessionId = Date.now().toString(36) + Math.random().toString(36).substring
  * @param details - Un objeto con datos adicionales.
  */
 export const logTelemetryEvent = (eventName: string, details: object = {}) => {
-  apiService('telemetry/log/', {
+  api.post('telemetry/log/', {
     method: 'POST',
     body: JSON.stringify({
       event_name: eventName,
