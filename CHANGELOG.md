@@ -4,6 +4,32 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[1.1.0-alpha] - 2025-07-27
+Added
+Backend: Se implementó un BaseModel abstracto en la app core con campos de auditoría (created_at, updated_at) para estandarizar los modelos.
+
+Backend: Se creó el modelo GlossaryTerm y su correspondiente Serializer y ViewSet para la nueva funcionalidad de Glosario.
+
+Backend: Se añadió un endpoint para la pHCalculatorView, capaz de realizar conversiones entre pH, pOH, [H+] y [OH-].
+
+Backend: Se implementó caché con Redis en el endpoint del glosario para optimizar el rendimiento.
+
+Backend: Se añadieron pruebas unitarias para los nuevos endpoints de la app calculators.
+
+Frontend: Se desarrolló la página del Glosario (/glossary) con funcionalidad de búsqueda y filtrado en el cliente.
+
+Frontend: Se creó el componente PHCalculator y se integró en el dashboard principal.
+
+Changed
+Frontend: Se refactorizó completamente el servicio api.ts para exportar un objeto api con métodos por cada verbo HTTP (get, post, etc.), mejorando la claridad y el tipado.
+
+Frontend: Se actualizaron los componentes LoginForm, RegisterForm, AddMoleculeForm y MolarMassCalculator para que sean compatibles con el nuevo servicio de API refactorizado.
+
+Fixed
+Backend: Se corrigió un problema de desincronización con la base de datos generando y aplicando las migraciones necesarias para añadir las columnas faltantes (created_at, updated_at) a la tabla calculators_glossaryterm.
+
+Frontend: Se solucionó un error en el componente PHCalculator que impedía mostrar los resultados al manejar incorrectamente el objeto de respuesta de la API.
+
 [1.0.0-alpha] - 2025-07-19
 Added
 Backend: Se integró Redis al stack de docker-compose para ser utilizado como backend de caché.
