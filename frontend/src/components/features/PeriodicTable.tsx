@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import apiService from '@/services/api';
+import { api } from '@/services/api';
 import { setElementFilter } from '@/store/filterSlice';
 import { useDispatch } from 'react-redux';
 
@@ -33,7 +33,7 @@ export default function PeriodicTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await apiService('data/periodic-table/');
+        const data = await api.get('data/periodic-table/');
         setElements(data.elements);
       } catch (error) {
         console.error("Error fetching periodic table data:", error);
