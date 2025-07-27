@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import apiService from '@/services/api';
+import { api } from '@/services/api';
 
 export interface Molecule {
   id: number;
@@ -31,7 +31,7 @@ const initialState: MoleculesState = {
 // Thunk asíncrono para obtener las moléculas
 export const fetchMolecules = createAsyncThunk('molecules/fetchMolecules', async () => {
   // El servicio ahora devolverá el objeto de paginación completo
-  const response = await apiService('molecules/');
+  const response = await api.get('molecules/');
   // Devolvemos solo el array de resultados para que el reducer lo maneje
   return (response as PaginatedResponse).results;
 });
@@ -40,7 +40,7 @@ export const fetchMolecules = createAsyncThunk('molecules/fetchMolecules', async
 export const deleteMolecule = createAsyncThunk(
   'molecules/deleteMolecule',
   async (moleculeId: number) => {
-    await apiService(`molecules/${moleculeId}/`, { method: 'DELETE' });
+    await api.delete(`molecules/${moleculeId}/`, { method: 'DELETE' });
     return moleculeId; // Devolvemos el ID para saber cuál eliminar del estado
   }
 );
@@ -49,7 +49,7 @@ export const deleteMolecule = createAsyncThunk(
 export const updateMolecule = createAsyncThunk(
   'molecules/updateMolecule',
   async (molecule: Molecule) => {
-    const response = await apiService(`molecules/${molecule.id}/`, {
+    const response = await api.put(`molecules/${molecule.id}/`, {
       method: 'PUT', // o 'PATCH' si solo actualizas algunos campos
       body: JSON.stringify(molecule),
     });
