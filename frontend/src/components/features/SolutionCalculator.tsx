@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/store';
 import { setSolutionInput, resetSolutionForm } from '@/store/calculatorsSlice';
+import { addNotification } from '@/store/notificationsSlice';
 import { api } from '@/services/api';
 import Card from '@/components/common/Card';
 import Input from '@/components/common/Input';
@@ -25,6 +26,7 @@ const SolutionCalculator = () => {
     dispatch(setSolutionInput({ field, value }));
   };
 
+
   const handleCalculate = async () => {
     setLoading(true);
     setError(null);
@@ -40,8 +42,13 @@ const SolutionCalculator = () => {
     try {
       const response = await api.post('calculators/solution-calculator/', payload);
       setResult(response);
+      // notificación de éxito
+      dispatch(addNotification({ message: 'Cálculo de disolución exitoso.', type: 'success' }));
     } catch (err: any) {
-      setError(err.message || 'Error en el cálculo. Revise los datos ingresados.');
+      const errorMessage = err.message || 'Error en el cálculo. Revise los datos ingresados.';
+      setError(errorMessage);
+      // notificación de error
+      dispatch(addNotification({ message: errorMessage, type: 'error' }));
     } finally {
       setLoading(false);
     }
