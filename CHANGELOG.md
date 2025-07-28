@@ -4,6 +4,34 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.0.0-alpha] - 2025-07-28
+Added
+Backend: Se han creado dos nuevas aplicaciones de Django, structures y reactions, para organizar la lógica de las futuras funcionalidades de análisis molecular y de reacciones.
+
+Backend: Se han integrado las librerías científicas rdkit-pypi (para manipulación de moléculas) y sympy (para cálculo simbólico) al proyecto.
+
+Frontend: Se ha añadido la librería kekule al proyecto como dependencia de npm, seleccionada para la futura visualización de estructuras químicas en 2D.
+
+Changed
+Backend: Se actualizó requirements.txt para incluir las nuevas dependencias rdkit-pypi y sympy.
+
+Backend: Se modificó chems_tools/settings.py para registrar las nuevas aplicaciones structures y reactions.
+
+DevOps: Se ha verificado que el pipeline de CI existente en GitHub Actions maneja correctamente la instalación de las nuevas dependencias del backend.
+
+[1.3.0-alpha] - 2025-07-27
+Added
+Documentación: Se ha añadido una nueva sección a USER_GUIDE.md que explica en detalle el funcionamiento del Glosario de Términos Químicos, la Calculadora de pH/pOH y la Calculadora de Disoluciones.
+
+Documentación: Se han mejorado los docstrings en las vistas del backend (calculators/views.py) para enriquecer la documentación autogenerada de la API en Swagger/Redoc, haciéndola más clara para los desarrolladores.
+
+Changed
+Frontend: Se ha integrado el sistema de notificaciones global (basado en Redux) en los componentes PHCalculator y SolutionCalculator. Ahora, los usuarios reciben un feedback visual consistente (éxito o error) después de cada operación.
+
+Backend: Se ha revisado el código de los nuevos módulos (calculators) para asegurar la adherencia a los estándares del proyecto. El rendimiento de los endpoints se considera óptimo para la carga actual y no ha requerido optimizaciones adicionales.
+
+UI/UX: Se ha realizado una revisión general de la usabilidad de las nuevas herramientas, confirmando que el diseño actual es intuitivo y no requiere ajustes mayores en esta fase.
+
 [1.2.0-alpha] - 2025-07-27
 Added
 Backend: Se desarrolló el endpoint calculators/solution-calculator/ con lógica para calcular % m/m y % m/v, incluyendo derivaciones a partir de la densidad.
