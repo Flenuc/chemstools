@@ -4,6 +4,23 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[1.2.0-alpha] - 2025-07-27
+Added
+Backend: Se desarrolló el endpoint calculators/solution-calculator/ con lógica para calcular % m/m y % m/v, incluyendo derivaciones a partir de la densidad.
+
+Backend: Se implementó una validación robusta en la SolutionCalculatorView para manejar entradas numéricas inválidas (negativas, cero donde no corresponde) y datos insuficientes.
+
+Backend: Se ampliaron las pruebas unitarias en calculators/tests/test_views.py para cubrir todos los casos de uso y de error de la nueva calculadora de disoluciones.
+
+Frontend: Se creó un nuevo slice de Redux (calculatorsSlice.ts) para gestionar de forma centralizada el estado de los formularios de las calculadoras.
+
+Frontend: Se diseñó y desarrolló el componente interactivo SolutionCalculator.tsx, conectándolo al nuevo slice de Redux y al endpoint del backend.
+
+Fixed
+Backend: Se corrigió la estructura del archivo de pruebas calculators/tests/test_views.py, moviendo los métodos de prueba de la calculadora de disoluciones dentro de la clase CalculatorsAPITests para resolver los errores de fixture 'self' not found.
+
+Backend: Se refactorizó la prueba test_get_glossary_list para crear sus propios datos de prueba en setUpTestData, haciéndola independiente de las migraciones de datos y solucionando el fallo de aserción.
+
 [1.1.0-alpha] - 2025-07-27
 Added
 Backend: Se implementó un BaseModel abstracto en la app core con campos de auditoría (created_at, updated_at) para estandarizar los modelos.
