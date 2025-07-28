@@ -2114,3 +2114,101 @@ LINE 1: SELECT "calculators_glossaryterm"."id", "calculators_glossar...
 
 ERROR 2025-07-27 22:56:03,709 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
 WARNING 2025-07-27 22:56:03,710 log Bad Request: /api/telemetry/log/
+WARNING 2025-07-27 23:29:33,858 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:29:33,863 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:29:33,874 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-27 23:29:33,885 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-27 23:29:34,420 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-27 23:29:34,421 log Unauthorized: /api/auth/me/
+ERROR 2025-07-27 23:33:03,607 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-07-27 23:33:03,608 log Bad Request: /api/telemetry/log/
+WARNING 2025-07-27 23:37:34,383 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:37:34,387 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:37:34,399 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-27 23:37:34,410 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-27 23:37:34,915 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-27 23:37:34,916 log Unauthorized: /api/auth/me/
+WARNING 2025-07-27 23:39:39,133 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:39:39,138 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:39:39,149 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-27 23:39:39,159 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-27 23:39:39,662 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-27 23:39:39,662 log Unauthorized: /api/auth/me/
+WARNING 2025-07-27 23:41:25,939 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:41:25,943 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:41:25,954 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-27 23:41:25,965 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-27 23:41:26,514 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-27 23:41:26,514 log Unauthorized: /api/auth/me/
+WARNING 2025-07-27 23:42:54,753 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:42:54,757 log Bad Request: /api/calculators/ph-calculator/
+ERROR 2025-07-27 23:42:55,265 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-27 23:42:55,265 log Unauthorized: /api/auth/me/
+WARNING 2025-07-27 23:43:39,152 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:43:39,157 log Bad Request: /api/calculators/ph-calculator/
+ERROR 2025-07-27 23:43:39,667 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-27 23:43:39,668 log Unauthorized: /api/auth/me/
+ERROR 2025-07-27 23:51:15,291 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-07-27 23:51:15,292 log Bad Request: /api/telemetry/log/
+ERROR 2025-07-27 23:54:43,171 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-07-27 23:54:43,171 log Bad Request: /api/telemetry/log/
+WARNING 2025-07-27 23:57:47,588 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-27 23:57:47,592 log Bad Request: /api/calculators/ph-calculator/
+ERROR 2025-07-27 23:57:48,127 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-27 23:57:48,128 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:00:52,321 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:00:52,325 log Bad Request: /api/calculators/ph-calculator/
+ERROR 2025-07-28 00:00:52,850 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:00:52,850 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:03:26,631 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:03:26,635 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:03:26,646 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:03:26,657 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:03:27,157 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:03:27,157 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:04:40,262 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:04:40,266 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:04:40,277 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:04:40,288 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:04:40,784 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:04:40,784 log Unauthorized: /api/auth/me/
+ERROR 2025-07-28 00:12:20,867 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:12:20,867 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:12:39,952 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:12:39,957 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:12:39,968 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:12:39,979 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:12:40,475 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:12:40,476 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:16:51,264 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:16:51,268 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:16:51,278 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:16:51,288 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:16:51,790 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:16:51,790 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:22:56,426 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:22:56,431 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:22:56,444 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:22:56,457 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:22:57,002 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:22:57,002 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:26:08,118 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:26:08,122 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:26:08,133 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:26:08,144 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:26:08,653 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:26:08,654 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:28:52,241 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:28:52,245 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:28:52,256 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:28:52,266 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:28:52,765 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:28:52,765 log Unauthorized: /api/auth/me/
+WARNING 2025-07-28 00:37:13,046 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:37:13,050 log Bad Request: /api/calculators/ph-calculator/
+WARNING 2025-07-28 00:37:13,063 log Bad Request: /api/calculators/solution-calculator/
+WARNING 2025-07-28 00:37:13,074 log Bad Request: /api/calculators/solution-calculator/
+ERROR 2025-07-28 00:37:13,569 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-07-28 00:37:13,569 log Unauthorized: /api/auth/me/
+ERROR 2025-07-28 00:40:11,222 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-07-28 00:40:11,222 log Bad Request: /api/telemetry/log/
