@@ -1,0 +1,17 @@
+[
+  "api/tests/test_views.py::HealthCheckTests::test_health_check_returns_200",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_get_glossary_list",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_ph_calculator_invalid_input",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_ph_calculator_non_numeric_input",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_ph_calculator_with_h_concentration",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_ph_calculator_with_ph",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_solution_calculator_insufficient_data",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_solution_calculator_mass_mass",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_solution_calculator_mass_volume",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_solution_calculator_negative_input",
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_solution_calculator_with_density",
+  "molecules/tests/test_serializers.py::MoleculeSerializerTest::test_invalid_smiles",
+  "molecules/tests/test_serializers.py::MoleculeSerializerTest::test_valid_smiles",
+  "users/tests/test_views.py::UserProfileViewTests::test_get_profile_authenticated",
+  "users/tests/test_views.py::UserProfileViewTests::test_get_profile_unauthenticated"
+]
