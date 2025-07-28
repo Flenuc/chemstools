@@ -1,0 +1,3 @@
+{
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_get_glossary_list": true
+}
