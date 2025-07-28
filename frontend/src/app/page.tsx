@@ -9,6 +9,7 @@ import MoleculeList from '@/components/features/MoleculeList';
 import AddMoleculeForm from '@/components/features/AddMoleculeForm';
 import MolarMassCalculator from '@/components/features/MolarMassCalculator';
 import PHCalculator from '@/components/features/PHCalculator';
+import SolutionCalculator from '@/components/features/SolutionCalculator';
 
 export default function Home() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -26,6 +27,7 @@ export default function Home() {
               <AddMoleculeForm />
               <MolarMassCalculator />
               <PHCalculator />
+              <SolutionCalculator />
             </div>
           </div>
         ) : (
