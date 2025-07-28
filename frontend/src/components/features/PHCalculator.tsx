@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '@/store';
+import { addNotification } from '@/store/notificationsSlice';
 import { api } from '@/services/api';
 import Card from '@/components/common/Card';
 import Input from '@/components/common/Input';
@@ -16,6 +17,7 @@ interface PHResult {
 }
 
 const PHCalculator = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [inputValue, setInputValue] = useState('');
   const [inputType, setInputType] = useState<'ph' | 'poh' | 'h_concentration' | 'oh_concentration'>('ph');
   const [result, setResult] = useState<PHResult | null>(null);
@@ -29,14 +31,18 @@ const PHCalculator = () => {
     setError(null);
     setResult(null);
 
+
     try {
       const payload = { [inputType]: parseFloat(inputValue) };
       const response = await api.post('calculators/ph-calculator/', payload);
-      // FIX: The response is the data itself, not response.data
       setResult(response);
+      // Añadir notificación de éxito
+      dispatch(addNotification({ message: 'Cálculo realizado con éxito.', type: 'success' }));
     } catch (err: any) {
-      setError(err.message || 'Error en el cálculo. Verifique el valor ingresado.');
-      console.error(err);
+      const errorMessage = err.message || 'Error en el cálculo. Verifique el valor ingresado.';
+      setError(errorMessage);
+      // Añadir notificación de error
+      dispatch(addNotification({ message: errorMessage, type: 'error' }));
     } finally {
       setLoading(false);
     }
