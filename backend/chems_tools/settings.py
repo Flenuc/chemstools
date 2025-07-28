@@ -65,6 +65,12 @@ INSTALLED_APPS = [
     
     # calculators app for chemical calculations
     'calculators.apps.CalculatorsConfig',
+    
+    # structures app for handling chemical structures
+    'structures.apps.StructuresConfig',
+    
+    # reactions app for chemical reactions
+    'reactions.apps.ReactionsConfig', 
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
