@@ -12,7 +12,7 @@ const Input: React.FC<InputProps> = ({ label, id, error, className, ...props }) 
   return (
     <div>
       {label && (
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor={id} className="block text-sm font-medium text-gray-900 mb-1">
           {label}
         </label>
       )}
