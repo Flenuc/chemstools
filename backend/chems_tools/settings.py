@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'No password'
+SECRET_KEY = 'ap11g%4tgv50-cf3bl(6+u8x2$e7s=jax4gxo^@j+nj-9)zqty'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     'calculators.apps.CalculatorsConfig',
     
     # structures app for handling chemical structures
-    'structures.apps.StructuresConfig',
+    'structures',
     
     # reactions app for chemical reactions
     'reactions.apps.ReactionsConfig', 
@@ -111,8 +111,19 @@ WSGI_APPLICATION = 'chems_tools.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'chemstools_db',
+        'USER': 'chemstools_user',
+        'PASSWORD': 'chemstools_password',
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
+}
+
+# If the DATABASE_URL environment variable is set, use it to configure the database.
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
