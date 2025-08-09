@@ -10,6 +10,7 @@ import AddMoleculeForm from '@/components/features/AddMoleculeForm';
 import MolarMassCalculator from '@/components/features/MolarMassCalculator';
 import PHCalculator from '@/components/features/PHCalculator';
 import SolutionCalculator from '@/components/features/SolutionCalculator';
+import LewisStructureGenerator from '@/components/features/LewisStructureGenerator';
 
 export default function Home() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -21,13 +22,14 @@ export default function Home() {
         {isAuthenticated ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
+              <AddMoleculeForm />
               <MoleculeList />
+              <SolutionCalculator />
+              <LewisStructureGenerator />
             </div>
             <div className="space-y-8">
-              <AddMoleculeForm />
               <MolarMassCalculator />
               <PHCalculator />
-              <SolutionCalculator />
             </div>
           </div>
         ) : (
