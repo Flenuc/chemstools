@@ -4,6 +4,31 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.1.0-alpha] - 2025-08-09
+Added
+Backend: Se ha implementado la funcionalidad completa del Generador de Estructuras de Lewis en la nueva app structures.
+
+Backend: Se ha creado el modelo MolecularStructure para actuar como caché en la base de datos, almacenando las estructuras generadas para optimizar peticiones futuras.
+
+Backend: Se ha desarrollado la clase LewisStructureGenerator en structures/utils.py, que encapsula toda la lógica de negocio con RDKit para el análisis de fórmulas, cálculo de propiedades y generación de estructuras.
+
+Backend: Se ha implementado el endpoint POST /api/structures/lewis-generator/ que devuelve una representación JSON detallada de la estructura de Lewis, incluyendo átomos, enlaces, cargas formales y pares libres.
+
+Backend: Se ha añadido una suite de pruebas unitarias y de integración exhaustiva para el nuevo módulo, validando la lógica de RDKit, el modelo de datos y los endpoints de la API.
+
+Frontend: Se ha desarrollado un nuevo componente LewisStructureGenerator.tsx con una interfaz de usuario avanzada, incluyendo:
+
+Validación de fórmulas en tiempo real.
+
+Botones de selección rápida para moléculas comunes.
+
+Un renderizador de canvas personalizado para visualizar las estructuras de Lewis, mostrando átomos, enlaces y pares de electrones.
+
+Una vista detallada de las propiedades moleculares y atómicas calculadas.
+
+Changed
+Arquitectura: Se ha adoptado un enfoque basado en un servicio (utils.py) y un modelo de caché (models.py) para el generador de estructuras, en lugar de una lógica puramente transitoria, mejorando el rendimiento y la organización del código.
+
 [2.0.0-alpha] - 2025-07-28
 Added
 Backend: Se han creado dos nuevas aplicaciones de Django, structures y reactions, para organizar la lógica de las futuras funcionalidades de análisis molecular y de reacciones.
