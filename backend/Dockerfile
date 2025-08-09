@@ -1,5 +1,20 @@
-
 FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y \
+    libxrender1 \
+    libxext6 \
+    libxtst6 \
+    libxi6 \
+    libxrandr2 \
+    libasound2 \
+    libpangocairo-1.0-0 \
+    libatk1.0-0 \
+    libgtk-3-0 \
+    libgdk-pixbuf2.0-0 \
+    libxss1 \
+    libgconf-2-4 \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
