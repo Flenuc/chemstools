@@ -5,8 +5,8 @@ import notificationsReducer from './notificationsSlice';
 import filterReducer from './filterSlice';
 import calculatorsReducer from './calculatorsSlice';
 import quizReducer from './quizSlice';
-
 import chemWordleReducer from './chemWordleSlice';
+import memoryReducer from './memorySlice';
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +17,7 @@ export const store = configureStore({
     calculators: calculatorsReducer,
     quiz: quizReducer,
     chemWordle: chemWordleReducer,
+    memory: memoryReducer
   },
 });
 
