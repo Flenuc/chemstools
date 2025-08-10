@@ -4,6 +4,87 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.2.1-alpha] - 2025-08-10
+Added
+Backend: Se ha implementado el sistema completo de Quiz Rápido de Química mediante la nueva app games, proporcionando una experiencia de aprendizaje gamificada e interactiva.
+
+Backend: Se han creado 4 modelos principales para el sistema de quiz:
+- QuizQuestion: Almacena preguntas de opción múltiple categorizadas por dificultad (fácil/medio/difícil) y tema (nomenclatura, tabla periódica, reacciones, estructura atómica, estructuras de Lewis, disoluciones, pH)
+- QuizSession: Gestiona sesiones individuales de quiz con tracking de progreso, puntuación y tiempo
+- QuizAnswer: Registra respuestas individuales con validación de corrección, tiempo de respuesta y puntos obtenidos
+- QuizLeaderboard: Sistema de clasificación global con estadísticas por usuario (mejor puntuación, promedio, tiempo más rápido, total de partidas)
+
+Backend: Se ha desarrollado la clase QuizGameEngine que encapsula toda la lógica del motor de juego:
+- Creación de sesiones con selección aleatoria de preguntas filtradas por dificultad y categoría
+- Validación robusta de respuestas incluyendo manejo de casos especiales (tiempo agotado, opciones inválidas)
+- Sistema de puntuación dinámica basado en dificultad de pregunta y corrección de respuesta
+- Actualización automática de estadísticas y clasificaciones al completar sesiones
+
+Backend: Se han implementado 6 endpoints REST completos para el sistema de quiz:
+- POST /api/games/quiz/start_session/: Inicia nuevas sesiones con parámetros opcionales de filtrado
+- GET /api/games/quiz/get_question/: Obtiene la pregunta actual de una sesión activa
+- POST /api/games/quiz/submit_answer/: Procesa respuestas con validación completa y feedback inmediato
+- GET /api/games/quiz/leaderboard/: Consulta clasificación global top 10
+- GET /api/games/quiz/my_stats/: Obtiene estadísticas personales del usuario autenticado
+- Todos los endpoints incluyen validación de datos, manejo de errores robusto y respuestas JSON estructuradas
+
+Backend: Se ha creado el comando de management populate_quiz_questions que incluye más de 30 preguntas de ejemplo cuidadosamente diseñadas, cubriendo todos los temas principales de química con explicaciones educativas detalladas.
+
+Frontend: Se ha desarrollado el componente QuizGame.tsx con funcionalidades avanzadas:
+- Sistema de temporizador visual con alertas cuando quedan menos de 30 segundos
+- Selección de modalidades de juego (aleatorio, por dificultad: fácil/medio/difícil)
+- Interfaz de selección de respuestas con feedback visual inmediato
+- Barra de progreso animada mostrando avance a través de las preguntas
+- Estados de UI diferenciados (inicio, carga, jugando, respondiendo, completado, error)
+- Feedback educativo después de cada respuesta con explicación de la respuesta correcta
+- Pantalla de resultados finales con resumen de puntuación y opciones de continuación
+
+Frontend: Se ha implementado el componente QuizLeaderboard.tsx que presenta:
+- Tabla de clasificación interactiva con top 10 jugadores globales
+- Medallas visuales (🥇🥈🥉) para los primeros 3 lugares
+- Panel de estadísticas personales del usuario con métricas detalladas (mejor puntuación, promedio, partidas jugadas, tiempo más rápido)
+- Formateo inteligente de tiempo en formato MM:SS
+- Design responsive con grillas adaptativas
+
+Frontend: Se ha creado el store slice quizSlice.ts con Redux Toolkit que gestiona:
+- Estado global completo del quiz (sesión actual, pregunta, progreso, puntuación, temporizador)
+- Thunks asíncronos para todas las operaciones de API con manejo robusto de errores
+- Estados de UI reactivos que se sincronizan automáticamente con las acciones del usuario
+- Reducers para operaciones locales (reset, actualización de tiempo, cambio de estados)
+
+Frontend: Se ha desarrollado la página completa /quiz con:
+- Sistema de navegación por pestañas entre juego y clasificación
+- Protección de ruta que requiere autenticación
+- Integración completa con el sistema de navegación existente
+- Design consistente con el resto de la aplicación ChemsTools
+
+Testing: Se ha implementado una suite exhaustiva de 8 pruebas unitarias y de integración para el backend que valida:
+- Funcionamiento correcto de todos los endpoints de la API
+- Flujo completo desde inicio de sesión hasta finalización de quiz
+- Manejo apropiado de casos de error (sesiones inválidas, preguntas inexistentes, datos malformados)
+- Validación de lógica de puntuación y actualización de estadísticas
+- Casos edge como tiempo agotado y respuestas fuera de rango
+
+Changed
+Arquitectura: Se ha adoptado un patrón de separación clara entre motor de juego (QuizGameEngine), modelos de datos, y presentación de API, facilitando futuras extensiones del sistema de quiz.
+
+Frontend: Se ha mejorado el manejo de estados asíncronos en Redux con verificaciones de seguridad para evitar errores de propiedades undefined, incluyendo logging detallado para debugging.
+
+Backend: Se ha optimizado el sistema de validación de respuestas para soportar casos especiales como tiempo agotado (-1) manteniendo la integridad de datos.
+
+Infrastructure: Se ha actualizado la configuración del proyecto para incluir la nueva app games en INSTALLED_APPS y routing de URLs.
+
+Fixed
+Backend: Se han corregido problemas de validación en la lógica de selección de respuestas, asegurando que todos los índices de opciones sean válidos antes del procesamiento.
+
+Frontend: Se han solucionado errores de tipado TypeScript relacionados con importaciones de store y manejo de propiedades de componentes, garantizando compilación sin warnings.
+
+Frontend: Se ha corregido el manejo de respuestas de API en el frontend para adaptarse correctamente a la estructura de respuesta del backend ({ success: boolean, data: {...} }).
+
+Testing: Se han resuelto fallos en las pruebas relacionados con validación de datos de entrada y formato de respuestas JSON, alcanzando 100% de éxito en la suite de pruebas.
+
+Performance: Se ha optimizado la consulta de preguntas aleatorias utilizando random.sample() en lugar de operaciones de base de datos múltiples, mejorando significativamente los tiempos de respuesta.
+
 [2.2.0-alpha] - 2025-08-09
 Added
 Backend: Se ha implementado la funcionalidad completa del Simulador de Reacciones Químicas en la nueva app reactions.
