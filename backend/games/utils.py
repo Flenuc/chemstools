@@ -1,9 +1,12 @@
 import random
+import json
+from pathlib import Path
 from django.utils import timezone
 from .models import QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard
 from .models import ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats
 from .models import MemoryGame, MemoryStats
 from .models import BalanceChallengeAttempt, BalanceChallengeGame, BalanceChallengeStats
+from .models import PeriodicSpeedGame, PeriodicSpeedStats
 from reactions.utils import ChemicalEquationBalancer
 
 class QuizGameEngine:
@@ -938,3 +941,230 @@ class BalanceChallengeEngine:
         stats.accuracy_rate = (stats.games_correct / stats.games_completed) * 100
         
         stats.save()
+        
+class PeriodicSpeedEngine:
+    """Motor de juego para el desafío de velocidad de tabla periódica"""
+    
+    # Categorías de elementos para stats
+    ELEMENT_CATEGORIES = {
+        'alkali metal': 'metals',
+        'alkaline earth metal': 'metals',
+        'transition metal': 'metals',
+        'post-transition metal': 'metals',
+        'diatomic nonmetal': 'nonmetals',
+        'polyatomic nonmetal': 'nonmetals',
+        'metalloid': 'metalloids',
+        'noble gas': 'noble_gases',
+        'lanthanide': 'metals',
+        'actinide': 'metals',
+        'unknown, probably transition metal': 'metals',
+        'unknown, probably post-transition metal': 'metals',
+        'unknown, probably metalloid': 'metalloids',
+        'unknown, predicted to be noble gas': 'noble_gases'
+    }
+    
+    @staticmethod
+    def get_periodic_table_data():
+        """Obtiene los datos de la tabla periódica"""
+        try:
+            json_file_path = Path(__file__).parent.parent / 'data' / 'static' / 'data' / 'periodic_table.json'
+            with open(json_file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return data['elements']
+        except Exception as e:
+            raise ValueError(f"Error al cargar datos de la tabla periódica: {str(e)}")
+    
+    @staticmethod
+    def create_speed_challenge(user, difficulty='random'):
+        """Crea un nuevo desafío de velocidad"""
+        # Verificar si ya tiene un juego activo
+        active_game = PeriodicSpeedGame.objects.filter(
+            user=user,
+            is_completed=False
+        ).first()
+        
+        if active_game:
+            return active_game
+        
+        # Obtener elementos de la tabla periódica
+        elements = PeriodicSpeedEngine.get_periodic_table_data()
+        
+        # Filtrar elementos según dificultad
+        if difficulty == 'common':
+            # Elementos más comunes (primeros 20 + algunos otros conocidos)
+            common_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 26, 29, 47, 79]
+            filtered_elements = [e for e in elements if e['number'] in common_numbers]
+        elif difficulty == 'rare':
+            # Elementos menos comunes (número atómico > 80 o lantánidos/actínidos)
+            filtered_elements = [e for e in elements if e['number'] > 80 or (57 <= e['number'] <= 71) or (89 <= e['number'] <= 103)]
+        else:  # random - todos los elementos
+            filtered_elements = elements
+        
+        # Seleccionar elemento aleatorio
+        target_element = random.choice(filtered_elements)
+        
+        # Crear el juego
+        game = PeriodicSpeedGame.objects.create(
+            user=user,
+            target_element=target_element
+        )
+        
+        return game
+    
+    @staticmethod
+    def submit_selection(game, selected_element_number, time_taken):
+        """Procesa la selección del usuario"""
+        if game.is_completed:
+            return None, "El juego ya está completado"
+        
+        # Obtener todos los elementos para encontrar el seleccionado
+        elements = PeriodicSpeedEngine.get_periodic_table_data()
+        selected_element = next((e for e in elements if e['number'] == selected_element_number), None)
+        
+        if not selected_element:
+            return None, f"Elemento con número atómico {selected_element_number} no encontrado"
+        
+        # Verificar si es correcto
+        target_number = game.target_element['number']
+        is_correct = selected_element_number == target_number
+        
+        # Actualizar el juego
+        game.selected_element = selected_element
+        game.is_correct = is_correct
+        game.is_completed = True
+        game.time_taken_seconds = time_taken
+        game.completed_at = timezone.now()
+        game.save()
+        
+        # Actualizar estadísticas
+        PeriodicSpeedEngine._update_stats(game)
+        
+        result = {
+            'is_correct': is_correct,
+            'target_element': game.target_element,
+            'selected_element': selected_element,
+            'time_taken': time_taken,
+            'message': '¡Correcto!' if is_correct else f'Incorrecto. El elemento era {game.target_element["name"]} ({game.target_element["symbol"]})'
+        }
+        
+        return result, None
+    
+    @staticmethod
+    def get_hint(game):
+        """Proporciona una pista sobre el elemento objetivo"""
+        if game.is_completed:
+            return None, "El juego ya está completado"
+        
+        if game.hint_used:
+            return None, "Ya se utilizó la pista para este juego"
+        
+        target = game.target_element
+        
+        # Generar pista basada en las propiedades del elemento
+        hints = []
+        
+        # Pista sobre la categoría
+        category = target.get('category', '')
+        if 'metal' in category.lower():
+            hints.append("Es un metal")
+        elif 'nonmetal' in category.lower():
+            hints.append("Es un no metal")
+        elif 'noble gas' in category.lower():
+            hints.append("Es un gas noble")
+        elif 'metalloid' in category.lower():
+            hints.append("Es un metaloide")
+        
+        # Pista sobre la posición
+        if target.get('ypos', 0) <= 3:
+            hints.append("Está en los primeros 3 períodos")
+        elif target.get('ypos', 0) <= 5:
+            hints.append("Está en los períodos 4-5")
+        else:
+            hints.append("Está en los períodos 6-7")
+        
+        # Pista específica según número atómico
+        number = target.get('number', 0)
+        if number <= 10:
+            hints.append("Es uno de los primeros 10 elementos")
+        elif number <= 20:
+            hints.append("Su número atómico está entre 11 y 20")
+        elif number <= 36:
+            hints.append("Su número atómico está entre 21 y 36")
+        elif number <= 54:
+            hints.append("Su número atómico está entre 37 y 54")
+        else:
+            hints.append("Es un elemento pesado (Z > 54)")
+        
+        # Seleccionar una pista aleatoria
+        hint = random.choice(hints) if hints else "Es un elemento químico de la tabla periódica"
+        
+        # Marcar pista como usada
+        game.hint_used = True
+        game.save()
+        
+        return hint, None
+    
+    @staticmethod
+    def _update_stats(game):
+        """Actualiza las estadísticas del usuario"""
+        stats, created = PeriodicSpeedStats.objects.get_or_create(
+            user=game.user,
+            defaults={
+                'games_played': 0,
+                'games_correct': 0,
+                'accuracy_rate': 0.0,
+                'best_time_seconds': None,
+                'average_time_seconds': 0.0,
+                'total_time_seconds': 0.0,
+                'current_streak': 0,
+                'best_streak': 0
+            }
+        )
+        
+        stats.games_played += 1
+        
+        if game.is_correct and game.time_taken_seconds:
+            stats.games_correct += 1
+            stats.current_streak += 1
+            stats.best_streak = max(stats.best_streak, stats.current_streak)
+            
+            # Actualizar tiempos
+            stats.total_time_seconds += game.time_taken_seconds
+            stats.average_time_seconds = stats.total_time_seconds / stats.games_correct
+            
+            if not stats.best_time_seconds or game.time_taken_seconds < stats.best_time_seconds:
+                stats.best_time_seconds = game.time_taken_seconds
+            
+            # Actualizar estadísticas por categoría
+            element_category = game.target_element.get('category', '')
+            category_key = PeriodicSpeedEngine.ELEMENT_CATEGORIES.get(element_category, 'metals')
+            
+            # Incrementar contador de la categoría
+            category_field = f"{category_key}_correct"
+            setattr(stats, category_field, getattr(stats, category_field) + 1)
+            
+            # Actualizar mejor tiempo por categoría
+            best_time_field = f"best_time_{category_key}"
+            current_best = getattr(stats, best_time_field)
+            if not current_best or game.time_taken_seconds < current_best:
+                setattr(stats, best_time_field, game.time_taken_seconds)
+        else:
+            stats.current_streak = 0
+        
+        # Calcular tasa de precisión
+        stats.accuracy_rate = (stats.games_correct / stats.games_played) * 100
+        
+        stats.save()
+    
+    @staticmethod
+    def get_leaderboard(limit=10):
+        """Obtiene la tabla de clasificación"""
+        return PeriodicSpeedStats.objects.filter(
+            games_played__gte=5  # Mínimo 5 juegos
+        ).order_by('best_time_seconds', '-accuracy_rate')[:limit]
+    
+    @staticmethod
+    def get_random_elements_for_practice(count=10):
+        """Obtiene elementos aleatorios para práctica"""
+        elements = PeriodicSpeedEngine.get_periodic_table_data()
+        return random.sample(elements, min(count, len(elements)))
