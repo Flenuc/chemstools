@@ -5,15 +5,18 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 from .models import ( 
         QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard, 
-        ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats )
+        ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats 
+        , MemoryGame, MemoryStats)
 from .serializers import (
     QuizQuestionSerializer, QuizSessionSerializer, QuizAnswerSerializer, 
     QuizLeaderboardSerializer, QuizQuestionWithAnswerSerializer,
     ChemicalWordSerializer, ChemWordleGameSerializer, ChemWordleGameCompleteSerializer,
     ChemWordleAttemptSerializer, ChemWordleStatsSerializer,
+    MemoryCardRevealSerializer, MemoryGameSerializer, MemoryGameCreateSerializer, MemoryStatsSerializer,
 )
 from .utils import QuizGameEngine
 from .utils import ChemWordleEngine
+from .utils import MemoryGameEngine
 
 
 class QuizViewSet(viewsets.ViewSet):
@@ -393,4 +396,292 @@ class ChemWordleViewSet(viewsets.ViewSet):
             return Response({
                 'success': False,
                 'error': f'Error al obtener clasificación: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+class MemoryGameViewSet(viewsets.ViewSet):
+    """ViewSet para el juego Memory Molecular"""
+    permission_classes = [IsAuthenticated]
+    
+    @action(detail=False, methods=['post'])
+    def start_game(self, request):
+        """Inicia una nueva partida de Memory Molecular"""
+        try:
+            serializer = MemoryGameCreateSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({
+                    'success': False,
+                    'error': 'Datos inválidos',
+                    'details': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            difficulty = serializer.validated_data['difficulty']
+            total_pairs = serializer.validated_data['total_pairs']
+            
+            # Verificar si hay una partida activa
+            active_game = MemoryGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if active_game:
+                game_serializer = MemoryGameSerializer(active_game)
+                return Response({
+                    'success': True,
+                    'game': game_serializer.data,
+                    'message': 'Continuando partida existente'
+                })
+            
+            # Crear nueva partida
+            game = MemoryGameEngine.create_memory_game(
+                user=request.user,
+                difficulty=difficulty,
+                total_pairs=total_pairs
+            )
+            
+            game_serializer = MemoryGameSerializer(game)
+            return Response({
+                'success': True,
+                'game': game_serializer.data,
+                'message': 'Nueva partida de Memory Molecular iniciada'
+            }, status=status.HTTP_201_CREATED)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al iniciar partida: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def reveal_card(self, request):
+        """Revela una carta del tablero"""
+        try:
+            serializer = MemoryCardRevealSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({
+                    'success': False,
+                    'error': 'Datos inválidos',
+                    'details': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game_id = serializer.validated_data['game_id']
+            card_position = serializer.validated_data['card_position']
+            
+            game = MemoryGame.objects.get(id=game_id, user=request.user)
+            
+            if game.is_completed:
+                return Response({
+                    'success': False,
+                    'error': 'La partida ya está completada'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            result, error = MemoryGameEngine.reveal_card(game, card_position)
+            
+            if error:
+                return Response({
+                    'success': False,
+                    'error': error
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Obtener estado actualizado del juego
+            game.refresh_from_db()
+            game_serializer = MemoryGameSerializer(game)
+            
+            response_data = {
+                'success': True,
+                'result': result,
+                'game': game_serializer.data,
+                'message': 'Carta revelada correctamente'
+            }
+            
+            # Mensajes específicos según el resultado
+            if result['is_match']:
+                response_data['message'] = '¡Excelente! Has encontrado un par'
+                if result['game_completed']:
+                    response_data['message'] = '¡Felicitaciones! Has completado el juego'
+            
+            return Response(response_data)
+            
+        except MemoryGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Partida no encontrada'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al revelar carta: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def hide_cards(self, request):
+        """Oculta cartas reveladas que no fueron emparejadas"""
+        try:
+            game_id = request.data.get('game_id')
+            if not game_id:
+                return Response({
+                    'success': False,
+                    'error': 'Se requiere game_id'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game = MemoryGame.objects.get(id=game_id, user=request.user)
+            
+            if game.is_completed:
+                return Response({
+                    'success': False,
+                    'error': 'La partida ya está completada'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            MemoryGameEngine.hide_revealed_cards(game)
+            
+            game.refresh_from_db()
+            game_serializer = MemoryGameSerializer(game)
+            
+            return Response({
+                'success': True,
+                'game': game_serializer.data,
+                'message': 'Cartas ocultadas correctamente'
+            })
+            
+        except MemoryGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Partida no encontrada'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al ocultar cartas: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def current_game(self, request):
+        """Obtiene la partida actual del usuario"""
+        try:
+            game = MemoryGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if not game:
+                return Response({
+                    'success': True,
+                    'game': None,
+                    'message': 'No hay partida activa'
+                })
+            
+            game_serializer = MemoryGameSerializer(game)
+            return Response({
+                'success': True,
+                'game': game_serializer.data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener partida: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """Obtiene estadísticas del usuario"""
+        try:
+            stats, created = MemoryStats.objects.get_or_create(
+                user=request.user,
+                defaults={
+                    'games_played': 0,
+                    'games_completed': 0,
+                    'completion_rate': 0.0,
+                    'total_pairs_found': 0,
+                    'total_attempts': 0,
+                    'average_accuracy': 0.0
+                }
+            )
+            
+            serializer = MemoryStatsSerializer(stats)
+            return Response({
+                'success': True,
+                'stats': serializer.data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener estadísticas: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def leaderboard(self, request):
+        """Obtiene tabla de clasificación de Memory Molecular"""
+        try:
+            # Top jugadores por tasa de finalización y precisión
+            top_players = MemoryStats.objects.filter(
+                games_played__gte=3  # Mínimo 3 partidas
+            ).order_by('-completion_rate', '-average_accuracy')[:10]
+            
+            leaderboard_data = []
+            for i, stat in enumerate(top_players, 1):
+                # Calcular mejor tiempo general
+                best_times = [stat.best_time_easy, stat.best_time_medium, stat.best_time_hard]
+                best_overall = min([t for t in best_times if t is not None], default=None)
+                
+                leaderboard_data.append({
+                    'rank': i,
+                    'username': stat.user.username,
+                    'games_played': stat.games_played,
+                    'completion_rate': round(stat.completion_rate, 1),
+                    'average_accuracy': round(stat.average_accuracy, 1),
+                    'best_time_overall': best_overall,
+                    'total_pairs_found': stat.total_pairs_found
+                })
+            
+            return Response({
+                'success': True,
+                'leaderboard': leaderboard_data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener clasificación: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['delete'])
+    def end_game(self, request):
+        """Termina la partida actual (abandonar)"""
+        try:
+            game = MemoryGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if not game:
+                return Response({
+                    'success': False,
+                    'error': 'No hay partida activa para terminar'
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            # Marcar como completada sin actualizar estadísticas de victoria
+            game.is_completed = True
+            game.completed_at = timezone.now()
+            game.total_time_seconds = (game.completed_at - game.started_at).seconds
+            game.save()
+            
+            # Actualizar solo estadísticas de partidas jugadas
+            stats, created = MemoryStats.objects.get_or_create(
+                user=request.user,
+                defaults={'games_played': 0}
+            )
+            stats.games_played += 1
+            stats.completion_rate = (stats.games_completed / stats.games_played) * 100
+            stats.save()
+            
+            return Response({
+                'success': True,
+                'message': 'Partida terminada'
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al terminar partida: {str(e)}'
             }, status=status.HTTP_400_BAD_REQUEST)
