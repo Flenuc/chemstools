@@ -198,3 +198,59 @@ class ChemWordleStats(BaseModel):
     class Meta:
         verbose_name = "Estadísticas ChemWordle"
         verbose_name_plural = "Estadísticas ChemWordle"
+        
+class MemoryGame(BaseModel):
+    """Sesión de juego Memory Molecular para un usuario"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    difficulty = models.CharField(
+        max_length=10, 
+        choices=[('easy', 'Fácil'), ('medium', 'Medio'), ('hard', 'Difícil')],
+        default='easy'
+    )
+    
+    # Estado del juego
+    is_completed = models.BooleanField(default=False)
+    pairs_found = models.IntegerField(default=0)
+    total_pairs = models.IntegerField(default=6)  # 6 pares = 12 cartas
+    attempts = models.IntegerField(default=0)
+    score = models.IntegerField(default=0)
+    
+    # Datos del juego
+    cards_data = models.JSONField(verbose_name="Datos de las cartas")
+    revealed_pairs = models.JSONField(default=list, verbose_name="Pares revelados")
+    
+    # Tiempo de juego
+    started_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    total_time_seconds = models.IntegerField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Partida Memory Molecular"
+        verbose_name_plural = "Partidas Memory Molecular"
+    
+    def __str__(self):
+        status = "Completada" if self.is_completed else "En progreso"
+        return f"{self.user.username} - Memory {self.difficulty} ({status})"
+
+class MemoryStats(BaseModel):
+    """Estadísticas globales de Memory Molecular por usuario"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    # Estadísticas generales
+    games_played = models.IntegerField(default=0)
+    games_completed = models.IntegerField(default=0)
+    completion_rate = models.FloatField(default=0.0)
+    
+    # Mejores tiempos por dificultad
+    best_time_easy = models.IntegerField(null=True, blank=True)
+    best_time_medium = models.IntegerField(null=True, blank=True)
+    best_time_hard = models.IntegerField(null=True, blank=True)
+    
+    # Estadísticas de rendimiento
+    total_pairs_found = models.IntegerField(default=0)
+    total_attempts = models.IntegerField(default=0)
+    average_accuracy = models.FloatField(default=0.0)
+    
+    class Meta:
+        verbose_name = "Estadísticas Memory Molecular"
+        verbose_name_plural = "Estadísticas Memory Molecular"
