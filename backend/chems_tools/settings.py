@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'structures',
     
     # reactions app for chemical reactions
-    'reactions.apps.ReactionsConfig', 
+    'reactions', 
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
