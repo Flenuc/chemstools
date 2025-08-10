@@ -1,6 +1,48 @@
 import { store } from '@/store';
+import { setTokens, logout } from '@/store/authSlice';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
+// Función para refrescar el token
+const refreshAccessToken = async (): Promise<boolean> => {
+  const { auth } = store.getState();
+  
+  if (!auth.refreshToken) {
+    console.warn('No refresh token available');
+    return false;
+  }
+  
+  try {
+    const response = await fetch(`${BASE_URL}/auth/token/refresh/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        refresh: auth.refreshToken,
+      }),
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Token refreshed successfully');
+      store.dispatch(setTokens({
+        access: data.access,
+        refresh: data.refresh || auth.refreshToken, // Usar el nuevo refresh token si está disponible
+      }));
+      return true;
+    } else {
+      console.error('Failed to refresh token:', response.status);
+    }
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+  }
+  
+  // Si no se pudo refrescar, hacer logout
+  console.warn('Refreshing token failed, logging out user');
+  store.dispatch(logout());
+  return false;
+};
 
 const baseFetch = async (endpoint: string, options: RequestInit = {}) => {
   const { auth } = store.getState();
@@ -26,7 +68,21 @@ const baseFetch = async (endpoint: string, options: RequestInit = {}) => {
 
   // Prevenir dobles barras en la URL
   const url = `${BASE_URL}/${endpoint.startsWith('/') ? endpoint.substring(1) : endpoint}`;
-  const response = await fetch(url, config);
+  let response = await fetch(url, config);
+
+  // Si obtenemos un 401 y tenemos refresh token, intentar refrescar
+  if (response.status === 401 && auth.refreshToken && !endpoint.includes('auth/token')) {
+    const refreshSuccess = await refreshAccessToken();
+    
+    if (refreshSuccess) {
+      // Retry the original request with the new token
+      const newAuth = store.getState().auth;
+      if (newAuth.accessToken) {
+        headers.set('Authorization', `Bearer ${newAuth.accessToken}`);
+        response = await fetch(url, { ...config, headers });
+      }
+    }
+  }
 
   if (!response.ok) {
     let errorMessage = `Error del servidor (${response.status})`;
