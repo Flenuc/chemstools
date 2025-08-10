@@ -6,17 +6,21 @@ from django.utils import timezone
 from .models import ( 
         QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard, 
         ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats 
-        , MemoryGame, MemoryStats)
+        , MemoryGame, MemoryStats,
+        BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats,)
 from .serializers import (
     QuizQuestionSerializer, QuizSessionSerializer, QuizAnswerSerializer, 
     QuizLeaderboardSerializer, QuizQuestionWithAnswerSerializer,
     ChemicalWordSerializer, ChemWordleGameSerializer, ChemWordleGameCompleteSerializer,
     ChemWordleAttemptSerializer, ChemWordleStatsSerializer,
     MemoryCardRevealSerializer, MemoryGameSerializer, MemoryGameCreateSerializer, MemoryStatsSerializer,
+    BalanceChallengeAttemptSerializer, BalanceChallengeGameSerializer, BalanceChallengeStatsSerializer, 
+    BalanceChallengeCreateSerializer, BalanceChallengeSubmitSerializer, BalanceChallengeGameCompleteSerializer,
 )
 from .utils import QuizGameEngine
 from .utils import ChemWordleEngine
 from .utils import MemoryGameEngine
+from .utils import BalanceChallengeEngine
 
 
 class QuizViewSet(viewsets.ViewSet):
@@ -684,4 +688,284 @@ class MemoryGameViewSet(viewsets.ViewSet):
             return Response({
                 'success': False,
                 'error': f'Error al terminar partida: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+class BalanceChallengeViewSet(viewsets.ViewSet):
+    """ViewSet para el desafío de balanceo de ecuaciones"""
+    permission_classes = [IsAuthenticated]
+    
+    @action(detail=False, methods=['post'])
+    def start_challenge(self, request):
+        """Inicia un nuevo desafío de balanceo"""
+        try:
+            serializer = BalanceChallengeCreateSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({
+                    'success': False,
+                    'error': 'Datos inválidos',
+                    'details': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            difficulty = serializer.validated_data['difficulty']
+            
+            # Verificar si hay un juego activo
+            active_game = BalanceChallengeGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if active_game:
+                game_serializer = BalanceChallengeGameSerializer(active_game)
+                return Response({
+                    'success': True,
+                    'game': game_serializer.data,
+                    'message': 'Continuando desafío existente'
+                })
+            
+            # Crear nuevo desafío
+            from .utils import BalanceChallengeEngine
+            game = BalanceChallengeEngine.create_balance_challenge(
+                user=request.user,
+                difficulty=difficulty
+            )
+            
+            game_serializer = BalanceChallengeGameSerializer(game)
+            return Response({
+                'success': True,
+                'game': game_serializer.data,
+                'message': 'Nuevo desafío de balanceo iniciado'
+            }, status=status.HTTP_201_CREATED)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al iniciar desafío: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def submit_coefficients(self, request):
+        """Envía coeficientes para validación"""
+        try:
+            serializer = BalanceChallengeSubmitSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({
+                    'success': False,
+                    'error': 'Datos inválidos',
+                    'details': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game_id = serializer.validated_data['game_id']
+            coefficients = serializer.validated_data['coefficients']
+            time_taken = serializer.validated_data['time_taken']
+            
+            game = BalanceChallengeGame.objects.get(id=game_id, user=request.user)
+            
+            from .utils import BalanceChallengeEngine
+            attempt, error = BalanceChallengeEngine.submit_attempt(
+                game, coefficients, time_taken
+            )
+            
+            if error:
+                return Response({
+                    'success': False,
+                    'error': error
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Preparar respuesta
+            attempt_serializer = BalanceChallengeAttemptSerializer(attempt)
+            
+            # Usar serializer completo si el juego terminó
+            if game.is_completed:
+                game_serializer = BalanceChallengeGameCompleteSerializer(game)
+            else:
+                game_serializer = BalanceChallengeGameSerializer(game)
+            
+            return Response({
+                'success': True,
+                'attempt': attempt_serializer.data,
+                'game': game_serializer.data,
+                'game_completed': game.is_completed,
+                'is_correct': attempt.is_correct,
+                'validation_result': attempt.validation_result,
+                'message': 'Intento procesado correctamente'
+            })
+            
+        except BalanceChallengeGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Desafío no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al procesar intento: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def get_hint(self, request):
+        """Obtiene una pista"""
+        try:
+            game_id = request.data.get('game_id')
+            hint_type = request.data.get('hint_type', 'element')
+            
+            if not game_id:
+                return Response({
+                    'success': False,
+                    'error': 'Se requiere game_id'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game = BalanceChallengeGame.objects.get(id=game_id, user=request.user)
+            
+            from .utils import BalanceChallengeEngine
+            hint, error = BalanceChallengeEngine.get_hint(game, hint_type)
+            
+            if error:
+                return Response({
+                    'success': False,
+                    'error': error
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response({
+                'success': True,
+                'hint': hint,
+                'hint_type': hint_type,
+                'hints_used': game.hints_used
+            })
+            
+        except BalanceChallengeGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Desafío no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener pista: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def current_challenge(self, request):
+        """Obtiene el desafío actual del usuario"""
+        try:
+            game = BalanceChallengeGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if not game:
+                return Response({
+                    'success': True,
+                    'game': None,
+                    'message': 'No hay desafío activo'
+                })
+            
+            game_serializer = BalanceChallengeGameSerializer(game)
+            return Response({
+                'success': True,
+                'game': game_serializer.data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener desafío: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """Obtiene estadísticas del usuario"""
+        try:
+            stats, created = BalanceChallengeStats.objects.get_or_create(
+                user=request.user,
+                defaults={
+                    'games_played': 0,
+                    'games_completed': 0,
+                    'games_correct': 0,
+                    'completion_rate': 0.0,
+                    'accuracy_rate': 0.0,
+                    'average_time_per_game': 0.0,
+                    'current_streak': 0,
+                    'best_streak': 0
+                }
+            )
+            
+            serializer = BalanceChallengeStatsSerializer(stats)
+            return Response({
+                'success': True,
+                'stats': serializer.data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener estadísticas: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def leaderboard(self, request):
+        """Obtiene tabla de clasificación"""
+        try:
+            # Top jugadores por tasa de precisión y racha
+            top_players = BalanceChallengeStats.objects.filter(
+                games_completed__gte=3  # Mínimo 3 juegos completados
+            ).order_by('-accuracy_rate', '-best_streak', '-games_correct')[:10]
+            
+            leaderboard_data = []
+            for i, stat in enumerate(top_players, 1):
+                leaderboard_data.append({
+                    'rank': i,
+                    'username': stat.user.username,
+                    'games_played': stat.games_played,
+                    'games_correct': stat.games_correct,
+                    'accuracy_rate': round(stat.accuracy_rate, 1),
+                    'best_streak': stat.best_streak,
+                    'current_streak': stat.current_streak,
+                    'average_time': round(stat.average_time_per_game, 1) if stat.average_time_per_game else 0
+                })
+            
+            return Response({
+                'success': True,
+                'leaderboard': leaderboard_data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener clasificación: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['delete'])
+    def end_challenge(self, request):
+        """Termina el desafío actual (abandonar)"""
+        try:
+            game = BalanceChallengeGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if not game:
+                return Response({
+                    'success': False,
+                    'error': 'No hay desafío activo para terminar'
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            # Marcar como completado sin ser correcto
+            game.is_completed = True
+            game.completed_at = timezone.now()
+            game.time_spent_seconds = (game.completed_at - game.started_at).seconds
+            game.save()
+            
+            # Actualizar estadísticas básicas
+            from .utils import BalanceChallengeEngine
+            BalanceChallengeEngine._update_stats(game)
+            
+            return Response({
+                'success': True,
+                'message': 'Desafío terminado'
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al terminar desafío: {str(e)}'
             }, status=status.HTTP_400_BAD_REQUEST)
