@@ -17,6 +17,7 @@ export default function Header() {
         {pathname !== '/' && <Link href="/" className="text-base text-gray-600 hover:text-indigo-600">Dashboard</Link>}
         <Link href="/periodic-table" className="text-base text-gray-600 hover:text-indigo-600">Tabla Periódica</Link>
         <Link href="/glossary" className="text-base text-gray-600 hover:text-indigo-600">Glosario</Link>
+        <Link href="/simulator" className="text-base text-gray-600 hover:text-indigo-600">Reacciones</Link>
       </nav>
       <div>
         {isAuthenticated && user ? (
