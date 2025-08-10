@@ -2700,3 +2700,11 @@ ERROR 2025-08-10 02:13:10,048 exceptions API Error: {'detail': ErrorDetail(strin
 WARNING 2025-08-10 02:13:10,049 log Unauthorized: /api/data/periodic-table/
 ERROR 2025-08-10 02:13:24,574 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
 WARNING 2025-08-10 02:13:24,574 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-10 03:47:11,165 log Bad Request: /api/games/quiz/start_session/
+WARNING 2025-08-10 03:48:45,649 log Bad Request: /api/games/quiz/start_session/
+WARNING 2025-08-10 03:55:36,160 log Bad Request: /api/games/quiz/start_session/
+WARNING 2025-08-10 03:55:36,317 log Not Found: /api/games/quiz/submit_answer/
+ERROR 2025-08-10 04:17:51,852 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 04:17:51,853 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 04:26:01,832 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 04:26:01,833 log Bad Request: /api/telemetry/log/
