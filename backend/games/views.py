@@ -3,11 +3,15 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
+import random
 from .models import ( 
         QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard, 
         ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats 
         , MemoryGame, MemoryStats,
-        BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats,)
+        BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats,
+        PeriodicSpeedGame, PeriodicSpeedStats,
+        
+        )
 from .serializers import (
     QuizQuestionSerializer, QuizSessionSerializer, QuizAnswerSerializer, 
     QuizLeaderboardSerializer, QuizQuestionWithAnswerSerializer,
@@ -16,12 +20,14 @@ from .serializers import (
     MemoryCardRevealSerializer, MemoryGameSerializer, MemoryGameCreateSerializer, MemoryStatsSerializer,
     BalanceChallengeAttemptSerializer, BalanceChallengeGameSerializer, BalanceChallengeStatsSerializer, 
     BalanceChallengeCreateSerializer, BalanceChallengeSubmitSerializer, BalanceChallengeGameCompleteSerializer,
+    PeriodicSpeedGameSerializer, PeriodicSpeedStatsSerializer, PeriodicSpeedCreateSerializer, PeriodicSpeedSubmitSerializer, PeriodicSpeedGameCompleteSerializer
+
 )
 from .utils import QuizGameEngine
 from .utils import ChemWordleEngine
 from .utils import MemoryGameEngine
 from .utils import BalanceChallengeEngine
-
+from .utils import PeriodicSpeedEngine
 
 class QuizViewSet(viewsets.ViewSet):
     """ViewSet para el sistema de quiz"""
@@ -958,6 +964,336 @@ class BalanceChallengeViewSet(viewsets.ViewSet):
             # Actualizar estadísticas básicas
             from .utils import BalanceChallengeEngine
             BalanceChallengeEngine._update_stats(game)
+            
+            return Response({
+                'success': True,
+                'message': 'Desafío terminado'
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al terminar desafío: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+class PeriodicSpeedViewSet(viewsets.ViewSet):
+    """ViewSet para el desafío de velocidad de tabla periódica"""
+    permission_classes = [IsAuthenticated]
+    
+    @action(detail=False, methods=['post'])
+    def start_challenge(self, request):
+        """Inicia un nuevo desafío de velocidad"""
+        try:
+            serializer = PeriodicSpeedCreateSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({
+                    'success': False,
+                    'error': 'Datos inválidos',
+                    'details': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            difficulty = serializer.validated_data['difficulty']
+            
+            # Verificar si hay un juego activo
+            active_game = PeriodicSpeedGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if active_game:
+                game_serializer = PeriodicSpeedGameSerializer(active_game)
+                return Response({
+                    'success': True,
+                    'game': game_serializer.data,
+                    'message': 'Continuando desafío existente'
+                })
+            
+            # Crear nuevo desafío
+            from .utils import PeriodicSpeedEngine
+            game = PeriodicSpeedEngine.create_speed_challenge(
+                user=request.user,
+                difficulty=difficulty
+            )
+            
+            game_serializer = PeriodicSpeedGameSerializer(game)
+            return Response({
+                'success': True,
+                'game': game_serializer.data,
+                'message': f'Nuevo desafío de velocidad iniciado (dificultad: {difficulty})'
+            }, status=status.HTTP_201_CREATED)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al iniciar desafío: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def submit_selection(self, request):
+        """Envía la selección del elemento"""
+        try:
+            serializer = PeriodicSpeedSubmitSerializer(data=request.data)
+            if not serializer.is_valid():
+                return Response({
+                    'success': False,
+                    'error': 'Datos inválidos',
+                    'details': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game_id = serializer.validated_data['game_id']
+            selected_element_number = serializer.validated_data['selected_element_number']
+            time_taken = serializer.validated_data['time_taken']
+            
+            game = PeriodicSpeedGame.objects.get(id=game_id, user=request.user)
+            
+            from .utils import PeriodicSpeedEngine
+            result, error = PeriodicSpeedEngine.submit_selection(
+                game, selected_element_number, time_taken
+            )
+            
+            if error:
+                return Response({
+                    'success': False,
+                    'error': error
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Usar serializer completo para juego terminado
+            game_serializer = PeriodicSpeedGameCompleteSerializer(game)
+            
+            return Response({
+                'success': True,
+                'result': result,
+                'game': game_serializer.data,
+                'is_correct': result['is_correct'],
+                'time_taken': result['time_taken'],
+                'message': result['message']
+            })
+            
+        except PeriodicSpeedGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Desafío no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al procesar selección: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def get_hint(self, request):
+        """Obtiene una pista sobre el elemento objetivo"""
+        try:
+            game_id = request.data.get('game_id')
+            
+            if not game_id:
+                return Response({
+                    'success': False,
+                    'error': 'Se requiere game_id'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game = PeriodicSpeedGame.objects.get(id=game_id, user=request.user)
+            
+            from .utils import PeriodicSpeedEngine
+            hint, error = PeriodicSpeedEngine.get_hint(game)
+            
+            if error:
+                return Response({
+                    'success': False,
+                    'error': error
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            return Response({
+                'success': True,
+                'hint': hint,
+                'hint_used': game.hint_used,
+                'message': 'Pista proporcionada'
+            })
+            
+        except PeriodicSpeedGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Desafío no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener pista: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def current_challenge(self, request):
+        """Obtiene el desafío actual del usuario"""
+        try:
+            game = PeriodicSpeedGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if not game:
+                return Response({
+                    'success': True,
+                    'game': None,
+                    'message': 'No hay desafío activo'
+                })
+            
+            game_serializer = PeriodicSpeedGameSerializer(game)
+            return Response({
+                'success': True,
+                'game': game_serializer.data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener desafío: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """Obtiene estadísticas del usuario"""
+        try:
+            stats, created = PeriodicSpeedStats.objects.get_or_create(
+                user=request.user,
+                defaults={
+                    'games_played': 0,
+                    'games_correct': 0,
+                    'accuracy_rate': 0.0,
+                    'best_time_seconds': None,
+                    'average_time_seconds': 0.0,
+                    'current_streak': 0,
+                    'best_streak': 0
+                }
+            )
+            
+            serializer = PeriodicSpeedStatsSerializer(stats)
+            return Response({
+                'success': True,
+                'stats': serializer.data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener estadísticas: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def leaderboard(self, request):
+        """Obtiene tabla de clasificación"""
+        try:
+            from .utils import PeriodicSpeedEngine
+            top_players = PeriodicSpeedEngine.get_leaderboard(limit=10)
+            
+            leaderboard_data = []
+            for i, stat in enumerate(top_players, 1):
+                leaderboard_data.append({
+                    'rank': i,
+                    'username': stat.user.username,
+                    'games_played': stat.games_played,
+                    'games_correct': stat.games_correct,
+                    'accuracy_rate': round(stat.accuracy_rate, 1),
+                    'best_time_seconds': stat.best_time_seconds,
+                    'best_time_formatted': f"{stat.best_time_seconds:.2f}s" if stat.best_time_seconds else "N/A",
+                    'best_streak': stat.best_streak,
+                    'current_streak': stat.current_streak
+                })
+            
+            return Response({
+                'success': True,
+                'leaderboard': leaderboard_data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener clasificación: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def periodic_table(self, request):
+        """Obtiene los datos completos de la tabla periódica"""
+        try:
+            from .utils import PeriodicSpeedEngine
+            elements = PeriodicSpeedEngine.get_periodic_table_data()
+            
+            return Response({
+                'success': True,
+                'elements': elements,
+                'total_elements': len(elements)
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener tabla periódica: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def practice_elements(self, request):
+        """Obtiene elementos aleatorios para práctica"""
+        try:
+            count = int(request.query_params.get('count', 10))
+            difficulty = request.query_params.get('difficulty', 'random')
+            
+            from .utils import PeriodicSpeedEngine
+            
+            if difficulty == 'common':
+                elements = PeriodicSpeedEngine.get_periodic_table_data()
+                common_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 26, 29, 47, 79]
+                filtered_elements = [e for e in elements if e['number'] in common_numbers]
+                practice_elements = random.sample(filtered_elements, min(count, len(filtered_elements)))
+            elif difficulty == 'rare':
+                elements = PeriodicSpeedEngine.get_periodic_table_data()
+                filtered_elements = [e for e in elements if e['number'] > 80 or (57 <= e['number'] <= 71) or (89 <= e['number'] <= 103)]
+                practice_elements = random.sample(filtered_elements, min(count, len(filtered_elements)))
+            else:
+                practice_elements = PeriodicSpeedEngine.get_random_elements_for_practice(count)
+            
+            return Response({
+                'success': True,
+                'elements': practice_elements,
+                'count': len(practice_elements),
+                'difficulty': difficulty
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener elementos de práctica: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['delete'])
+    def end_challenge(self, request):
+        """Termina el desafío actual (abandonar)"""
+        try:
+            game = PeriodicSpeedGame.objects.filter(
+                user=request.user,
+                is_completed=False
+            ).first()
+            
+            if not game:
+                return Response({
+                    'success': False,
+                    'error': 'No hay desafío activo para terminar'
+                }, status=status.HTTP_404_NOT_FOUND)
+            
+            # Marcar como completado sin actualizar estadísticas de éxito
+            game.is_completed = True
+            game.completed_at = timezone.now()
+            game.time_taken_seconds = (game.completed_at - game.started_at).total_seconds()
+            game.save()
+            
+            # Actualizar solo estadísticas básicas (juegos jugados)
+            stats, created = PeriodicSpeedStats.objects.get_or_create(
+                user=request.user,
+                defaults={'games_played': 0}
+            )
+            stats.games_played += 1
+            if stats.games_played > 0:
+                stats.accuracy_rate = (stats.games_correct / stats.games_played) * 100
+            stats.current_streak = 0  # Romper racha al abandonar
+            stats.save()
             
             return Response({
                 'success': True,
