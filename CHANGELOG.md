@@ -4,6 +4,72 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.2.5-alpha] - 2025-08-10
+
+Added
+Backend: Se ha implementado el sistema completo de Tabla Periódica Rápida mediante la expansión de la app games, proporcionando una experiencia de velocidad y precisión para identificar elementos químicos.
+
+Backend: Se han creado 2 modelos especializados para el sistema Periodic Speed Challenge:
+- PeriodicSpeedGame: Gestiona sesiones individuales con elemento objetivo, estado de finalización, tiempo de respuesta, elemento seleccionado por el usuario, y uso de pistas
+- PeriodicSpeedStats: Sistema de estadísticas persistentes por usuario con métricas generales (precisión, mejores tiempos, rachas), estadísticas por categoría de elementos (metales, no metales, metaloides, gases nobles), y tiempos récord por tipo de elemento
+
+Backend: Se ha desarrollado la clase PeriodicSpeedEngine que implementa la lógica completa del juego de velocidad periódica:
+- Sistema de generación de desafíos categorizados por dificultad (aleatorio: todos los elementos, común: primeros 20 + elementos conocidos, raro: elementos pesados y lantánidos/actínidos)
+- Algoritmo de validación de selecciones con verificación de elemento correcto y medición precisa de tiempo de respuesta
+- Sistema de puntuación y gestión de rachas con límites configurables y tracking de mejores tiempos
+- Gestión automática de finalización de desafíos y actualización de estadísticas al completar intentos
+- Sistema de pistas contextuales basadas en propiedades químicas (categoría, período, rango de número atómico)
+
+Backend: Se han implementado 8 endpoints REST especializados para Periodic Speed Challenge:
+- POST /api/games/periodic-speed/start_challenge/: Inicia nuevo desafío con selección de dificultad y generación de elemento objetivo aleatorio
+- POST /api/games/periodic-speed/submit_selection/: Valida selección del usuario con verificación de elemento correcto y registro de tiempo
+- POST /api/games/periodic-speed/get_hint/: Sistema de pistas contextuales basadas en propiedades del elemento objetivo
+- GET /api/games/periodic-speed/current_challenge/: Obtiene desafío activo del usuario con información del elemento objetivo
+- GET /api/games/periodic-speed/stats/: Estadísticas detalladas del usuario (precisión, rachas, tiempos por categoría)
+- GET /api/games/periodic-speed/leaderboard/: Clasificación global basada en mejor tiempo y tasa de precisión
+- GET /api/games/periodic-speed/periodic_table/: Datos completos de la tabla periódica para referencia del frontend
+- GET /api/games/periodic-speed/practice_elements/: Elementos aleatorios para práctica con filtrado por dificultad
+- DELETE /api/games/periodic-speed/end_challenge/: Permite abandonar desafío activo con actualización de estadísticas
+
+Backend: Se ha integrado el sistema de Periodic Speed Challenge con los datos existentes de la tabla periódica de la app data para:
+- Reutilización de los datos de elementos químicos del archivo periodic_table.json
+- Validación robusta de elementos seleccionados usando número atómico como identificador único
+- Generación automática de pistas basadas en propiedades químicas (categoría, posición en tabla)
+- Clasificación inteligente de elementos por categorías para estadísticas detalladas
+
+Testing: Se ha implementado una suite exhaustiva de 25+ pruebas unitarias y de integración que valida:
+- Carga correcta de datos de tabla periódica y funcionamiento del motor de juego con diferentes dificultades
+- Algoritmo de validación de selecciones y detección de elementos correctos con casos edge complejos
+- Funcionamiento correcto de todos los endpoints de la API con validación de respuestas JSON
+- Flujo completo desde inicio hasta finalización de desafío con actualización de estadísticas
+- Manejo de errores para casos inválidos (números de elemento fuera de rango, juegos completados, tiempos inválidos)
+- Sistema de pistas progresivas y gestión de hints utilizados por usuario
+- Continuación de desafíos existentes y prevención de duplicados activos
+
+Testing: Se han implementado 2 comandos de management para debugging y testing:
+- debug_periodic_speed: Valida funcionamiento completo del sistema con creación de usuario de prueba y ejecución de flujo completo
+- test_periodic_elements: Verifica carga y categorización correcta de elementos de la tabla periódica
+
+Changed
+Arquitectura: Se ha expandido el patrón modular de la app games para soportar Periodic Speed Challenge como quinto tipo de juego, manteniendo separación clara entre motores de juego, modelos y presentación API.
+
+Backend: Se ha optimizado la reutilización de los datos de tabla periódica existentes para crear un sistema de validación robusto que aprovecha la información química ya implementada sin duplicar código.
+
+Infrastructure: Se ha actualizado la configuración de routing para soportar Quiz, ChemWordle, Memory, Balance Challenge y Periodic Speed de manera independiente, expandiendo el router de games sin conflictos.
+
+Performance: Se ha implementado gestión de estado de elementos optimizada que minimiza consultas a datos y proporciona respuesta inmediata para validación de selecciones del usuario.
+
+Fixed
+Backend: Se han corregido problemas en la validación de elementos para manejar correctamente casos edge como números atómicos fuera de rango y elementos inexistentes.
+
+Testing: Se han corregido 2 fallos en las pruebas unitarias relacionados con validación de tiempos de respuesta y manejo de estadísticas para usuarios nuevos en Periodic Speed Challenge.
+
+Backend: Se ha corregido el manejo de estadísticas para usuarios nuevos en Periodic Speed Challenge, implementando valores por defecto apropiados y evitando errores de referencia nula en consultas de leaderboard.
+
+Security: Se ha implementado validación adicional en endpoints de Periodic Speed Challenge para verificar ownership de desafíos y prevenir acceso no autorizado a datos de juegos de otros usuarios.
+
+UX: Se han corregido problemas de categorización de elementos para proporcionar estadísticas precisas por tipo de elemento (metales, no metales, metaloides, gases nobles) basadas en las categorías químicas estándar.
+
 [2.2.4-alpha] - 2025-08-10
 
 Added
