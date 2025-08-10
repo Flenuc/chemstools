@@ -3276,3 +3276,22 @@ ERROR 2025-08-10 18:16:11,432 exceptions API Error: {'detail': ErrorDetail(strin
 WARNING 2025-08-10 18:16:11,433 log Unauthorized: /api/games/memory/current_game/
 ERROR 2025-08-10 18:28:42,924 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
 WARNING 2025-08-10 18:28:42,924 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 18:52:51,988 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 18:52:51,988 log Unauthorized: /api/games/chemwordle/start_game/
+WARNING 2025-08-10 20:03:57,806 log Not Found: /api/games/balance-challenge/end_challenge/
+WARNING 2025-08-10 20:03:58,120 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:03:58,276 log Not Found: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:03:59,036 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:06:12,018 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:06:12,020 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:06:12,170 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:07:31,380 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:07:57,083 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:08:38,565 log Not Found: /api/games/balance-challenge/end_challenge/
+WARNING 2025-08-10 20:08:38,888 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:08:38,890 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:08:39,038 log Not Found: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:09:02,781 log Not Found: /api/games/balance-challenge/end_challenge/
+WARNING 2025-08-10 20:09:03,086 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:09:03,089 log Bad Request: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 20:09:03,240 log Not Found: /api/games/balance-challenge/submit_coefficients/
