@@ -3,7 +3,8 @@ from .models import (
         QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard,
         ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats, 
         MemoryGame, MemoryStats,
-        BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats
+        BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats,
+        PeriodicSpeedGame, PeriodicSpeedStats,
         )
 
 @admin.register(QuizQuestion)
@@ -207,6 +208,92 @@ class BalanceChallengeStatsAdmin(admin.ModelAdmin):
                 'average_time_per_game',
                 ('best_time_easy', 'best_time_medium', 'best_time_hard'),
                 ('current_streak', 'best_streak')
+            ),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+    
+    def has_add_permission(self, request):
+        return False  # Las estadísticas se crean automáticamente
+    
+    def has_delete_permission(self, request, obj=None):
+        return False  # No permitir borrar estadísticas
+    
+@admin.register(PeriodicSpeedGame)
+class PeriodicSpeedGameAdmin(admin.ModelAdmin):
+    list_display = ['user', 'target_element_name', 'is_completed', 'is_correct', 'time_taken_seconds', 'hint_used', 'started_at']
+    list_filter = ['is_completed', 'is_correct', 'hint_used', 'started_at']
+    search_fields = ['user__username']
+    readonly_fields = ['started_at', 'completed_at', 'time_taken_seconds']
+    ordering = ['-started_at']
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('user', 'started_at', 'completed_at')
+        }),
+        ('Elemento Objetivo', {
+            'fields': ('target_element',)
+        }),
+        ('Estado del Juego', {
+            'fields': ('is_completed', 'is_correct', 'time_taken_seconds', 'hint_used')
+        }),
+        ('Respuesta del Usuario', {
+            'fields': ('selected_element',),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def target_element_name(self, obj):
+        """Muestra el nombre del elemento objetivo"""
+        if obj.target_element:
+            return f"{obj.target_element.get('name', 'Unknown')} ({obj.target_element.get('symbol', '?')})"
+        return "Unknown"
+    target_element_name.short_description = "Elemento Objetivo"
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+
+@admin.register(PeriodicSpeedStats)
+class PeriodicSpeedStatsAdmin(admin.ModelAdmin):
+    list_display = [
+        'user', 'games_played', 'games_correct', 'accuracy_rate', 
+        'best_time_seconds', 'current_streak', 'best_streak'
+    ]
+    readonly_fields = [
+        'user', 'games_played', 'games_correct', 'accuracy_rate',
+        'best_time_seconds', 'average_time_seconds', 'total_time_seconds',
+        'current_streak', 'best_streak', 'metals_correct', 'nonmetals_correct',
+        'metalloids_correct', 'noble_gases_correct', 'best_time_metals',
+        'best_time_nonmetals', 'best_time_metalloids', 'best_time_noble_gases'
+    ]
+    ordering = ['-accuracy_rate', 'best_time_seconds']
+    search_fields = ['user__username']
+    
+    fieldsets = (
+        ('Usuario', {
+            'fields': ('user',)
+        }),
+        ('Estadísticas Generales', {
+            'fields': ('games_played', 'games_correct', 'accuracy_rate')
+        }),
+        ('Tiempos', {
+            'fields': ('best_time_seconds', 'average_time_seconds', 'total_time_seconds')
+        }),
+        ('Rachas', {
+            'fields': ('current_streak', 'best_streak')
+        }),
+        ('Estadísticas por Categoría', {
+            'fields': (
+                'metals_correct', 'nonmetals_correct', 'metalloids_correct', 'noble_gases_correct'
+            ),
+            'classes': ('collapse',)
+        }),
+        ('Mejores Tiempos por Categoría', {
+            'fields': (
+                'best_time_metals', 'best_time_nonmetals', 'best_time_metalloids', 'best_time_noble_gases'
             ),
             'classes': ('collapse',)
         })
