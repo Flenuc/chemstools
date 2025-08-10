@@ -31,5 +31,6 @@ urlpatterns = [
     path('api/calculators/', include('calculators.urls')),
     path('structures/', include('structures.urls')),
     path('api/reactions/', include('reactions.urls')),
+    path('api/games/', include('games.urls')),
 ]
 
