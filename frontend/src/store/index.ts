@@ -4,6 +4,7 @@ import moleculesReducer from './moleculesSlice';
 import notificationsReducer from './notificationsSlice';
 import filterReducer from './filterSlice';
 import calculatorsReducer from './calculatorsSlice';
+import quizReducer from './quizSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     notifications: notificationsReducer,
     filters: filterReducer, 
     calculators: calculatorsReducer,
+    quiz: quizReducer,
   },
 });
 
