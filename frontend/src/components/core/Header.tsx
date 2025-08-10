@@ -21,6 +21,7 @@ export default function Header() {
         <Link href="/games" className="text-base text-gray-600 hover:text-indigo-600">Quiz</Link>
         <Link href="/chemwordle" className="text-base text-gray-600 hover:text-purple-600">ChemWordle</Link>
         <Link href="/memory" className="text-base text-gray-600 hover:text-green-600">MemoryGame</Link>
+        <Link href="/balance-challenge" className="text-base text-gray-600 hover:text-blue-600">Balance Challenge</Link>
       </nav>
       <div>
         {isAuthenticated && user ? (
