@@ -254,3 +254,86 @@ class MemoryStats(BaseModel):
     class Meta:
         verbose_name = "Estadísticas Memory Molecular"
         verbose_name_plural = "Estadísticas Memory Molecular"
+
+class BalanceChallengeGame(BaseModel):
+    """Modelo para el juego de balanceo de ecuaciones"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    original_equation = models.TextField(verbose_name="Ecuación original")
+    target_balanced_equation = models.TextField(verbose_name="Ecuación balanceada objetivo")
+    target_coefficients = models.JSONField(verbose_name="Coeficientes objetivo")
+    user_coefficients = models.JSONField(default=dict, verbose_name="Coeficientes del usuario")
+    
+    # Estado del juego
+    is_completed = models.BooleanField(default=False)
+    is_correct = models.BooleanField(default=False)
+    attempts = models.IntegerField(default=0)
+    max_attempts = models.IntegerField(default=5)
+    difficulty = models.CharField(
+        max_length=10,
+        choices=[('easy', 'Fácil'), ('medium', 'Medio'), ('hard', 'Difícil')],
+        default='easy'
+    )
+    
+    # Pistas y ayuda
+    hints_used = models.JSONField(default=list, verbose_name="Pistas utilizadas")
+    time_spent_seconds = models.IntegerField(null=True, blank=True)
+    
+    # Tiempo de juego
+    started_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Desafío de Balanceo"
+        verbose_name_plural = "Desafíos de Balanceo"
+    
+    def __str__(self):
+        status = "Correcto" if self.is_correct else "Incorrecto" if self.is_completed else "En progreso"
+        return f"{self.user.username} - {self.original_equation} ({status})"
+
+class BalanceChallengeAttempt(BaseModel):
+    """Intento individual en un desafío de balanceo"""
+    game = models.ForeignKey(BalanceChallengeGame, on_delete=models.CASCADE, related_name='attempts_history')
+    attempt_number = models.IntegerField(verbose_name="Número de intento")
+    coefficients_submitted = models.JSONField(verbose_name="Coeficientes enviados")
+    is_correct = models.BooleanField(default=False)
+    validation_result = models.JSONField(verbose_name="Resultado de validación")
+    time_taken_seconds = models.IntegerField(verbose_name="Tiempo en segundos")
+    
+    class Meta:
+        verbose_name = "Intento de Balanceo"
+        verbose_name_plural = "Intentos de Balanceo"
+        ordering = ['attempt_number']
+        unique_together = ['game', 'attempt_number']
+
+class BalanceChallengeStats(BaseModel):
+    """Estadísticas del usuario para el desafío de balanceo"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    # Estadísticas generales
+    games_played = models.IntegerField(default=0)
+    games_completed = models.IntegerField(default=0)
+    games_correct = models.IntegerField(default=0)
+    completion_rate = models.FloatField(default=0.0)
+    accuracy_rate = models.FloatField(default=0.0)
+    
+    # Estadísticas por dificultad
+    easy_completed = models.IntegerField(default=0)
+    easy_correct = models.IntegerField(default=0)
+    medium_completed = models.IntegerField(default=0)
+    medium_correct = models.IntegerField(default=0)
+    hard_completed = models.IntegerField(default=0)
+    hard_correct = models.IntegerField(default=0)
+    
+    # Tiempo y eficiencia
+    average_time_per_game = models.FloatField(default=0.0)
+    best_time_easy = models.IntegerField(null=True, blank=True)
+    best_time_medium = models.IntegerField(null=True, blank=True)
+    best_time_hard = models.IntegerField(null=True, blank=True)
+    
+    # Racha actual y mejor racha
+    current_streak = models.IntegerField(default=0)
+    best_streak = models.IntegerField(default=0)
+    
+    class Meta:
+        verbose_name = "Estadísticas de Balanceo"
+        verbose_name_plural = "Estadísticas de Balanceo"
