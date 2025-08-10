@@ -70,7 +70,10 @@ INSTALLED_APPS = [
     'structures',
     
     # reactions app for chemical reactions
-    'reactions', 
+    'reactions',
+    
+    # games app for quiz and other games
+    'games.apps.GamesConfig'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
