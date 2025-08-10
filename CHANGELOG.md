@@ -4,6 +4,99 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.2.3-alpha] - 2025-08-10
+
+Added
+Backend: Se ha implementado el sistema completo de Memory Molecular mediante la expansión de la app games, proporcionando una experiencia de memoria química educativa e interactiva.
+
+Backend: Se han creado 2 modelos especializados para el sistema Memory Molecular:
+- MemoryGame: Gestiona sesiones individuales con configuración de dificultad, tracking de progreso (pares encontrados, intentos, puntuación), datos de cartas con posiciones y estados, y sistema de tiempo de juego
+- MemoryStats: Sistema de estadísticas persistentes por usuario con métricas de rendimiento (partidas jugadas, tasa de finalización, precisión promedio), mejores tiempos por dificultad, y tracking de progreso general
+
+Backend: Se ha desarrollado la clase MemoryGameEngine que implementa la lógica completa del juego de memoria:
+- Sistema de generación de cartas con datos químicos categorizados por dificultad (fácil: compuestos básicos, medio: compuestos comunes, difícil: moléculas complejas)
+- Algoritmo de emparejamiento nombre-fórmula con validación de coincidencias y gestión de estados de cartas (oculta/revelada/emparejada)
+- Sistema de puntuación diferenciado por dificultad (100/200/300 puntos por par en fácil/medio/difícil)
+- Gestión automática de finalización de partidas y actualización de estadísticas al completar juegos
+- Prevención de acciones inválidas (revelar cartas ya emparejadas, posiciones fuera de rango)
+
+Backend: Se han implementado 7 endpoints REST especializados para Memory Molecular:
+- POST /api/games/memory/start_game/: Inicia nueva partida con configuración de dificultad y número de pares
+- POST /api/games/memory/reveal_card/: Revela cartas individuales con validación de coincidencias tipo memoria
+- POST /api/games/memory/hide_cards/: Oculta cartas no emparejadas después del período de visualización
+- GET /api/games/memory/current_game/: Obtiene partida activa del usuario con estado completo
+- GET /api/games/memory/stats/: Estadísticas detalladas del usuario (rendimiento, mejores tiempos, precisión)
+- GET /api/games/memory/leaderboard/: Clasificación global basada en tasa de finalización y precisión
+- DELETE /api/games/memory/end_game/: Permite abandonar partida activa con actualización de estadísticas
+
+Backend: Se ha creado un sistema de datos químicos incorporado con más de 24 compuestos distribuidos por dificultad:
+- Fácil: Compuestos básicos (H₂O, CH₄, NH₃, CO₂, NaCl, HCl) con fórmulas simples y nombres conocidos
+- Medio: Compuestos comunes (C₆H₁₂O₆, C₂H₅OH, H₂SO₄, NaOH, CaCO₃) con mayor complejidad química
+- Difícil: Moléculas complejas (C₈H₁₀N₄O₂, C₉H₈O₄, C₆H₈O₆) incluyendo biomoléculas y fármacos
+
+Frontend: Se ha desarrollado el componente MemoryGame.tsx con mecánicas completas de juego de memoria:
+- Grid dinámico de cartas adaptativo según número de pares seleccionados
+- Sistema de cartas volteables con animaciones suaves usando Framer Motion
+- Diferenciación visual por tipo de carta (nombre en morado, fórmula en naranja, emparejadas en verde)
+- Temporizador en tiempo real con formateo MM:SS y tracking de tiempo por partida
+- Barra de progreso animada mostrando pares encontrados vs total
+- Estados de juego diferenciados (configuración, jugando, verificando coincidencias, completado)
+
+Frontend: Se ha implementado el componente MemoryGameStats.tsx con analíticas avanzadas:
+- Dashboard de estadísticas personales con métricas clave (partidas, finalización, precisión)
+- Tabla de mejores tiempos por dificultad con formateo inteligente de tiempo
+- Clasificación global interactiva con medallas para top 3 jugadores
+- Visualización de progreso con barras de progreso animadas para tasa de finalización y precisión
+- Sección de ayuda integrada explicando mecánicas de juego y sistema de puntuación
+
+Frontend: Se ha creado el store slice memorySlice.ts con gestión de estado completa:
+- Estado global reactivo para partida actual, estadísticas, clasificación y progreso
+- Thunks asíncronos para todas las operaciones de API con manejo robusto de errores
+- Reducers especializados para gestión de cartas seleccionadas y estados de verificación
+- Integración automática con el sistema de autenticación y manejo de tokens
+- Estados de carga y error centralizados para toda la funcionalidad Memory
+
+Frontend: Se ha desarrollado la página completa /memory con:
+- Sistema de navegación por pestañas entre juego y estadísticas
+- Protección de ruta que requiere autenticación con integración al sistema de auth
+- Diseño responsive con gradientes temáticos y componentes modernos
+- Callback de finalización de juego con transición automática a estadísticas
+- Header actualizado con enlace dedicado a Memory Molecular
+
+Testing: Se ha implementado una suite exhaustiva de 20+ pruebas unitarias y de integración que valida:
+- Creación y configuración correcta de partidas de memory con diferentes dificultades
+- Algoritmo de revelado de cartas y detección de coincidencias con casos edge complejos
+- Funcionamiento correcto de todos los endpoints de la API con validación de respuestas
+- Flujo completo desde inicio hasta finalización de partida con actualización de estadísticas
+- Manejo de errores para casos inválidos (cartas ya emparejadas, posiciones fuera de rango)
+- Continuación de partidas existentes y prevención de duplicados activos
+
+Changed
+Arquitectura: Se ha expandido el patrón modular de la app games para soportar múltiples tipos de juegos de memoria, manteniendo separación clara entre motores de juego, modelos y presentación API.
+
+Frontend: Se ha actualizado el sistema de navegación global para incluir Memory Molecular como juego independiente, diferenciándolo visualmente de Quiz y ChemWordle con iconografía específica.
+
+Backend: Se ha optimizado el sistema de generación de cartas mediante algoritmo de shuffle inteligente que mantiene balance entre tipos de cartas (nombre/fórmula) y asegura distribución equitativa.
+
+Infrastructure: Se ha actualizado la configuración de routing para soportar Quiz, ChemWordle y Memory de manera independiente, expandiendo el router de games sin conflictos.
+
+Performance: Se ha implementado gestión de estado de cartas optimizada que minimiza re-renders innecesarios y proporciona feedback visual inmediato en revelado de cartas.
+
+Fixed
+Backend: Se han corregido problemas en la validación de posiciones de cartas para manejar correctamente casos de índices fuera de rango y prevenir errores de acceso a arrays.
+
+Frontend: Se han solucionado conflictos potenciales de estado entre diferentes componentes de Memory, asegurando que el estado de cartas se mantenga consistente durante las transiciones.
+
+Testing: Se han corregido 2 fallos en las pruebas unitarias relacionados con generación de datos de prueba y validación de respuestas de API en endpoints de estadísticas.
+
+Backend: Se ha corregido el manejo de estadísticas para usuarios nuevos en Memory, implementando valores por defecto apropiados y evitando errores de referencia nula.
+
+Frontend: Se han solucionado problemas de tipado TypeScript en componentes de Memory, asegurando compatibilidad completa con las interfaces definidas en el store slice.
+
+Security: Se ha implementado validación adicional en endpoints de Memory para verificar ownership de partidas y prevenir acceso no autorizado a datos de juegos.
+
+UX: Se han corregido animaciones de cartas para proporcionar mejor feedback visual durante el proceso de revelado y ocultado, mejorando la experiencia de juego.
+
 [2.2.2-alpha] - 2025-08-10
 Added
 Backend: Se ha implementado el sistema completo de ChemWordle (Wordle Químico) mediante la expansión de la app games, proporcionando una experiencia de adivinanza de palabras químicas educativa y entretenida.
