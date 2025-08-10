@@ -4,6 +4,100 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.2.2-alpha] - 2025-08-10
+Added
+Backend: Se ha implementado el sistema completo de ChemWordle (Wordle Químico) mediante la expansión de la app games, proporcionando una experiencia de adivinanza de palabras químicas educativa y entretenida.
+
+Backend: Se han creado 4 modelos especializados para el sistema ChemWordle:
+- ChemicalWord: Almacena palabras químicas categorizadas (elemento/compuesto/ion/molécula) con metadatos científicos completos (número atómico, grupo, período, estado STP, fórmula química, peso molecular)
+- ChemWordleGame: Gestiona sesiones individuales con tracking de intentos, estado de finalización y sistema de pistas reveladas
+- ChemWordleAttempt: Registra cada intento individual con evaluación detallada de letras (correcto/presente/ausente) y tiempo de respuesta
+- ChemWordleStats: Sistema de estadísticas persistentes por usuario con distribución de victorias, rachas y clasificación global
+
+Backend: Se ha desarrollado la clase ChemWordleEngine que implementa la lógica completa del juego estilo Wordle:
+- Algoritmo de evaluación de letras fiel al estándar Wordle con manejo correcto de letras repetidas
+- Sistema de validación robusta de adivinanzas (longitud, caracteres alfabéticos)
+- Generación automática de pistas progresivas basadas en metadatos químicos
+- Prevención de repetición de palabras mediante cache de 30 días por usuario
+- Actualización automática de estadísticas y clasificaciones al completar partidas
+
+Backend: Se han implementado 6 endpoints REST especializados para ChemWordle:
+- GET /api/games/chemwordle/start_game/: Inicia nueva partida con filtrado opcional por dificultad
+- POST /api/games/chemwordle/submit_guess/: Procesa adivinanzas con evaluación completa tipo Wordle
+- POST /api/games/chemwordle/get_hint/: Sistema de pistas progresivas contextuales
+- GET /api/games/chemwordle/stats/: Estadísticas detalladas del usuario (partidas, victorias, rachas, distribución)
+- GET /api/games/chemwordle/leaderboard/: Clasificación global con criterios de desempate
+- Todos los endpoints incluyen validación exhaustiva, manejo de errores y respuestas JSON estructuradas
+
+Backend: Se ha creado el comando de management populate_chemwordle_words con más de 35 palabras químicas cuidadosamente seleccionadas:
+- Elementos químicos: desde básicos (H, O, C) hasta avanzados (Cs, Ga, Re) categorizados por dificultad
+- Compuestos: desde esenciales (Agua, Sal) hasta complejos (Cafeína, Aspirina, Benceno)
+- Iones poliatómicos: Sulfato, Nitrato, Fosfato con información estructural
+- Moléculas especiales: Ozono, con propiedades y aplicaciones detalladas
+
+Frontend: Se ha desarrollado el componente ChemWordle.tsx con mecánicas de juego completas:
+- Interfaz tipo Wordle con grid de 6 intentos y evaluación visual por colores
+- Teclado virtual interactivo que refleja el estado de cada letra utilizada
+- Sistema de badges por categoría química con colores distintivos
+- Temporizador por intento y tracking de tiempo total de partida
+- Animaciones de feedback (shake para intentos inválidos, transiciones suaves)
+- Estados de juego diferenciados (inicio, jugando, completado, error) con interfaces específicas
+
+Frontend: Se ha implementado el componente ChemWordleStats.tsx con análticas avanzadas:
+- Dashboard de estadísticas personales con métricas clave (partidas, porcentaje victoria, rachas)
+- Gráfico de distribución de victorias por número de intentos con barras proporcionales
+- Tabla de clasificación global interactiva con medallas para top 3 jugadores
+- Información educativa sobre mecánicas de juego y categorías químicas
+- Formateo inteligente de tiempos y porcentajes con precisión decimal
+
+Frontend: Se ha creado el store slice chemWordleSlice.ts con gestión de estado completa:
+- Estado global reactivo para sesión actual, progreso, teclado y estadísticas
+- Thunks asíncronos para todas las operaciones de API con manejo robusto de errores
+- Reducers especializados para input de letras, validación y feedback visual
+- Sincronización automática del estado del teclado basado en intentos previos
+- Manejo de casos edge como tiempo agotado y validación de entrada
+
+Frontend: Se ha desarrollado la página completa /chemwordle con:
+- Sistema de navegación por pestañas entre juego y estadísticas
+- Protección de ruta que requiere autenticación con mensaje informativo
+- Diseño responsive con gradientes temáticos y componentes modernos
+- Integración completa con el sistema de navegación principal de ChemsTools
+- Header actualizado con enlace dedicado a ChemWordle
+
+Testing: Se ha implementado una suite exhaustiva de 16 pruebas unitarias y de integración que valida:
+- Algoritmo de evaluación Wordle con casos complejos (letras repetidas, posiciones mixtas)
+- Funcionamiento correcto de todos los endpoints de la API con casos edge
+- Validación de entrada robusta (longitud, caracteres, sesiones inválidas)
+- Lógica de pistas progresivas y manejo de metadatos químicos
+- Flujo completo desde inicio hasta finalización de partida con estadísticas
+- Comando de debugging para verificación de estado del sistema
+
+Changed
+Arquitectura: Se ha expandido el patrón modular de la app games para soportar múltiples tipos de juegos químicos, manteniendo separación clara entre motores de juego, modelos y presentación API.
+
+Frontend: Se ha actualizado el sistema de navegación global para incluir ChemWordle como juego independiente, diferenciándolo visualmente del Quiz tradicional con iconografía específica.
+
+Backend: Se ha optimizado el sistema de selección de palabras mediante algoritmo de cache inteligente que evita repeticiones recientes mientras mantiene distribución equitativa por dificultad.
+
+Infrastructure: Se ha actualizado la configuración de routing para soportar tanto Quiz como ChemWordle de manera independiente, resolviendo conflictos entre App Router y Pages Router en Next.js 15.
+
+Performance: Se ha implementado evaluación de letras optimizada con complejidad O(n) que maneja eficientemente palabras con múltiples letras repetidas.
+
+Fixed
+Backend: Se han corregido problemas en el algoritmo de evaluación de letras para manejar correctamente todos los casos de Wordle, incluyendo escenarios complejos con múltiples instancias de la misma letra.
+
+Frontend: Se han solucionado conflictos de routing entre App Router (/app/chemwordle/page.tsx) y Pages Router (/pages/chemwordle.tsx), manteniendo únicamente la implementación de App Router para compatibilidad con Next.js 15.
+
+Testing: Se han corregido 3 fallos en las pruebas unitarias relacionados con casos de evaluación de letras parciales, formato de requests HTTP y referencias de modelos en endpoints de estadísticas.
+
+Backend: Se ha corregido el manejo de estadísticas para usuarios nuevos, implementando valores por defecto apropiados y evitando errores de referencia nula en consultas de clasificación.
+
+Frontend: Se han solucionado problemas de tipado TypeScript en componentes de ChemWordle, asegurando compatibilidad completa con las interfaces definidas en el store slice.
+
+Security: Se ha implementado validación adicional en endpoints de pistas para prevenir solicitud de pistas en juegos completados y verificar ownership de sesiones de juego.
+
+UX: Se han corregido animaciones de feedback visual para proporcionar mejor retroalimentación cuando se intentan adivinanzas de longitud incorrecta o con caracteres inválidos.
+
 [2.2.1-alpha] - 2025-08-10
 Added
 Backend: Se ha implementado el sistema completo de Quiz Rápido de Química mediante la nueva app games, proporcionando una experiencia de aprendizaje gamificada e interactiva.
