@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard
 from .models import ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats
 from .models import MemoryGame, MemoryStats
+from .models import BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats
 from django.utils import timezone
 
 class QuizQuestionSerializer(serializers.ModelSerializer):
@@ -171,3 +172,84 @@ class MemoryGameCreateSerializer(serializers.Serializer):
             )
         
         return value
+    
+class BalanceChallengeGameSerializer(serializers.ModelSerializer):
+    """Serializer para el juego de balanceo de ecuaciones"""
+    compounds = serializers.SerializerMethodField()
+    time_elapsed = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = BalanceChallengeGame
+        fields = [
+            'id', 'original_equation', 'difficulty', 'is_completed', 'is_correct',
+            'attempts', 'max_attempts', 'user_coefficients', 'hints_used',
+            'started_at', 'completed_at', 'time_elapsed', 'compounds'
+        ]
+        read_only_fields = ['user']
+    
+    def get_compounds(self, obj):
+        """Obtiene la lista de compuestos en orden"""
+        from reactions.utils import ChemicalEquationBalancer
+        try:
+            reactants, products = ChemicalEquationBalancer.parse_equation(obj.original_equation)
+            return {
+                'reactants': reactants,
+                'products': products,
+                'all_compounds': reactants + products
+            }
+        except:
+            return {'reactants': [], 'products': [], 'all_compounds': []}
+    
+    def get_time_elapsed(self, obj):
+        """Calcula el tiempo transcurrido"""
+        if obj.completed_at:
+            return obj.time_spent_seconds
+        else:
+            return int((timezone.now() - obj.started_at).total_seconds())
+
+class BalanceChallengeGameCompleteSerializer(BalanceChallengeGameSerializer):
+    """Serializer completo que incluye la solución"""
+    target_balanced_equation = serializers.CharField(read_only=True)
+    target_coefficients = serializers.JSONField(read_only=True)
+    
+    class Meta(BalanceChallengeGameSerializer.Meta):
+        fields = BalanceChallengeGameSerializer.Meta.fields + [
+            'target_balanced_equation', 'target_coefficients'
+        ]
+
+class BalanceChallengeAttemptSerializer(serializers.ModelSerializer):
+    """Serializer para intentos de balanceo"""
+    class Meta:
+        model = BalanceChallengeAttempt
+        fields = '__all__'
+
+class BalanceChallengeStatsSerializer(serializers.ModelSerializer):
+    """Serializer para estadísticas de balanceo"""
+    username = serializers.CharField(source='user.username', read_only=True)
+    
+    class Meta:
+        model = BalanceChallengeStats
+        fields = [
+            'username', 'games_played', 'games_completed', 'games_correct',
+            'completion_rate', 'accuracy_rate', 'easy_completed', 'easy_correct',
+            'medium_completed', 'medium_correct', 'hard_completed', 'hard_correct',
+            'average_time_per_game', 'best_time_easy', 'best_time_medium', 
+            'best_time_hard', 'current_streak', 'best_streak'
+        ]
+
+class BalanceChallengeSubmitSerializer(serializers.Serializer):
+    """Serializer para envío de coeficientes"""
+    game_id = serializers.IntegerField()
+    coefficients = serializers.ListField(
+        child=serializers.IntegerField(min_value=1, max_value=50),
+        min_length=1,
+        max_length=20
+    )
+    time_taken = serializers.IntegerField(min_value=0, default=0)
+
+class BalanceChallengeCreateSerializer(serializers.Serializer):
+    """Serializer para crear nuevo desafío"""
+    difficulty = serializers.ChoiceField(
+        choices=['easy', 'medium', 'hard'],
+        default='easy'
+    )
