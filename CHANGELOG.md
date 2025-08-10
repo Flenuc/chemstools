@@ -4,6 +4,67 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.2.0-alpha] - 2025-08-09
+Added
+Backend: Se ha implementado la funcionalidad completa del Simulador de Reacciones Químicas en la nueva app reactions.
+Backend: Se ha creado el modelo BalancedReaction para actuar como caché y historial en la base de datos, almacenando las ecuaciones balanceadas para optimizar peticiones futuras y permitir análisis de uso.
+Backend: Se ha desarrollado la clase ChemicalEquationBalancer en reactions/utils.py, que encapsula toda la lógica de balanceo algebraico utilizando SymPy para:
+
+Parsing inteligente de ecuaciones químicas con soporte para compuestos complejos con paréntesis (ej. Ca(OH)2)
+Balanceo automático mediante resolución de sistemas de ecuaciones lineales
+Clasificación automática del tipo de reacción (síntesis, descomposición, combustión, sustitución)
+Cálculo y normalización de coeficientes estequiométricos
+
+Backend: Se ha implementado el endpoint POST /api/reactions/balance-equation/ que recibe ecuaciones no balanceadas y devuelve:
+
+Ecuación balanceada completa
+Coeficientes organizados por reactivos y productos
+Tipo de reacción detectado automáticamente
+Mapeo detallado de coeficientes por compuesto
+
+Backend: Se han añadido endpoints auxiliares:
+
+GET /api/reactions/health/ para verificación del estado del servicio
+GET /api/reactions/balanced-reactions/ para consultar el historial de reacciones procesadas
+
+Backend: Se ha implementado una suite exhaustiva de 19 pruebas unitarias y de integración que validan:
+
+Parsing correcto de compuestos simples y complejos
+Balanceo preciso para los tres tipos principales de reacciones químicas
+Manejo robusto de errores y validaciones de entrada
+Funcionamiento completo de todos los endpoints de la API
+Almacenamiento correcto en base de datos
+
+Frontend: Se ha desarrollado el componente avanzado ReactionSimulator.tsx con TypeScript completo, que incluye:
+
+Interfaz de usuario intuitiva y responsive con TailwindCSS
+Validación de ecuaciones en tiempo real con mensajes de error específicos
+Botones de selección rápida para tipos de reacciones comunes (síntesis, descomposición, combustión)
+Estados visuales claros para carga, éxito y error con animaciones suaves
+Visualización detallada de resultados incluyendo ecuación balanceada, coeficientes por compuesto, y tipo de reacción
+Manejo robusto de errores de red y respuestas del servidor
+Funcionalidad de limpieza y reset completo del formulario
+
+Frontend: Se ha integrado la configuración completa de Axios con interceptores para:
+
+Logging automático de requests y responses para debugging
+Manejo centralizado de timeouts (10 segundos)
+Headers estándar y configuración de base URL por ambiente
+
+Changed
+Arquitectura: Se ha adoptado un enfoque de separación clara entre lógica de negocio (utils.py), modelos de datos (models.py) y presentación (views.py), mejorando la mantenibilidad y testabilidad del código.
+Dependencias: Se ha integrado SymPy como nueva dependencia del backend para cálculo simbólico avanzado, permitiendo el balanceo algebraico preciso de ecuaciones químicas complejas.
+API Design: Se ha establecido un patrón consistente de respuestas JSON estructuradas que incluyen:
+
+Campo success booleano para identificación rápida del estado
+Datos originales y procesados para trazabilidad completa
+Información de metadata (tipo de reacción, ID de base de datos)
+Manejo unificado de errores con mensajes descriptivos
+
+Fixed
+Backend: Se ha corrigido el parsing de compuestos químicos complejos con paréntesis mediante la implementación de un algoritmo recursivo que expande correctamente grupos como (OH)2, (NO3)3, etc.
+Testing: Se han solucionado problemas de importación relativa en la suite de pruebas, migrando de imports relativos (..models) a imports absolutos (reactions.models) para mayor compatibilidad con pytest.
+
 [2.1.0-alpha] - 2025-08-09
 Added
 Backend: Se ha implementado la funcionalidad completa del Generador de Estructuras de Lewis en la nueva app structures.
