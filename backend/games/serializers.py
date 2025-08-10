@@ -3,6 +3,7 @@ from .models import QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard
 from .models import ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats
 from .models import MemoryGame, MemoryStats
 from .models import BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats
+from .models import PeriodicSpeedGame, PeriodicSpeedStats 
 from django.utils import timezone
 
 class QuizQuestionSerializer(serializers.ModelSerializer):
@@ -253,3 +254,126 @@ class BalanceChallengeCreateSerializer(serializers.Serializer):
         choices=['easy', 'medium', 'hard'],
         default='easy'
     )
+
+class PeriodicSpeedGameSerializer(serializers.ModelSerializer):
+    """Serializer para el juego de velocidad periódica"""
+    time_elapsed = serializers.SerializerMethodField()
+    target_hint = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PeriodicSpeedGame
+        fields = [
+            'id', 'target_element', 'is_completed', 'is_correct', 
+            'time_taken_seconds', 'selected_element', 'hint_used',
+            'started_at', 'completed_at', 'time_elapsed', 'target_hint'
+        ]
+        read_only_fields = ['user']
+    
+    def get_time_elapsed(self, obj):
+        """Calcula el tiempo transcurrido"""
+        if obj.completed_at:
+            return obj.time_taken_seconds
+        else:
+            return (timezone.now() - obj.started_at).total_seconds()
+    
+    def get_target_hint(self, obj):
+        """Proporciona información básica del elemento sin revelarlo"""
+        if obj.is_completed:
+            return obj.target_element
+        
+        # Solo mostrar información básica mientras el juego está activo
+        target = obj.target_element
+        return {
+            'name': target.get('name', ''),
+            'category_hint': self._get_category_hint(target.get('category', '')),
+            'period_hint': f"Período {target.get('ypos', '?')}",
+            'group_hint': f"Grupo {target.get('xpos', '?')}" if target.get('xpos', 0) <= 18 else "Lantánido/Actínido"
+        }
+    
+    def _get_category_hint(self, category):
+        """Convierte categoría técnica en pista comprensible"""
+        if 'metal' in category.lower() and 'nonmetal' not in category.lower():
+            return "Metal"
+        elif 'nonmetal' in category.lower():
+            return "No metal"
+        elif 'noble gas' in category.lower():
+            return "Gas noble"
+        elif 'metalloid' in category.lower():
+            return "Metaloide"
+        else:
+            return "Elemento químico"
+
+class PeriodicSpeedGameCompleteSerializer(PeriodicSpeedGameSerializer):
+    """Serializer completo que incluye toda la información"""
+    target_element = serializers.JSONField(read_only=True)
+    
+    def get_target_hint(self, obj):
+        """Para juegos completados, retorna toda la información"""
+        return obj.target_element
+
+class PeriodicSpeedStatsSerializer(serializers.ModelSerializer):
+    """Serializer para estadísticas de velocidad periódica"""
+    username = serializers.CharField(source='user.username', read_only=True)
+    best_time_formatted = serializers.SerializerMethodField()
+    average_time_formatted = serializers.SerializerMethodField()
+    category_breakdown = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PeriodicSpeedStats
+        fields = [
+            'username', 'games_played', 'games_correct', 'accuracy_rate',
+            'best_time_seconds', 'average_time_seconds', 'current_streak', 'best_streak',
+            'metals_correct', 'nonmetals_correct', 'metalloids_correct', 'noble_gases_correct',
+            'best_time_metals', 'best_time_nonmetals', 'best_time_metalloids', 'best_time_noble_gases',
+            'best_time_formatted', 'average_time_formatted', 'category_breakdown'
+        ]
+    
+    def get_best_time_formatted(self, obj):
+        """Formatea el mejor tiempo para mostrar"""
+        if obj.best_time_seconds:
+            return f"{obj.best_time_seconds:.2f}s"
+        return "N/A"
+    
+    def get_average_time_formatted(self, obj):
+        """Formatea el tiempo promedio para mostrar"""
+        if obj.average_time_seconds:
+            return f"{obj.average_time_seconds:.2f}s"
+        return "N/A"
+    
+    def get_category_breakdown(self, obj):
+        """Proporciona desglose por categorías"""
+        return {
+            'metals': {
+                'correct': obj.metals_correct,
+                'best_time': obj.best_time_metals,
+                'best_time_formatted': f"{obj.best_time_metals:.2f}s" if obj.best_time_metals else "N/A"
+            },
+            'nonmetals': {
+                'correct': obj.nonmetals_correct,
+                'best_time': obj.best_time_nonmetals,
+                'best_time_formatted': f"{obj.best_time_nonmetals:.2f}s" if obj.best_time_nonmetals else "N/A"
+            },
+            'metalloids': {
+                'correct': obj.metalloids_correct,
+                'best_time': obj.best_time_metalloids,
+                'best_time_formatted': f"{obj.best_time_metalloids:.2f}s" if obj.best_time_metalloids else "N/A"
+            },
+            'noble_gases': {
+                'correct': obj.noble_gases_correct,
+                'best_time': obj.best_time_noble_gases,
+                'best_time_formatted': f"{obj.best_time_noble_gases:.2f}s" if obj.best_time_noble_gases else "N/A"
+            }
+        }
+
+class PeriodicSpeedCreateSerializer(serializers.Serializer):
+    """Serializer para crear nuevo desafío de velocidad"""
+    difficulty = serializers.ChoiceField(
+        choices=['random', 'common', 'rare'],
+        default='random'
+    )
+
+class PeriodicSpeedSubmitSerializer(serializers.Serializer):
+    """Serializer para envío de selección"""
+    game_id = serializers.IntegerField()
+    selected_element_number = serializers.IntegerField(min_value=1, max_value=118)
+    time_taken = serializers.FloatField(min_value=0.1, max_value=300.0)  # Entre 0.1s y 5 minutos
