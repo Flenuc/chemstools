@@ -337,3 +337,58 @@ class BalanceChallengeStats(BaseModel):
     class Meta:
         verbose_name = "Estadísticas de Balanceo"
         verbose_name_plural = "Estadísticas de Balanceo"
+        
+class PeriodicSpeedGame(BaseModel):
+    """Modelo para el juego de velocidad de tabla periódica"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    target_element = models.JSONField(verbose_name="Elemento objetivo")
+    is_completed = models.BooleanField(default=False)
+    is_correct = models.BooleanField(default=False)
+    time_taken_seconds = models.FloatField(null=True, blank=True)
+    selected_element = models.JSONField(null=True, blank=True, verbose_name="Elemento seleccionado")
+    hint_used = models.BooleanField(default=False)
+    started_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Juego de Velocidad Periódica"
+        verbose_name_plural = "Juegos de Velocidad Periódica"
+    
+    def __str__(self):
+        status = "Correcto" if self.is_correct else "Incorrecto" if self.is_completed else "En progreso"
+        element_name = self.target_element.get('name', 'Unknown') if self.target_element else 'Unknown'
+        return f"{self.user.username} - {element_name} ({status})"
+
+class PeriodicSpeedStats(BaseModel):
+    """Estadísticas del usuario para velocidad periódica"""
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    
+    # Estadísticas generales
+    games_played = models.IntegerField(default=0)
+    games_correct = models.IntegerField(default=0)
+    accuracy_rate = models.FloatField(default=0.0)
+    
+    # Tiempos
+    best_time_seconds = models.FloatField(null=True, blank=True)
+    average_time_seconds = models.FloatField(default=0.0)
+    total_time_seconds = models.FloatField(default=0.0)
+    
+    # Rachas
+    current_streak = models.IntegerField(default=0)
+    best_streak = models.IntegerField(default=0)
+    
+    # Categorías de elementos
+    metals_correct = models.IntegerField(default=0)
+    nonmetals_correct = models.IntegerField(default=0)
+    metalloids_correct = models.IntegerField(default=0)
+    noble_gases_correct = models.IntegerField(default=0)
+    
+    # Tiempos por categoría (solo los mejores tiempos)
+    best_time_metals = models.FloatField(null=True, blank=True)
+    best_time_nonmetals = models.FloatField(null=True, blank=True)
+    best_time_metalloids = models.FloatField(null=True, blank=True)
+    best_time_noble_gases = models.FloatField(null=True, blank=True)
+    
+    class Meta:
+        verbose_name = "Estadísticas de Velocidad Periódica"
+        verbose_name_plural = "Estadísticas de Velocidad Periódica"
