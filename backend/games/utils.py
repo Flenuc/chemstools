@@ -2,6 +2,7 @@ import random
 from django.utils import timezone
 from .models import QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard
 from .models import ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats
+from .models import MemoryGame, MemoryStats
 
 class QuizGameEngine:
     """Motor de juego para el quiz de química"""
@@ -368,3 +369,238 @@ class ChemWordleEngine:
         stats.win_percentage = (stats.games_won / stats.games_played) * 100
         
         stats.save()
+        
+class MemoryGameEngine:
+    """Motor de juego para Memory Molecular"""
+    
+    # Datos químicos para diferentes dificultades
+    CHEMICAL_DATA = {
+        'easy': [
+            {'name': 'Agua', 'formula': 'H₂O', 'type': 'compound'},
+            {'name': 'Metano', 'formula': 'CH₄', 'type': 'compound'},
+            {'name': 'Amoníaco', 'formula': 'NH₃', 'type': 'compound'},
+            {'name': 'Dióxido de carbono', 'formula': 'CO₂', 'type': 'compound'},
+            {'name': 'Hidrógeno', 'formula': 'H₂', 'type': 'element'},
+            {'name': 'Oxígeno', 'formula': 'O₂', 'type': 'element'},
+            {'name': 'Sal común', 'formula': 'NaCl', 'type': 'compound'},
+            {'name': 'Ácido clorhídrico', 'formula': 'HCl', 'type': 'compound'},
+        ],
+        'medium': [
+            {'name': 'Glucosa', 'formula': 'C₆H₁₂O₆', 'type': 'compound'},
+            {'name': 'Etanol', 'formula': 'C₂H₅OH', 'type': 'compound'},
+            {'name': 'Ácido sulfúrico', 'formula': 'H₂SO₄', 'type': 'compound'},
+            {'name': 'Hidróxido de sodio', 'formula': 'NaOH', 'type': 'compound'},
+            {'name': 'Carbonato de calcio', 'formula': 'CaCO₃', 'type': 'compound'},
+            {'name': 'Peróxido de hidrógeno', 'formula': 'H₂O₂', 'type': 'compound'},
+            {'name': 'Ácido acético', 'formula': 'CH₃COOH', 'type': 'compound'},
+            {'name': 'Bicarbonato de sodio', 'formula': 'NaHCO₃', 'type': 'compound'},
+        ],
+        'hard': [
+            {'name': 'Cafeína', 'formula': 'C₈H₁₀N₄O₂', 'type': 'compound'},
+            {'name': 'Aspirina', 'formula': 'C₉H₈O₄', 'type': 'compound'},
+            {'name': 'Vitamina C', 'formula': 'C₆H₈O₆', 'type': 'compound'},
+            {'name': 'Adenosina trifosfato', 'formula': 'C₁₀H₁₆N₅O₁₃P₃', 'type': 'compound'},
+            {'name': 'Colesterol', 'formula': 'C₂₇H₄₆O', 'type': 'compound'},
+            {'name': 'Morfina', 'formula': 'C₁₇H₁₉NO₃', 'type': 'compound'},
+            {'name': 'Penicilina G', 'formula': 'C₁₆H₁₈N₂O₄S', 'type': 'compound'},
+            {'name': 'Adrenalina', 'formula': 'C₉H₁₃NO₃', 'type': 'compound'},
+        ]
+    }
+    
+    @staticmethod
+    def create_memory_game(user, difficulty='easy', total_pairs=6):
+        """Crea una nueva partida de Memory Molecular"""
+        available_data = MemoryGameEngine.CHEMICAL_DATA.get(difficulty, MemoryGameEngine.CHEMICAL_DATA['easy'])
+        
+        if total_pairs > len(available_data):
+            total_pairs = len(available_data)
+        
+        # Seleccionar compuestos aleatorios
+        selected_compounds = random.sample(available_data, total_pairs)
+        
+        # Crear cartas (cada compuesto genera 2 cartas: nombre y fórmula)
+        cards = []
+        card_id = 0
+        
+        for compound in selected_compounds:
+            # Carta con nombre
+            cards.append({
+                'id': card_id,
+                'content': compound['name'],
+                'type': 'name',
+                'pair_id': len(cards) // 2,
+                'compound_type': compound['type'],
+                'is_revealed': False,
+                'is_matched': False
+            })
+            card_id += 1
+            
+            # Carta con fórmula
+            cards.append({
+                'id': card_id,
+                'content': compound['formula'],
+                'type': 'formula',
+                'pair_id': (len(cards) - 1) // 2,
+                'compound_type': compound['type'],
+                'is_revealed': False,
+                'is_matched': False
+            })
+            card_id += 1
+        
+        # Mezclar las cartas
+        random.shuffle(cards)
+        
+        # Reasignar IDs después del shuffle para mantener posiciones
+        for i, card in enumerate(cards):
+            card['position'] = i
+        
+        game = MemoryGame.objects.create(
+            user=user,
+            difficulty=difficulty,
+            total_pairs=total_pairs,
+            cards_data=cards
+        )
+        
+        return game
+    
+    @staticmethod
+    def reveal_card(game, card_position):
+        """Revela una carta y verifica si hay coincidencia"""
+        cards = game.cards_data.copy()
+        
+        if card_position >= len(cards):
+            return None, "Posición de carta inválida"
+        
+        card = cards[card_position]
+        
+        # No permitir revelar cartas ya emparejadas o ya reveladas
+        if card['is_matched'] or card['is_revealed']:
+            return None, "Esta carta ya está revelada o emparejada"
+        
+        # Revelar la carta
+        card['is_revealed'] = True
+        cards[card_position] = card
+        
+        # Contar cartas reveladas no emparejadas
+        revealed_cards = [c for c in cards if c['is_revealed'] and not c['is_matched']]
+        
+        result = {
+            'card': card,
+            'is_match': False,
+            'matched_pair': None,
+            'game_completed': False
+        }
+        
+        # Si hay 2 cartas reveladas, verificar coincidencia
+        if len(revealed_cards) == 2:
+            game.attempts += 1
+            
+            card1, card2 = revealed_cards
+            
+            # Verificar si forman un par (mismo pair_id)
+            if card1['pair_id'] == card2['pair_id']:
+                # ¡Coincidencia!
+                for i, c in enumerate(cards):
+                    if c['id'] == card1['id'] or c['id'] == card2['id']:
+                        cards[i]['is_matched'] = True
+                
+                game.pairs_found += 1
+                game.score += MemoryGameEngine._calculate_pair_score(game.difficulty)
+                
+                result['is_match'] = True
+                result['matched_pair'] = [card1, card2]
+                
+                # Verificar si el juego está completo
+                if game.pairs_found >= game.total_pairs:
+                    game.is_completed = True
+                    game.completed_at = timezone.now()
+                    game.total_time_seconds = (game.completed_at - game.started_at).seconds
+                    MemoryGameEngine._update_stats(game)
+                    result['game_completed'] = True
+            else:
+                # No coinciden - se ocultarán automáticamente en el frontend
+                pass
+        
+        # Actualizar datos del juego
+        game.cards_data = cards
+        game.save()
+        
+        return result, None
+    
+    @staticmethod
+    def hide_revealed_cards(game):
+        """Oculta las cartas reveladas que no fueron emparejadas"""
+        cards = game.cards_data.copy()
+        
+        for i, card in enumerate(cards):
+            if card['is_revealed'] and not card['is_matched']:
+                cards[i]['is_revealed'] = False
+        
+        game.cards_data = cards
+        game.save()
+        
+        return True
+    
+    @staticmethod
+    def _calculate_pair_score(difficulty):
+        """Calcula puntos por par encontrado según dificultad"""
+        score_map = {
+            'easy': 100,
+            'medium': 200,
+            'hard': 300
+        }
+        return score_map.get(difficulty, 100)
+    
+    @staticmethod
+    def _update_stats(game):
+        """Actualiza las estadísticas del usuario"""
+        stats, created = MemoryStats.objects.get_or_create(
+            user=game.user,
+            defaults={
+                'games_played': 0,
+                'games_completed': 0,
+                'completion_rate': 0.0,
+                'total_pairs_found': 0,
+                'total_attempts': 0,
+                'average_accuracy': 0.0
+            }
+        )
+        
+        stats.games_played += 1
+        if game.is_completed:
+            stats.games_completed += 1
+        
+        stats.total_pairs_found += game.pairs_found
+        stats.total_attempts += game.attempts
+        
+        # Calcular tasa de finalización
+        stats.completion_rate = (stats.games_completed / stats.games_played) * 100
+        
+        # Calcular precisión promedio
+        if stats.total_attempts > 0:
+            stats.average_accuracy = (stats.total_pairs_found / stats.total_attempts) * 100
+        
+        # Actualizar mejor tiempo por dificultad
+        if game.is_completed and game.total_time_seconds:
+            time_field = f'best_time_{game.difficulty}'
+            current_best = getattr(stats, time_field)
+            if not current_best or game.total_time_seconds < current_best:
+                setattr(stats, time_field, game.total_time_seconds)
+        
+        stats.save()
+    
+    @staticmethod
+    def get_game_state(game):
+        """Obtiene el estado actual del juego para el frontend"""
+        return {
+            'id': game.id,
+            'difficulty': game.difficulty,
+            'is_completed': game.is_completed,
+            'pairs_found': game.pairs_found,
+            'total_pairs': game.total_pairs,
+            'attempts': game.attempts,
+            'score': game.score,
+            'cards': game.cards_data,
+            'started_at': game.started_at,
+            'total_time_seconds': game.total_time_seconds
+        }
