@@ -3,12 +3,18 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
-from .models import QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard
+from .models import ( 
+        QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard, 
+        ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats )
 from .serializers import (
     QuizQuestionSerializer, QuizSessionSerializer, QuizAnswerSerializer, 
-    QuizLeaderboardSerializer, QuizQuestionWithAnswerSerializer
+    QuizLeaderboardSerializer, QuizQuestionWithAnswerSerializer,
+    ChemicalWordSerializer, ChemWordleGameSerializer, ChemWordleGameCompleteSerializer,
+    ChemWordleAttemptSerializer, ChemWordleStatsSerializer,
 )
 from .utils import QuizGameEngine
+from .utils import ChemWordleEngine
+
 
 class QuizViewSet(viewsets.ViewSet):
     """ViewSet para el sistema de quiz"""
@@ -194,3 +200,197 @@ class QuizViewSet(viewsets.ViewSet):
                 'stats': None,
                 'message': 'No hay estadísticas disponibles'
             })
+
+class ChemWordleViewSet(viewsets.ViewSet):
+    """ViewSet para el juego ChemWordle"""
+    permission_classes = [IsAuthenticated]
+    
+    @action(detail=False, methods=['get'])
+    def start_game(self, request):
+        """Inicia un nuevo juego o continúa uno existente"""
+        try:
+            difficulty = request.query_params.get('difficulty')
+            game = ChemWordleEngine.get_daily_word(request.user, difficulty)
+            
+            # Usar serializer diferente si el juego está completado
+            if game.is_completed:
+                serializer = ChemWordleGameCompleteSerializer(game)
+            else:
+                serializer = ChemWordleGameSerializer(game)
+            
+            return Response({
+                'success': True,
+                'game': serializer.data,
+                'message': 'Juego iniciado correctamente'
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al iniciar juego: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def submit_guess(self, request):
+        """Envía una adivinanza"""
+        try:
+            game_id = request.data.get('game_id')
+            guess = request.data.get('guess')
+            time_taken = request.data.get('time_taken', 0)
+            
+            if not all([game_id, guess]):
+                return Response({
+                    'success': False,
+                    'error': 'Se requieren game_id y guess'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game = ChemWordleGame.objects.get(id=game_id, user=request.user)
+            
+            if game.is_completed:
+                return Response({
+                    'success': False,
+                    'error': 'El juego ya está completado'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            attempt, error = ChemWordleEngine.submit_guess(game, guess, time_taken)
+            if error:
+                return Response({
+                    'success': False,
+                    'error': error
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Preparar respuesta
+            attempt_serializer = ChemWordleAttemptSerializer(attempt)
+            
+            # Usar serializer completo si el juego terminó
+            if game.is_completed:
+                game_serializer = ChemWordleGameCompleteSerializer(game)
+            else:
+                game_serializer = ChemWordleGameSerializer(game)
+            
+            return Response({
+                'success': True,
+                'attempt': attempt_serializer.data,
+                'game': game_serializer.data,
+                'game_completed': game.is_completed,
+                'game_won': game.is_won,
+                'message': 'Intento procesado correctamente'
+            })
+            
+        except ChemWordleGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Juego no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al procesar intento: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'])
+    def get_hint(self, request):
+        """Obtiene una pista progresiva"""
+        try:
+            game_id = request.data.get('game_id')
+            hint_level = request.data.get('hint_level', 1)
+            
+            if not game_id:
+                return Response({
+                    'success': False,
+                    'error': 'Se requiere game_id'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            game = ChemWordleGame.objects.get(id=game_id, user=request.user)
+            
+            if game.is_completed:
+                return Response({
+                    'success': False,
+                    'error': 'No se pueden solicitar pistas para juegos completados'
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            hint = ChemWordleEngine.get_progressive_hint(game, hint_level)
+            
+            # Actualizar pistas reveladas
+            if hint_level not in game.hints_revealed:
+                game.hints_revealed.append(hint_level)
+                game.save()
+            
+            return Response({
+                'success': True,
+                'hint': hint,
+                'hint_level': hint_level,
+                'hints_revealed': game.hints_revealed
+            })
+            
+        except ChemWordleGame.DoesNotExist:
+            return Response({
+                'success': False,
+                'error': 'Juego no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener pista: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """Obtiene estadísticas del usuario"""
+        try:
+            # CORRECCIÓN: Usar el modelo correcto
+            stats, created = ChemWordleStats.objects.get_or_create(
+                user=request.user,
+                defaults={
+                    'games_played': 0,
+                    'games_won': 0,
+                    'win_percentage': 0.0,
+                    'current_streak': 0,
+                    'max_streak': 0,
+                    'win_distribution': {},
+                    'best_time_seconds': None
+                }
+            )
+            serializer = ChemWordleStatsSerializer(stats)
+            
+            return Response({
+                'success': True,
+                'stats': serializer.data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener estadísticas: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['get'])
+    def leaderboard(self, request):
+        """Obtiene tabla de clasificación global"""
+        try:
+            top_players = ChemWordleStats.objects.filter(
+                games_played__gte=1  # Reducir mínimo para testing
+            ).order_by('-win_percentage', '-games_won')[:10]
+            
+            leaderboard_data = []
+            for i, stat in enumerate(top_players, 1):
+                leaderboard_data.append({
+                    'rank': i,
+                    'username': stat.user.username,
+                    'games_played': stat.games_played,
+                    'games_won': stat.games_won,
+                    'win_percentage': stat.win_percentage,
+                    'current_streak': stat.current_streak,
+                    'max_streak': stat.max_streak
+                })
+            
+            return Response({
+                'success': True,
+                'leaderboard': leaderboard_data
+            })
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'error': f'Error al obtener clasificación: {str(e)}'
+            }, status=status.HTTP_400_BAD_REQUEST)
