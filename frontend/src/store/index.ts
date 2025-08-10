@@ -6,6 +6,8 @@ import filterReducer from './filterSlice';
 import calculatorsReducer from './calculatorsSlice';
 import quizReducer from './quizSlice';
 
+import chemWordleReducer from './chemWordleSlice';
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -14,6 +16,7 @@ export const store = configureStore({
     filters: filterReducer, 
     calculators: calculatorsReducer,
     quiz: quizReducer,
+    chemWordle: chemWordleReducer,
   },
 });
 
