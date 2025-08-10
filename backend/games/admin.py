@@ -3,6 +3,7 @@ from .models import (
         QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard,
         ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats, 
         MemoryGame, MemoryStats,
+        BalanceChallengeGame, BalanceChallengeAttempt, BalanceChallengeStats
         )
 
 @admin.register(QuizQuestion)
@@ -121,3 +122,101 @@ class MemoryStatsAdmin(admin.ModelAdmin):
             'fields': ('best_time_easy', 'best_time_medium', 'best_time_hard')
         })
     )
+    
+@admin.register(BalanceChallengeGame)
+class BalanceChallengeGameAdmin(admin.ModelAdmin):
+    list_display = ['user', 'original_equation', 'difficulty', 'is_completed', 'is_correct', 'attempts', 'started_at']
+    list_filter = ['difficulty', 'is_completed', 'is_correct', 'started_at']
+    search_fields = ['user__username', 'original_equation', 'target_balanced_equation']
+    readonly_fields = ['started_at', 'completed_at', 'time_spent_seconds']
+    ordering = ['-started_at']
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('user', 'difficulty', 'started_at', 'completed_at')
+        }),
+        ('Ecuación', {
+            'fields': ('original_equation', 'target_balanced_equation', 'target_coefficients')
+        }),
+        ('Estado del Juego', {
+            'fields': ('is_completed', 'is_correct', 'attempts', 'max_attempts', 'time_spent_seconds')
+        }),
+        ('Interacción del Usuario', {
+            'fields': ('user_coefficients', 'hints_used'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+
+@admin.register(BalanceChallengeAttempt)
+class BalanceChallengeAttemptAdmin(admin.ModelAdmin):
+    list_display = ['game', 'attempt_number', 'is_correct', 'time_taken_seconds', 'created_at']
+    list_filter = ['is_correct', 'game__difficulty', 'created_at']
+    search_fields = ['game__user__username', 'game__original_equation']
+    readonly_fields = ['created_at']
+    ordering = ['game', 'attempt_number']
+    
+    fieldsets = (
+        ('Información del Intento', {
+            'fields': ('game', 'attempt_number', 'created_at')
+        }),
+        ('Respuesta del Usuario', {
+            'fields': ('coefficients_submitted', 'is_correct', 'time_taken_seconds')
+        }),
+        ('Resultado de Validación', {
+            'fields': ('validation_result',),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('game', 'game__user')
+
+@admin.register(BalanceChallengeStats)
+class BalanceChallengeStatsAdmin(admin.ModelAdmin):
+    list_display = ['user', 'games_played', 'games_correct', 'accuracy_rate', 'current_streak', 'best_streak']
+    readonly_fields = [
+        'user', 'games_played', 'games_completed', 'games_correct',
+        'completion_rate', 'accuracy_rate', 'easy_completed', 'easy_correct',
+        'medium_completed', 'medium_correct', 'hard_completed', 'hard_correct',
+        'average_time_per_game', 'best_time_easy', 'best_time_medium', 
+        'best_time_hard', 'current_streak', 'best_streak'
+    ]
+    ordering = ['-accuracy_rate', '-games_correct']
+    search_fields = ['user__username']
+    
+    fieldsets = (
+        ('Usuario', {
+            'fields': ('user',)
+        }),
+        ('Estadísticas Generales', {
+            'fields': ('games_played', 'games_completed', 'games_correct', 'completion_rate', 'accuracy_rate')
+        }),
+        ('Estadísticas por Dificultad', {
+            'fields': (
+                ('easy_completed', 'easy_correct'),
+                ('medium_completed', 'medium_correct'),
+                ('hard_completed', 'hard_correct')
+            ),
+            'classes': ('collapse',)
+        }),
+        ('Tiempos y Rachas', {
+            'fields': (
+                'average_time_per_game',
+                ('best_time_easy', 'best_time_medium', 'best_time_hard'),
+                ('current_streak', 'best_streak')
+            ),
+            'classes': ('collapse',)
+        })
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+    
+    def has_add_permission(self, request):
+        return False  # Las estadísticas se crean automáticamente
+    
+    def has_delete_permission(self, request, obj=None):
+        return False  # No permitir borrar estadísticas
