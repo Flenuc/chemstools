@@ -2708,3 +2708,17 @@ ERROR 2025-08-10 04:17:51,852 exceptions API Error: {'event_name': [ErrorDetail(
 WARNING 2025-08-10 04:17:51,853 log Bad Request: /api/telemetry/log/
 ERROR 2025-08-10 04:26:01,832 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
 WARNING 2025-08-10 04:26:01,833 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-10 05:01:28,867 log Bad Request: /api/games/chemwordle/get_hint/
+WARNING 2025-08-10 05:01:29,319 log Bad Request: /api/games/chemwordle/stats/
+WARNING 2025-08-10 05:03:14,945 log Bad Request: /api/games/quiz/start_session/
+WARNING 2025-08-10 05:03:15,095 log Not Found: /api/games/quiz/submit_answer/
+WARNING 2025-08-10 05:03:34,375 log Bad Request: /api/games/chemwordle/get_hint/
+WARNING 2025-08-10 05:03:34,836 log Bad Request: /api/games/chemwordle/stats/
+WARNING 2025-08-10 05:09:03,970 log Bad Request: /api/games/chemwordle/submit_guess/
+WARNING 2025-08-10 05:09:04,120 log Bad Request: /api/games/chemwordle/submit_guess/
+WARNING 2025-08-10 05:15:27,459 log Bad Request: /api/games/chemwordle/submit_guess/
+WARNING 2025-08-10 05:15:27,623 log Bad Request: /api/games/chemwordle/submit_guess/
+WARNING 2025-08-10 05:21:03,713 log Bad Request: /api/games/chemwordle/submit_guess/
+WARNING 2025-08-10 05:21:03,868 log Bad Request: /api/games/chemwordle/submit_guess/
+ERROR 2025-08-10 05:51:02,479 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 05:51:02,480 log Bad Request: /api/telemetry/log/
