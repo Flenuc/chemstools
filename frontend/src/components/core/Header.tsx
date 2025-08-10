@@ -18,6 +18,7 @@ export default function Header() {
         <Link href="/periodic-table" className="text-base text-gray-600 hover:text-indigo-600">Tabla Periódica</Link>
         <Link href="/glossary" className="text-base text-gray-600 hover:text-indigo-600">Glosario</Link>
         <Link href="/simulator" className="text-base text-gray-600 hover:text-indigo-600">Reacciones</Link>
+        <Link href="/games" className="text-base text-gray-600 hover:text-indigo-600">MiniJuegos</Link>
       </nav>
       <div>
         {isAuthenticated && user ? (
