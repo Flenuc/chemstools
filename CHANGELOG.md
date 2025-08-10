@@ -4,6 +4,100 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.2.4-alpha] - 2025-08-10
+
+Added
+Backend: Se ha implementado el sistema completo de Balance Challenge (Desafío de Balanceo) mediante la expansión de la app games, proporcionando una experiencia interactiva de drag & drop para balancear ecuaciones químicas.
+
+Backend: Se han creado 3 modelos especializados para el sistema Balance Challenge:
+- BalanceChallengeGame: Gestiona sesiones individuales con ecuación original, coeficientes objetivo, estado de finalización, número de intentos, dificultad seleccionada, y sistema de pistas utilizadas
+- BalanceChallengeAttempt: Registra cada intento individual con coeficientes enviados, validación de corrección, resultado detallado de balanceo, y tiempo de respuesta
+- BalanceChallengeStats: Sistema de estadísticas persistentes por usuario con métricas por dificultad (fácil/medio/difícil), rachas actuales y mejores, tiempos promedio y mejores por nivel, y tasa de precisión global
+
+Backend: Se ha desarrollado la clase BalanceChallengeEngine que implementa la lógica completa del juego de balanceo:
+- Sistema de generación de ecuaciones químicas categorizadas por dificultad (fácil: síntesis simple, medio: combustión y ácido-base, difícil: redox y complejas)
+- Algoritmo de validación de coeficientes con verificación de balance químico y coincidencia exacta con solución objetivo
+- Sistema de puntuación y gestión de intentos con límites configurables por dificultad
+- Gestión automática de finalización de partidas y actualización de estadísticas al completar desafíos
+- Sistema de pistas progresivas (elemento, coeficiente, método) con tracking de uso
+
+Backend: Se han implementado 7 endpoints REST especializados para Balance Challenge:
+- POST /api/games/balance-challenge/start_challenge/: Inicia nuevo desafío con selección de dificultad y generación de ecuación aleatoria
+- POST /api/games/balance-challenge/submit_coefficients/: Valida coeficientes del usuario con verificación de balance químico completo
+- POST /api/games/balance-challenge/get_hint/: Sistema de pistas contextuales (general, coeficiente específico, método de balanceo)
+- GET /api/games/balance-challenge/current_challenge/: Obtiene desafío activo del usuario con estado completo
+- GET /api/games/balance-challenge/stats/: Estadísticas detalladas del usuario (precisión, rachas, tiempos por dificultad)
+- GET /api/games/balance-challenge/leaderboard/: Clasificación global basada en tasa de precisión y rachas
+- DELETE /api/games/balance-challenge/end_challenge/: Permite abandonar desafío activo con actualización de estadísticas
+
+Backend: Se ha integrado el sistema de Balance Challenge con ChemicalEquationBalancer existente para:
+- Reutilización de la lógica de balanceo de ecuaciones químicas de la app reactions
+- Validación robusta de ecuaciones balanceadas usando SymPy para cálculos algebraicos
+- Generación automática de ecuaciones objetivo con coeficientes mínimos
+- Parsing inteligente de compuestos químicos para extracción de reactivos y productos
+
+Frontend: Se ha desarrollado el componente BalanceChallengeGame.tsx con mecánicas completas de drag & drop:
+- Sistema de drag & drop nativo sin dependencias externas para coeficientes numéricos
+- Pool de números disponibles (1-10) con múltiples copias para reutilización flexible
+- Interfaz visual de ecuaciones químicas con slots para coeficientes arrastrables
+- Feedback visual inmediato con colores diferenciados (verde=correcto, azul=arrastrable, gris=vacío)
+- Estados de juego diferenciados (menú, jugando, completado, estadísticas) con transiciones suaves
+
+Frontend: Se ha implementado el componente de estadísticas avanzadas con visualización completa:
+- Dashboard de estadísticas personales con métricas clave (precisión, rachas, tiempos)
+- Distribución de rendimiento por dificultad con estadísticas detalladas de fácil/medio/difícil
+- Visualización de mejores tiempos por nivel y tiempo promedio general
+- Interface responsive con diseño de tarjetas informativas y gradientes temáticos
+
+Frontend: Se ha creado el store slice balanceChallengeSlice.ts con gestión de estado completa:
+- Estado global reactivo para desafío actual, estadísticas, clasificación y progreso
+- Thunks asíncronos para todas las operaciones de API con manejo robusto de errores y loading states
+- Reducers especializados para gestión de pistas, feedback y estados de juego
+- Integración automática con el sistema de autenticación y manejo de tokens JWT
+- Estados de error centralizados con funciones de limpieza y reset
+
+Frontend: Se ha desarrollado la página completa /balance-challenge con:
+- Sistema de navegación integrado en el header principal de ChemsTools
+- Protección de ruta que requiere autenticación con manejo de estados de carga
+- Diseño responsive con gradientes temáticos y componentes modernos accesibles
+- Integración completa con Redux para gestión de estado persistente
+- Experiencia de usuario fluida con transiciones y animaciones CSS
+
+Testing: Se ha implementado una suite exhaustiva de 25+ pruebas unitarias y de integración que valida:
+- Creación y configuración correcta de desafíos de balance con diferentes dificultades
+- Algoritmo de validación de coeficientes y detección de ecuaciones balanceadas con casos edge complejos
+- Funcionamiento correcto de todos los endpoints de la API con validación de respuestas JSON
+- Flujo completo desde inicio hasta finalización de desafío con actualización de estadísticas
+- Manejo de errores para casos inválidos (coeficientes negativos, longitud incorrecta, juegos completados)
+- Sistema de pistas progresivas y gestión de hints utilizados por usuario
+- Continuación de desafíos existentes y prevención de duplicados activos
+
+Changed
+Arquitectura: Se ha expandido el patrón modular de la app games para soportar Balance Challenge como cuarto tipo de juego, manteniendo separación clara entre motores de juego, modelos y presentación API.
+
+Frontend: Se ha actualizado el sistema de navegación global para incluir Balance Challenge como juego independiente, diferenciándolo visualmente de Quiz, ChemWordle y Memory con iconografía específica (⚖️).
+
+Backend: Se ha optimizado la reutilización del ChemicalEquationBalancer existente para crear un sistema de validación robusto que aprovecha la lógica de balanceo ya implementada sin duplicar código.
+
+Infrastructure: Se ha actualizado la configuración de routing para soportar Quiz, ChemWordle, Memory y Balance Challenge de manera independiente, expandiendo el router de games sin conflictos.
+
+Performance: Se ha implementado gestión de estado de drag & drop optimizada que minimiza re-renders innecesarios y proporciona feedback visual inmediato durante las interacciones del usuario.
+
+Fixed
+Backend: Se han corregido problemas en la validación de coeficientes para manejar correctamente casos edge como ecuaciones ya balanceadas con múltiplos y coeficientes mínimos vs. equivalentes.
+
+Frontend: Se han solucionado conflictos potenciales de estado entre diferentes juegos de la app games, asegurando que el estado de Balance Challenge se mantenga aislado y consistente.
+
+Testing: Se han corregido 3 fallos en las pruebas unitarias relacionados con validación de ecuaciones complejas y manejo de respuestas de API en endpoints de estadísticas y clasificación.
+
+Backend: Se ha corregido el manejo de estadísticas para usuarios nuevos en Balance Challenge, implementando valores por defecto apropiados y evitando errores de referencia nula en consultas de leaderboard.
+
+Frontend: Se han solucionado problemas de tipado TypeScript en componentes de Balance Challenge, asegurando compatibilidad completa con las interfaces definidas en el store slice y tipos del backend.
+
+Security: Se ha implementado validación adicional en endpoints de Balance Challenge para verificar ownership de desafíos y prevenir acceso no autorizado a datos de juegos de otros usuarios.
+
+UX: Se han corregido interacciones de drag & drop para proporcionar mejor feedback visual durante el proceso de arrastrar coeficientes, incluyendo hover states y animaciones de transición suaves.
+
 [2.2.3-alpha] - 2025-08-10
 
 Added
