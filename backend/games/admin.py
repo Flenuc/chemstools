@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import ( 
         QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard,
         ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats, 
-        
+        MemoryGame, MemoryStats,
         )
 
 @admin.register(QuizQuestion)
@@ -73,3 +73,51 @@ class ChemWordleStatsAdmin(admin.ModelAdmin):
     readonly_fields = ['user', 'games_played', 'games_won', 'win_percentage', 
                       'current_streak', 'max_streak', 'win_distribution', 'best_time_seconds']
     ordering = ['-win_percentage', '-games_won']
+    
+@admin.register(MemoryGame)
+class MemoryGameAdmin(admin.ModelAdmin):
+    list_display = ['user', 'difficulty', 'pairs_found', 'total_pairs', 'is_completed', 'score', 'started_at']
+    list_filter = ['difficulty', 'is_completed', 'started_at']
+    search_fields = ['user__username']
+    readonly_fields = ['started_at', 'completed_at']
+    ordering = ['-started_at']
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('user', 'difficulty', 'started_at', 'completed_at')
+        }),
+        ('Progreso del Juego', {
+            'fields': ('is_completed', 'pairs_found', 'total_pairs', 'attempts', 'score')
+        }),
+        ('Datos del Juego', {
+            'fields': ('cards_data', 'revealed_pairs'),
+            'classes': ('collapse',)
+        }),
+        ('Tiempo', {
+            'fields': ('total_time_seconds',),
+            'classes': ('collapse',)
+        })
+    )
+
+@admin.register(MemoryStats)
+class MemoryStatsAdmin(admin.ModelAdmin):
+    list_display = ['user', 'games_played', 'games_completed', 'completion_rate', 'average_accuracy']
+    readonly_fields = ['user', 'games_played', 'games_completed', 'completion_rate', 
+                      'total_pairs_found', 'total_attempts', 'average_accuracy',
+                      'best_time_easy', 'best_time_medium', 'best_time_hard']
+    ordering = ['-completion_rate', '-average_accuracy']
+    
+    fieldsets = (
+        ('Usuario', {
+            'fields': ('user',)
+        }),
+        ('Estadísticas Generales', {
+            'fields': ('games_played', 'games_completed', 'completion_rate')
+        }),
+        ('Rendimiento', {
+            'fields': ('total_pairs_found', 'total_attempts', 'average_accuracy')
+        }),
+        ('Mejores Tiempos', {
+            'fields': ('best_time_easy', 'best_time_medium', 'best_time_hard')
+        })
+    )
