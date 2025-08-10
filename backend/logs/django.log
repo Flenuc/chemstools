@@ -2722,3 +2722,557 @@ WARNING 2025-08-10 05:21:03,713 log Bad Request: /api/games/chemwordle/submit_gu
 WARNING 2025-08-10 05:21:03,868 log Bad Request: /api/games/chemwordle/submit_guess/
 ERROR 2025-08-10 05:51:02,479 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
 WARNING 2025-08-10 05:51:02,480 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-10 15:02:01,885 log Not Found: /api/games/memory/end_game/
+WARNING 2025-08-10 15:02:02,183 log Bad Request: /api/games/memory/reveal_card/
+WARNING 2025-08-10 15:02:02,329 log Not Found: /api/games/memory/reveal_card/
+WARNING 2025-08-10 15:27:16,342 log Not Found: /api/games/memory/end_game/
+WARNING 2025-08-10 15:27:16,662 log Bad Request: /api/games/memory/reveal_card/
+WARNING 2025-08-10 15:27:16,815 log Not Found: /api/games/memory/reveal_card/
+ERROR 2025-08-10 15:56:37,261 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 15:56:37,262 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:04:48,952 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:04:48,953 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:11:02,583 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:11:02,584 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:15:19,143 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:15:19,144 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:15:24,553 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:15:24,588 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:15:24,614 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:15:24,624 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:18:46,596 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:18:46,596 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:18:52,416 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:18:52,441 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:18:52,469 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:18:52,479 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:18:57,316 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:18:57,325 log Bad Request: /api/games/memory/start_game
+ERROR 2025-08-10 16:18:58,427 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:18:58,436 log Bad Request: /api/games/memory/stats
+ERROR 2025-08-10 16:18:58,437 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:18:58,446 log Bad Request: /api/games/memory/leaderboard
+ERROR 2025-08-10 16:18:58,462 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:18:58,473 log Bad Request: /api/games/memory/stats
+ERROR 2025-08-10 16:18:58,488 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:18:58,499 log Bad Request: /api/games/memory/leaderboard
+WARNING 2025-08-10 16:20:06,839 log Not Found: /api/games/memory/
+ERROR 2025-08-10 16:20:29,043 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 16:20:29,044 log Unauthorized: /api/games/memory/stats/
+ERROR 2025-08-10 16:24:52,312 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:24:52,313 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:24:58,378 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:24:58,403 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:24:58,430 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:24:58,440 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:25:02,344 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:25:02,353 log Bad Request: /api/games/memory/stats
+ERROR 2025-08-10 16:25:02,354 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:25:02,363 log Bad Request: /api/games/memory/leaderboard
+ERROR 2025-08-10 16:25:02,379 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:25:02,388 log Bad Request: /api/games/memory/stats
+ERROR 2025-08-10 16:25:02,404 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:25:02,414 log Bad Request: /api/games/memory/leaderboard
+ERROR 2025-08-10 16:25:08,145 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:25:08,154 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:25:08,180 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:25:08,189 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:26:52,369 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:26:52,370 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:27:06,902 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:27:06,923 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:27:06,958 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:27:06,969 log Bad Request: /api/games/memory/current_game
+ERROR 2025-08-10 16:27:15,278 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:27:15,288 log Bad Request: /api/games/memory/stats
+ERROR 2025-08-10 16:27:15,289 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:27:15,300 log Bad Request: /api/games/memory/leaderboard
+ERROR 2025-08-10 16:27:15,319 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:27:15,336 log Bad Request: /api/games/memory/stats
+ERROR 2025-08-10 16:27:15,348 exception Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'backend:8000'. You may need to add 'backend' to ALLOWED_HOSTS.
+WARNING 2025-08-10 16:27:15,365 log Bad Request: /api/games/memory/leaderboard
+ERROR 2025-08-10 16:29:45,880 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:29:45,882 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:32:58,775 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:32:58,775 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:34:09,166 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:34:09,167 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:34:33,909 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:34:40,570 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:34:44,232 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:35:48,497 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:35:58,009 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:36:03,433 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:38:41,971 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:38:41,972 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-10 16:41:36,577 log Not Found: /api/games/memory/start_game
+WARNING 2025-08-10 16:42:04,545 log Not Found: /api/games/memory/start_game
+WARNING 2025-08-10 16:42:06,761 log Not Found: /api/games/memory/start_game
+WARNING 2025-08-10 16:43:53,834 log Not Found: /api/games/memory/current_game
+ERROR 2025-08-10 16:46:39,651 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:46:39,651 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:47:11,868 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:47:24,686 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 16:47:27,579 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+WARNING 2025-08-10 16:50:05,853 log Not Found: /api/games/memory/current_game
+ERROR 2025-08-10 16:53:06,127 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:53:06,127 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 16:55:26,742 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 16:55:26,743 log Unauthorized: /api/games/memory/current_game/
+ERROR 2025-08-10 16:57:10,293 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 16:57:10,293 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 17:07:17,389 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 17:07:17,390 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-10 17:09:33,528 log Not Found: /api/games/memory/start_game
+WARNING 2025-08-10 17:09:37,162 log Not Found: /api/games/memory/start_game
+WARNING 2025-08-10 17:09:39,382 log Not Found: /api/games/memory/start_game
+ERROR 2025-08-10 17:18:53,059 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-10 17:18:53,059 log Unauthorized: /api/auth/token/
+ERROR 2025-08-10 17:22:17,218 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 17:22:17,218 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 17:41:53,188 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 17:41:53,189 log Unauthorized: /api/molecules/
+ERROR 2025-08-10 17:41:53,193 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 17:41:53,193 log Unauthorized: /api/molecules/
+ERROR 2025-08-10 17:42:29,834 log Internal Server Error: /api/games/memory/start_game
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/games/memory/start_game/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-10 17:44:41,659 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 17:44:41,660 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-10 17:59:55,480 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 17:59:55,481 log Unauthorized: /api/games/memory/current_game/
+ERROR 2025-08-10 17:59:55,485 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 17:59:55,485 log Unauthorized: /api/games/memory/current_game/
+ERROR 2025-08-10 18:16:11,427 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 18:16:11,427 log Unauthorized: /api/games/memory/current_game/
+ERROR 2025-08-10 18:16:11,432 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-10 18:16:11,433 log Unauthorized: /api/games/memory/current_game/
+ERROR 2025-08-10 18:28:42,924 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-10 18:28:42,924 log Bad Request: /api/telemetry/log/
