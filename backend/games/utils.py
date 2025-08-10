@@ -3,6 +3,8 @@ from django.utils import timezone
 from .models import QuizQuestion, QuizSession, QuizAnswer, QuizLeaderboard
 from .models import ChemicalWord, ChemWordleGame, ChemWordleAttempt, ChemWordleStats
 from .models import MemoryGame, MemoryStats
+from .models import BalanceChallengeAttempt, BalanceChallengeGame, BalanceChallengeStats
+from reactions.utils import ChemicalEquationBalancer
 
 class QuizGameEngine:
     """Motor de juego para el quiz de química"""
@@ -604,3 +606,335 @@ class MemoryGameEngine:
             'started_at': game.started_at,
             'total_time_seconds': game.total_time_seconds
         }
+        
+class BalanceChallengeEngine:
+    """Motor de juego para el desafío de balanceo de ecuaciones"""
+    
+    # Ecuaciones predefinidas por dificultad
+    CHALLENGE_EQUATIONS = {
+        'easy': [
+            'H2 + O2 -> H2O',
+            'Na + Cl2 -> NaCl',
+            'Mg + O2 -> MgO',
+            'Ca + H2O -> Ca(OH)2 + H2',
+            'Al + O2 -> Al2O3',
+            'Fe + O2 -> Fe2O3',
+            'N2 + H2 -> NH3',
+            'P4 + O2 -> P4O10',
+        ],
+        'medium': [
+            'CH4 + O2 -> CO2 + H2O',
+            'C2H6 + O2 -> CO2 + H2O',
+            'NH3 + O2 -> NO + H2O',
+            'KClO3 -> KCl + O2',
+            'Ca(OH)2 + HCl -> CaCl2 + H2O',
+            'Al2(SO4)3 + NaOH -> Al(OH)3 + Na2SO4',
+            'H2SO4 + NaOH -> Na2SO4 + H2O',
+            'CaCO3 + HCl -> CaCl2 + CO2 + H2O',
+        ],
+        'hard': [
+            'C3H8 + O2 -> CO2 + H2O',
+            'C6H12O6 + O2 -> CO2 + H2O',
+            'Al + HCl -> AlCl3 + H2',
+            'Fe2O3 + CO -> Fe + CO2',
+            'KMnO4 + HCl -> KCl + MnCl2 + Cl2 + H2O',
+            'Cr2O7^2- + Fe^2+ + H+ -> Cr^3+ + Fe^3+ + H2O',
+            'NH3 + O2 -> NO2 + H2O',
+            'C4H10 + O2 -> CO2 + H2O',
+        ]
+    }
+    
+    @staticmethod
+    def create_balance_challenge(user, difficulty='easy'):
+        """Crea un nuevo desafío de balanceo"""
+        # Verificar si ya tiene un juego activo
+        active_game = BalanceChallengeGame.objects.filter(
+            user=user,
+            is_completed=False
+        ).first()
+        
+        if active_game:
+            return active_game
+        
+        # Seleccionar ecuación aleatoria
+        equations = BalanceChallengeEngine.CHALLENGE_EQUATIONS.get(difficulty, 
+                    BalanceChallengeEngine.CHALLENGE_EQUATIONS['easy'])
+        selected_equation = random.choice(equations)
+        
+        # Balancear la ecuación usando el motor existente
+        balance_result = ChemicalEquationBalancer.balance_equation(selected_equation)
+        
+        if not balance_result['success']:
+            raise ValueError(f"No se pudo balancear la ecuación: {selected_equation}")
+        
+        # Crear el juego
+        game = BalanceChallengeGame.objects.create(
+            user=user,
+            original_equation=selected_equation,
+            target_balanced_equation=balance_result['balanced_equation'],
+            target_coefficients=balance_result['coefficients'],
+            difficulty=difficulty
+        )
+        
+        return game
+    
+    @staticmethod
+    def validate_user_coefficients(game, user_coefficients):
+        """Valida los coeficientes proporcionados por el usuario"""
+        try:
+            # Parsear la ecuación original para obtener compuestos
+            reactants, products = ChemicalEquationBalancer.parse_equation(game.original_equation)
+            all_compounds = reactants + products
+            
+            # Verificar que se proporcionaron coeficientes para todos los compuestos
+            if len(user_coefficients) != len(all_compounds):
+                return {
+                    'is_correct': False,
+                    'error': f'Se esperan {len(all_compounds)} coeficientes, se recibieron {len(user_coefficients)}',
+                    'validation_details': None
+                }
+            
+            # Verificar que todos los coeficientes sean enteros positivos
+            for i, coeff in enumerate(user_coefficients):
+                if not isinstance(coeff, int) or coeff <= 0:
+                    return {
+                        'is_correct': False,
+                        'error': f'Los coeficientes deben ser enteros positivos. Coeficiente inválido en posición {i+1}: {coeff}',
+                        'validation_details': None
+                    }
+            
+            # Construir la ecuación con los coeficientes del usuario
+            user_reactants = []
+            user_products = []
+            
+            for i, compound in enumerate(reactants):
+                coeff = user_coefficients[i]
+                if coeff == 1:
+                    user_reactants.append(compound)
+                else:
+                    user_reactants.append(f"{coeff}{compound}")
+            
+            for i, compound in enumerate(products):
+                coeff = user_coefficients[len(reactants) + i]
+                if coeff == 1:
+                    user_products.append(compound)
+                else:
+                    user_products.append(f"{coeff}{compound}")
+            
+            user_equation = f"{' + '.join(user_reactants)} -> {' + '.join(user_products)}"
+            
+            # Verificar si la ecuación está balanceada
+            is_balanced = BalanceChallengeEngine._verify_equation_balance(
+                reactants, products, user_coefficients
+            )
+            
+            # Comparar con la solución objetivo
+            target_coefficients_list = []
+            target_coeffs = game.target_coefficients['compounds']
+            for compound in all_compounds:
+                target_coefficients_list.append(target_coeffs[compound])
+            
+            is_exact_match = user_coefficients == target_coefficients_list
+            
+            return {
+                'is_correct': is_balanced and is_exact_match,
+                'is_balanced': is_balanced,
+                'is_exact_match': is_exact_match,
+                'user_equation': user_equation,
+                'target_equation': game.target_balanced_equation,
+                'validation_details': {
+                    'user_coefficients': user_coefficients,
+                    'target_coefficients': target_coefficients_list,
+                    'compounds': all_compounds,
+                    'coefficient_comparison': [
+                        {
+                            'compound': compound,
+                            'user_coeff': user_coefficients[i],
+                            'target_coeff': target_coefficients_list[i],
+                            'is_correct': user_coefficients[i] == target_coefficients_list[i]
+                        }
+                        for i, compound in enumerate(all_compounds)
+                    ]
+                }
+            }
+            
+        except Exception as e:
+            return {
+                'is_correct': False,
+                'error': f'Error en validación: {str(e)}',
+                'validation_details': None
+            }
+    
+    @staticmethod
+    def _verify_equation_balance(reactants, products, coefficients):
+        """Verifica si una ecuación está balanceada con los coeficientes dados"""
+        try:
+            # Obtener composición de cada compuesto
+            all_compounds = reactants + products
+            element_balance = {}
+            
+            for i, compound in enumerate(all_compounds):
+                composition = ChemicalEquationBalancer.parse_compound(compound)
+                coefficient = coefficients[i]
+                
+                # Determinar el signo (positivo para reactivos, negativo para productos)
+                sign = 1 if i < len(reactants) else -1
+                
+                for element, count in composition.items():
+                    if element not in element_balance:
+                        element_balance[element] = 0
+                    element_balance[element] += sign * coefficient * count
+            
+            # Verificar que todos los elementos estén balanceados (suma = 0)
+            for element, balance in element_balance.items():
+                if abs(balance) > 1e-10:  # Tolerancia para errores de punto flotante
+                    return False
+            
+            return True
+            
+        except Exception:
+            return False
+    
+    @staticmethod
+    def submit_attempt(game, user_coefficients, time_taken=0):
+        """Procesa un intento del usuario"""
+        if game.is_completed:
+            return None, "El juego ya está completado"
+        
+        if game.attempts >= game.max_attempts:
+            return None, "Se ha alcanzado el número máximo de intentos"
+        
+        # Validar los coeficientes
+        validation_result = BalanceChallengeEngine.validate_user_coefficients(
+            game, user_coefficients
+        )
+        
+        # Si hay un error de validación, retornarlo
+        if 'error' in validation_result and validation_result.get('error'):
+            return None, validation_result['error']
+        
+        # Crear el intento
+        game.attempts += 1
+        attempt = BalanceChallengeAttempt.objects.create(
+            game=game,
+            attempt_number=game.attempts,
+            coefficients_submitted=user_coefficients,
+            is_correct=validation_result['is_correct'],
+            validation_result=validation_result,
+            time_taken_seconds=time_taken
+        )
+        
+        # Actualizar el estado del juego
+        game.user_coefficients = user_coefficients
+        
+        if validation_result['is_correct']:
+            game.is_correct = True
+            game.is_completed = True
+            game.completed_at = timezone.now()
+            game.time_spent_seconds = (game.completed_at - game.started_at).seconds
+        elif game.attempts >= game.max_attempts:
+            game.is_completed = True
+            game.completed_at = timezone.now()
+            game.time_spent_seconds = (game.completed_at - game.started_at).seconds
+        
+        game.save()
+        
+        # Actualizar estadísticas si el juego terminó
+        if game.is_completed:
+            BalanceChallengeEngine._update_stats(game)
+        
+        return attempt, None
+    
+    @staticmethod
+    def get_hint(game, hint_type='element'):
+        """Proporciona pistas al usuario"""
+        if game.is_completed:
+            return None, "El juego ya está completado"
+        
+        target_coeffs = game.target_coefficients['compounds']
+        reactants, products = ChemicalEquationBalancer.parse_equation(game.original_equation)
+        all_compounds = reactants + products
+        
+        if hint_type == 'element':
+            # Pista sobre balanceo de un elemento específico
+            return f"Consejo: Comienza balanceando un elemento que aparezca en pocos compuestos", None
+        
+        elif hint_type == 'coefficient':
+            # Revelar un coeficiente
+            if len(game.hints_used) < len(all_compounds) // 2:
+                available_compounds = [c for c in all_compounds if c not in game.hints_used]
+                if available_compounds:
+                    compound = random.choice(available_compounds)
+                    coefficient = target_coeffs[compound]
+                    game.hints_used.append(compound)
+                    game.save()
+                    return f"Pista: El coeficiente de {compound} es {coefficient}", None
+            
+            return "No hay más pistas de coeficientes disponibles", None
+        
+        elif hint_type == 'method':
+            # Pista sobre el método de balanceo
+            if game.difficulty == 'easy':
+                return "Consejo: Intenta el método de inspección, balanceando un elemento a la vez", None
+            else:
+                return "Consejo: Para ecuaciones complejas, puede ser útil usar el método algebraico", None
+        
+        return "Tipo de pista no válido", None
+    
+    @staticmethod
+    def _update_stats(game):
+        """Actualiza las estadísticas del usuario"""
+        stats, created = BalanceChallengeStats.objects.get_or_create(
+            user=game.user,
+            defaults={
+                'games_played': 0,
+                'games_completed': 0,
+                'games_correct': 0,
+                'completion_rate': 0.0,
+                'accuracy_rate': 0.0,
+                'average_time_per_game': 0.0,
+                'current_streak': 0,
+                'best_streak': 0
+            }
+        )
+        
+        stats.games_played += 1
+        stats.games_completed += 1
+        
+        if game.is_correct:
+            stats.games_correct += 1
+            stats.current_streak += 1
+            stats.best_streak = max(stats.best_streak, stats.current_streak)
+        else:
+            stats.current_streak = 0
+        
+        # Actualizar estadísticas por dificultad
+        difficulty_completed_field = f"{game.difficulty}_completed"
+        difficulty_correct_field = f"{game.difficulty}_correct"
+        
+        setattr(stats, difficulty_completed_field, 
+                getattr(stats, difficulty_completed_field) + 1)
+        
+        if game.is_correct:
+            setattr(stats, difficulty_correct_field, 
+                    getattr(stats, difficulty_correct_field) + 1)
+        
+        # Actualizar tiempos
+        if game.time_spent_seconds:
+            # Calcular promedio de tiempo
+            total_time = (stats.average_time_per_game * (stats.games_completed - 1) + 
+                         game.time_spent_seconds)
+            stats.average_time_per_game = total_time / stats.games_completed
+            
+            # Actualizar mejor tiempo por dificultad (solo si es correcto)
+            if game.is_correct:
+                best_time_field = f"best_time_{game.difficulty}"
+                current_best = getattr(stats, best_time_field)
+                if not current_best or game.time_spent_seconds < current_best:
+                    setattr(stats, best_time_field, game.time_spent_seconds)
+        
+        # Calcular tasas
+        stats.completion_rate = (stats.games_completed / stats.games_played) * 100
+        stats.accuracy_rate = (stats.games_correct / stats.games_completed) * 100
+        
+        stats.save()
