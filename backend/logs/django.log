@@ -3295,3 +3295,13 @@ WARNING 2025-08-10 20:09:02,781 log Not Found: /api/games/balance-challenge/end_
 WARNING 2025-08-10 20:09:03,086 log Bad Request: /api/games/balance-challenge/submit_coefficients/
 WARNING 2025-08-10 20:09:03,089 log Bad Request: /api/games/balance-challenge/submit_coefficients/
 WARNING 2025-08-10 20:09:03,240 log Not Found: /api/games/balance-challenge/submit_coefficients/
+WARNING 2025-08-10 23:17:43,059 log Not Found: /api/games/periodic-speed/end_challenge/
+WARNING 2025-08-10 23:17:43,363 log Bad Request: /api/games/periodic-speed/submit_selection/
+WARNING 2025-08-10 23:17:43,510 log Not Found: /api/games/periodic-speed/submit_selection/
+WARNING 2025-08-10 23:17:43,660 log Bad Request: /api/games/periodic-speed/submit_selection/
+WARNING 2025-08-10 23:17:43,662 log Bad Request: /api/games/periodic-speed/submit_selection/
+WARNING 2025-08-10 23:18:05,928 log Not Found: /api/games/periodic-speed/end_challenge/
+WARNING 2025-08-10 23:18:06,231 log Bad Request: /api/games/periodic-speed/submit_selection/
+WARNING 2025-08-10 23:18:06,378 log Not Found: /api/games/periodic-speed/submit_selection/
+WARNING 2025-08-10 23:18:06,528 log Bad Request: /api/games/periodic-speed/submit_selection/
+WARNING 2025-08-10 23:18:06,529 log Bad Request: /api/games/periodic-speed/submit_selection/
