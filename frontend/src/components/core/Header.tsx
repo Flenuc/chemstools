@@ -11,7 +11,7 @@ export default function Header() {
   const dispatch = useDispatch();
 
   return (
-    <header className="w-full max-w-7xl flex justify-between items-center p-4 bg-white/80 backdrop-blur-md shadow-lg rounded-xl mb-8 sticky top-6 z-40">
+    <header className="w-full max-w-8xl flex justify-between items-center p-4 bg-white/80 backdrop-blur-md shadow-lg rounded-xl mb-8 sticky top-6 z-40">
       <Link href="/" className="text-2xl font-bold text-slate-900">ChemsTools</Link>
       <nav className="flex items-center space-x-6">
         {pathname !== '/' && <Link href="/" className="text-base text-gray-600 hover:text-indigo-600">Dashboard</Link>}
@@ -22,6 +22,7 @@ export default function Header() {
         <Link href="/chemwordle" className="text-base text-gray-600 hover:text-purple-600">ChemWordle</Link>
         <Link href="/memory" className="text-base text-gray-600 hover:text-green-600">MemoryGame</Link>
         <Link href="/balance-challenge" className="text-base text-gray-600 hover:text-blue-600">Balance Challenge</Link>
+        <Link href="/periodic-speed" className="text-base text-gray-600 hover:text-pink-600">PeriodicSpeedGame</Link>
       </nav>
       <div>
         {isAuthenticated && user ? (
