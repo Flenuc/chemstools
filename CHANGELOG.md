@@ -4,10 +4,36 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
-[2.2.5-alpha] - 2025-08-10
+[2.2.5-alpha] - 2025-08-11
 
 Added
 Backend: Se ha implementado el sistema completo de Tabla Periódica Rápida mediante la expansión de la app games, proporcionando una experiencia de velocidad y precisión para identificar elementos químicos.
+
+Frontend: Se ha desarrollado la interfaz completa del juego Periodic Speed en Next.js con los siguientes componentes:
+- Página principal (/periodic-speed) integrada con el sistema de navegación de ChemsTools
+- Componente principal PeriodicSpeedGame.tsx que gestiona todo el flujo del juego, estados y comunicación con la API
+- Tabla periódica interactiva (PeriodicTable.tsx) con elementos seleccionables y efectos visuales de hover
+- Display del elemento objetivo (ElementDisplay.tsx) mostrando símbolo, nombre y propiedades químicas
+- Temporizador en tiempo real (GameTimer.tsx) con tracking preciso del tiempo de respuesta
+- Panel de estadísticas (GameStats.tsx) con métricas de rendimiento del jugador
+- Pantalla de resultados (GameResults.tsx) con feedback detallado tras cada intento
+
+Frontend: Se ha implementado la lógica completa del juego en el cliente:
+- Sistema de selección de dificultad (aleatorio, común, raro) antes de iniciar cada desafío
+- Mecánica de selección de elementos mediante click en la tabla periódica interactiva
+- Validación inmediata de respuestas con feedback visual (correcto/incorrecto)
+- Sistema de pistas contextuales integrado con botón dedicado y display de información
+- Gestión de estados de juego (inicio, jugando, completado) con transiciones suaves
+- Cálculo y display del tiempo transcurrido con precisión de décimas de segundo
+- Integración completa con el sistema de autenticación existente
+
+Frontend: Se ha creado una experiencia de usuario optimizada:
+- Interfaz responsive adaptable a diferentes tamaños de pantalla
+- Animaciones fluidas con Framer Motion para transiciones y feedback visual
+- Iconografía consistente con lucide-react (Trophy, Zap, Clock, Target, Brain)
+- Diseño visual con gradientes temáticos y componentes modernos
+- Estados de carga claros durante las operaciones asíncronas
+- Manejo robusto de errores con mensajes informativos para el usuario
 
 Backend: Se han creado 2 modelos especializados para el sistema Periodic Speed Challenge:
 - PeriodicSpeedGame: Gestiona sesiones individuales con elemento objetivo, estado de finalización, tiempo de respuesta, elemento seleccionado por el usuario, y uso de pistas
