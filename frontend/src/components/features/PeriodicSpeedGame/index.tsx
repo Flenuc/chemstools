@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDispatch } from 'react-redux';
+import { addNotification } from '@/store/notificationsSlice';
 import { api } from '@/services/api';
 import PeriodicTable from './PeriodicTable';
 import GameTimer from './GameTimer';
@@ -47,6 +49,8 @@ interface Stats {
 }
 
 const PeriodicSpeedGame: React.FC = () => {
+  const dispatch = useDispatch();
+  
   // Game state
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(false);
@@ -141,11 +145,22 @@ const PeriodicSpeedGame: React.FC = () => {
         setGameStarted(true);
         setTimeElapsed(0);
         setGameResult(null);
+        dispatch(addNotification({
+          message: `Desafío iniciado - Encuentra: ${data.game.target_element.name}`,
+          type: 'info'
+        }));
       } else {
-        console.error('Error starting game:', data.error);
+        const errorMessage = data.error || 'Error al iniciar el juego';
+        dispatch(addNotification({
+          message: errorMessage,
+          type: 'error'
+        }));
       }
     } catch (error) {
-      console.error('Error starting game:', error);
+      dispatch(addNotification({
+        message: 'Error al conectar con el servidor',
+        type: 'error'
+      }));
     } finally {
       setLoading(false);
     }
@@ -168,11 +183,28 @@ const PeriodicSpeedGame: React.FC = () => {
         setGameResult(data.result);
         setShowResult(true);
         
+        const message = data.result.is_correct 
+          ? `¡Correcto! ${data.result.target_element.name} en ${timeElapsed.toFixed(1)}s`
+          : `Incorrecto. Era ${data.result.target_element.name}`;
+        
+        dispatch(addNotification({
+          message,
+          type: data.result.is_correct ? 'success' : 'error'
+        }));
+        
         // Reload stats after game completion
         await loadUserStats();
+      } else {
+        dispatch(addNotification({
+          message: 'Error al procesar la selección',
+          type: 'error'
+        }));
       }
     } catch (error) {
-      console.error('Error submitting selection:', error);
+      dispatch(addNotification({
+        message: 'Error al enviar la selección',
+        type: 'error'
+      }));
     } finally {
       setLoading(false);
     }
@@ -192,9 +224,21 @@ const PeriodicSpeedGame: React.FC = () => {
         setHint(data.hint);
         setShowHint(true);
         setGame(prev => prev ? { ...prev, hint_used: true } : null);
+        dispatch(addNotification({
+          message: 'Pista obtenida',
+          type: 'info'
+        }));
+      } else {
+        dispatch(addNotification({
+          message: 'Error al obtener la pista',
+          type: 'error'
+        }));
       }
     } catch (error) {
-      console.error('Error getting hint:', error);
+      dispatch(addNotification({
+        message: 'Error al obtener la pista',
+        type: 'error'
+      }));
     } finally {
       setLoading(false);
     }
