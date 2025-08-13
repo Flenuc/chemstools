@@ -198,17 +198,18 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # Añadir esta nueva sección para el rate limiting
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ],
-    # Configuración de los límites de rate limiting
-    # Límite de peticiones por día para usuarios anónimos y autenticados
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/day', # Límite para usuarios anónimos
-        'user': '1000/day', # Límite para usuarios autenticados
-        'auth': '5/min', # Límite estricto para login/registro
-    },
+    # TEMPORALMENTE DESACTIVADO PARA PRUEBAS
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ],
+    # # Configuración de los límites de rate limiting
+    # # Límite de peticiones por día para usuarios anónimos y autenticados
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon': '100/day', # Límite para usuarios anónimos
+    #     'user': '1000/day', # Límite para usuarios autenticados
+    #     'auth': '5/min', # Límite estricto para login/registro
+    # },
     # Configuración de paginación
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10 # Número de items por página
