@@ -30,12 +30,52 @@ from .utils import BalanceChallengeEngine
 from .utils import PeriodicSpeedEngine
 
 class QuizViewSet(viewsets.ViewSet):
-    """ViewSet para el sistema de quiz"""
+    """
+    ViewSet para el sistema de Quiz Rápido de Química.
+    
+    Proporciona endpoints para gestionar sesiones de quiz interactivas con preguntas
+    de opción múltiple sobre diversos temas de química. El sistema incluye seguimiento
+    de puntuación, tiempos de respuesta y estadísticas personales.
+    
+    Autenticación requerida: Sí (JWT Token)
+    """
     permission_classes = [IsAuthenticated]
     
     @action(detail=False, methods=['post'])
     def start_session(self, request):
-        """Iniciar una nueva sesión de quiz"""
+        """
+        Iniciar una nueva sesión de quiz.
+        
+        Crea una nueva sesión de quiz para el usuario autenticado con parámetros opcionales
+        de filtrado. Las preguntas se seleccionan aleatoriamente según los criterios especificados.
+        
+        **Parámetros del body (JSON):**
+        - difficulty (str, opcional): Nivel de dificultad ('easy', 'medium', 'hard')
+        - category (str, opcional): Categoría de preguntas ('nomenclatura', 'tabla_periodica', 
+          'reacciones', 'estructura_atomica', 'lewis', 'disoluciones', 'ph')
+        - total_questions (int, opcional): Número de preguntas para la sesión (default: 10)
+        
+        **Respuesta exitosa (201):**
+        ```json
+        {
+            "success": true,
+            "session": {
+                "id": 1,
+                "user": 1,
+                "total_questions": 10,
+                "current_question_index": 0,
+                "score": 0,
+                "is_completed": false,
+                "started_at": "2025-08-11T20:00:00Z"
+            },
+            "message": "Sesión de quiz iniciada correctamente"
+        }
+        ```
+        
+        **Errores posibles:**
+        - 400: No hay preguntas disponibles con los criterios especificados
+        - 401: Usuario no autenticado
+        """
         difficulty = request.data.get('difficulty')
         category = request.data.get('category')
         total_questions = request.data.get('total_questions', 10)
@@ -82,7 +122,38 @@ class QuizViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def get_question(self, request):
-        """Obtener la pregunta actual de la sesión activa"""
+        """
+        Obtener la pregunta actual de la sesión activa.
+        
+        Devuelve la pregunta actual que debe responder el usuario en su sesión de quiz.
+        Las opciones de respuesta se barajan aleatoriamente para cada usuario.
+        
+        **Parámetros de query:**
+        - session_id (int, requerido): ID de la sesión de quiz activa
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "question": {
+                "id": 1,
+                "text": "¿Cuál es el símbolo químico del oro?",
+                "options": ["Au", "Ag", "Fe", "Cu"],
+                "category": "tabla_periodica",
+                "difficulty": "easy",
+                "points": 10
+            },
+            "current_index": 1,
+            "total_questions": 10,
+            "current_score": 50
+        }
+        ```
+        
+        **Errores posibles:**
+        - 400: session_id no proporcionado o sesión ya completada
+        - 404: Sesión no encontrada
+        - 401: Usuario no autenticado
+        """
         try:
             session_id = request.query_params.get('session_id')
             if not session_id:
@@ -128,7 +199,44 @@ class QuizViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['post'])
     def submit_answer(self, request):
-        """Enviar una respuesta"""
+        """
+        Enviar una respuesta para la pregunta actual.
+        
+        Procesa la respuesta del usuario, calcula los puntos obtenidos y actualiza
+        las estadísticas de la sesión. Si es la última pregunta, finaliza la sesión
+        y actualiza el leaderboard.
+        
+        **Parámetros del body (JSON):**
+        - session_id (int, requerido): ID de la sesión de quiz
+        - question_id (int, requerido): ID de la pregunta que se está respondiendo
+        - selected_option (int, requerido): Índice de la opción seleccionada (0-3)
+        - time_taken (float, opcional): Tiempo en segundos para responder
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "answer": {
+                "id": 1,
+                "question": 1,
+                "selected_option": 0,
+                "is_correct": true,
+                "points_earned": 10,
+                "time_taken": 5.5,
+                "correct_option": 0,
+                "explanation": "El oro (Au) proviene del latín 'aurum'"
+            },
+            "session_completed": false,
+            "final_score": null,
+            "message": "Respuesta procesada correctamente"
+        }
+        ```
+        
+        **Errores posibles:**
+        - 400: Datos faltantes, sesión completada o pregunta inválida
+        - 404: Sesión no encontrada
+        - 401: Usuario no autenticado
+        """
         try:
             session_id = request.data.get('session_id')
             question_id = request.data.get('question_id')
@@ -187,7 +295,33 @@ class QuizViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def leaderboard(self, request):
-        """Obtener tabla de clasificación"""
+        """
+        Obtener tabla de clasificación global.
+        
+        Devuelve el top 10 de jugadores con mejores estadísticas en el quiz.
+        La clasificación se ordena por mejor puntuación y tiempo más rápido.
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "leaderboard": [
+                {
+                    "id": 1,
+                    "user": "usuario1",
+                    "best_score": 950,
+                    "average_score": 850.5,
+                    "fastest_time_seconds": 45.2,
+                    "total_games": 25,
+                    "perfect_games": 3
+                }
+            ]
+        }
+        ```
+        
+        **Errores posibles:**
+        - 401: Usuario no autenticado
+        """
         leaderboard = QuizLeaderboard.objects.all()[:10]  # Top 10
         serializer = QuizLeaderboardSerializer(leaderboard, many=True)
         
@@ -198,7 +332,35 @@ class QuizViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def my_stats(self, request):
-        """Obtener estadísticas del usuario actual"""
+        """
+        Obtener estadísticas personales del usuario.
+        
+        Devuelve las estadísticas detalladas del usuario autenticado, incluyendo
+        su mejor puntuación, promedio, tiempo más rápido y partidas jugadas.
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "stats": {
+                "id": 1,
+                "user": "usuario1",
+                "best_score": 950,
+                "average_score": 750.5,
+                "fastest_time_seconds": 48.3,
+                "total_games": 15,
+                "perfect_games": 2,
+                "created_at": "2025-08-01T10:00:00Z",
+                "updated_at": "2025-08-11T20:00:00Z"
+            }
+        }
+        ```
+        
+        **Nota:** Si el usuario no ha jugado ninguna partida, stats será null.
+        
+        **Errores posibles:**
+        - 401: Usuario no autenticado
+        """
         try:
             leaderboard = QuizLeaderboard.objects.get(user=request.user)
             serializer = QuizLeaderboardSerializer(leaderboard)
@@ -215,12 +377,53 @@ class QuizViewSet(viewsets.ViewSet):
             })
 
 class ChemWordleViewSet(viewsets.ViewSet):
-    """ViewSet para el juego ChemWordle"""
+    """
+    ViewSet para el juego ChemWordle (Wordle Químico).
+    
+    Sistema de adivinanza de palabras químicas tipo Wordle con 6 intentos para
+    adivinar elementos, compuestos, iones o moléculas. Incluye pistas progresivas
+    basadas en propiedades químicas y estadísticas de rendimiento.
+    
+    Autenticación requerida: Sí (JWT Token)
+    """
     permission_classes = [IsAuthenticated]
     
     @action(detail=False, methods=['get'])
     def start_game(self, request):
-        """Inicia un nuevo juego o continúa uno existente"""
+        """
+        Iniciar un nuevo juego o continuar uno existente.
+        
+        Crea un nuevo juego de ChemWordle o devuelve el juego activo del usuario.
+        La palabra objetivo se selecciona aleatoriamente evitando repeticiones de 30 días.
+        
+        **Parámetros de query:**
+        - difficulty (str, opcional): Nivel de dificultad ('easy', 'medium', 'hard')
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "game": {
+                "id": 1,
+                "word_length": 6,
+                "current_attempt": 0,
+                "max_attempts": 6,
+                "is_completed": false,
+                "is_won": false,
+                "hints_revealed": [],
+                "attempts": [],
+                "started_at": "2025-08-11T20:00:00Z"
+            },
+            "message": "Juego iniciado correctamente"
+        }
+        ```
+        
+        **Nota:** Si el juego está completado, incluirá la palabra objetivo.
+        
+        **Errores posibles:**
+        - 400: Error al iniciar juego
+        - 401: Usuario no autenticado
+        """
         try:
             difficulty = request.query_params.get('difficulty')
             game = ChemWordleEngine.get_daily_word(request.user, difficulty)
@@ -245,7 +448,46 @@ class ChemWordleViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['post'])
     def submit_guess(self, request):
-        """Envía una adivinanza"""
+        """
+        Enviar una adivinanza para el juego actual.
+        
+        Procesa la palabra ingresada, evalua cada letra según el algoritmo Wordle
+        (verde=posición correcta, amarillo=letra presente, gris=ausente) y actualiza
+        las estadísticas si el juego se completa.
+        
+        **Parámetros del body (JSON):**
+        - game_id (int, requerido): ID del juego activo
+        - guess (str, requerido): Palabra química a adivinar
+        - time_taken (float, opcional): Tiempo en segundos para el intento
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "attempt": {
+                "id": 1,
+                "guess": "CARBON",
+                "evaluation": ["absent", "present", "correct", "absent", "correct", "absent"],
+                "attempt_number": 1,
+                "time_taken": 15.5
+            },
+            "game": {
+                "id": 1,
+                "current_attempt": 1,
+                "is_completed": false,
+                "is_won": false
+            },
+            "game_completed": false,
+            "game_won": false,
+            "message": "Intento procesado correctamente"
+        }
+        ```
+        
+        **Errores posibles:**
+        - 400: Datos faltantes, juego completado o palabra inválida
+        - 404: Juego no encontrado
+        - 401: Usuario no autenticado
+        """
         try:
             game_id = request.data.get('game_id')
             guess = request.data.get('guess')
@@ -303,7 +545,36 @@ class ChemWordleViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['post'])
     def get_hint(self, request):
-        """Obtiene una pista progresiva"""
+        """
+        Obtener una pista progresiva sobre la palabra objetivo.
+        
+        Proporciona pistas contextuales basadas en las propiedades químicas de la
+        palabra objetivo. Las pistas se vuelven más específicas con cada nivel.
+        
+        **Parámetros del body (JSON):**
+        - game_id (int, requerido): ID del juego activo
+        - hint_level (int, opcional): Nivel de pista (1-3, default: 1)
+        
+        **Niveles de pista:**
+        - Nivel 1: Categoría general (elemento, compuesto, ion, molécula)
+        - Nivel 2: Propiedad específica (grupo, período, estado, etc.)
+        - Nivel 3: Información detallada (peso molecular, aplicaciones, etc.)
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "hint": "Es un elemento del grupo 14",
+            "hint_level": 2,
+            "hints_revealed": [1, 2]
+        }
+        ```
+        
+        **Errores posibles:**
+        - 400: game_id faltante o juego completado
+        - 404: Juego no encontrado
+        - 401: Usuario no autenticado
+        """
         try:
             game_id = request.data.get('game_id')
             hint_level = request.data.get('hint_level', 1)
@@ -349,7 +620,42 @@ class ChemWordleViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def stats(self, request):
-        """Obtiene estadísticas del usuario"""
+        """
+        Obtener estadísticas personales del usuario.
+        
+        Devuelve las estadísticas detalladas del usuario en ChemWordle, incluyendo
+        tasa de victoria, distribución de intentos, rachas y mejor tiempo.
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "stats": {
+                "id": 1,
+                "games_played": 50,
+                "games_won": 42,
+                "win_percentage": 84.0,
+                "current_streak": 5,
+                "max_streak": 12,
+                "win_distribution": {
+                    "1": 2,
+                    "2": 8,
+                    "3": 15,
+                    "4": 10,
+                    "5": 5,
+                    "6": 2
+                },
+                "best_time_seconds": 23.5,
+                "average_attempts": 3.4
+            }
+        }
+        ```
+        
+        **Nota:** Se crean estadísticas vacías si el usuario es nuevo.
+        
+        **Errores posibles:**
+        - 401: Usuario no autenticado
+        """
         try:
             # CORRECCIÓN: Usar el modelo correcto
             stats, created = ChemWordleStats.objects.get_or_create(
@@ -379,7 +685,33 @@ class ChemWordleViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def leaderboard(self, request):
-        """Obtiene tabla de clasificación global"""
+        """
+        Obtener tabla de clasificación global de ChemWordle.
+        
+        Devuelve el top 10 de jugadores ordenados por porcentaje de victoria y
+        número de juegos ganados. Requiere mínimo 1 juego para aparecer.
+        
+        **Respuesta exitosa (200):**
+        ```json
+        {
+            "success": true,
+            "leaderboard": [
+                {
+                    "rank": 1,
+                    "username": "químico_pro",
+                    "games_played": 100,
+                    "games_won": 95,
+                    "win_percentage": 95.0,
+                    "current_streak": 20,
+                    "max_streak": 25
+                }
+            ]
+        }
+        ```
+        
+        **Errores posibles:**
+        - 401: Usuario no autenticado
+        """
         try:
             top_players = ChemWordleStats.objects.filter(
                 games_played__gte=1  # Reducir mínimo para testing
