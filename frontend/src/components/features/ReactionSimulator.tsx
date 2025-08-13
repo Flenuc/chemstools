@@ -3,6 +3,8 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addNotification } from '@/store/notificationsSlice';
 import Header from '@/components/core/Header';
 
 // Tipos TypeScript para la API
@@ -33,6 +35,8 @@ interface ErrorResponse {
 type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 
 const ReactionSimulator: React.FC = () => {
+  const dispatch = useDispatch();
+  
   // Estados del componente
   const [equation, setEquation] = useState<string>('');
   const [result, setResult] = useState<BalanceEquationResponse | null>(null);
@@ -64,6 +68,10 @@ const ReactionSimulator: React.FC = () => {
     if (validationError) {
       setErrorMessage(validationError);
       setLoadingState('error');
+      dispatch(addNotification({
+        message: validationError,
+        type: 'error'
+      }));
       return;
     }
 
@@ -71,6 +79,11 @@ const ReactionSimulator: React.FC = () => {
     setLoadingState('loading');
     setErrorMessage('');
     setResult(null);
+    
+    dispatch(addNotification({
+      message: `Balanceando ecuación: ${equation}`,
+      type: 'info'
+    }));
 
     try {
       const requestData: BalanceEquationRequest = {
@@ -90,33 +103,64 @@ const ReactionSimulator: React.FC = () => {
       if (response.data.success) {
         setResult(response.data);
         setLoadingState('success');
+        
+        dispatch(addNotification({
+          message: `Ecuación balanceada exitosamente: ${response.data.balanced_equation}`,
+          type: 'success'
+        }));
+        
+        // Notificación adicional sobre el tipo de reacción
+        if (response.data.reaction_type) {
+          const reactionTypes: Record<string, string> = {
+            'synthesis': 'Síntesis',
+            'decomposition': 'Descomposición',
+            'combustion': 'Combustión',
+            'substitution': 'Sustitución',
+            'unknown': 'No clasificada'
+          };
+          
+          dispatch(addNotification({
+            message: `Tipo de reacción: ${reactionTypes[response.data.reaction_type] || response.data.reaction_type}`,
+            type: 'info'
+          }));
+        }
       } else {
-        setErrorMessage(response.data.error || 'Error desconocido al balancear la ecuación');
+        const errorMsg = response.data.error || 'Error desconocido al balancear la ecuación';
+        setErrorMessage(errorMsg);
         setLoadingState('error');
+        
+        dispatch(addNotification({
+          message: errorMsg,
+          type: 'error'
+        }));
       }
     } catch (error) {
-      console.error('Error al balancear ecuación:', error);
+      let errorMsg = 'Error inesperado al procesar la ecuación';
       
       if (axios.isAxiosError(error)) {
         if (error.response?.data) {
           const errorData = error.response.data as ErrorResponse;
           if (errorData.equation) {
-            setErrorMessage(errorData.equation[0]);
+            errorMsg = errorData.equation[0];
           } else if (errorData.error) {
-            setErrorMessage(errorData.error);
+            errorMsg = errorData.error;
           } else {
-            setErrorMessage('Error del servidor al procesar la ecuación');
+            errorMsg = 'Error del servidor al procesar la ecuación';
           }
         } else if (error.request) {
-          setErrorMessage('No se pudo conectar con el servidor. Verifica tu conexión.');
+          errorMsg = 'No se pudo conectar con el servidor. Verifica tu conexión.';
         } else {
-          setErrorMessage('Error inesperado al procesar la solicitud');
+          errorMsg = 'Error inesperado al procesar la solicitud';
         }
-      } else {
-        setErrorMessage('Error inesperado al procesar la ecuación');
       }
       
+      setErrorMessage(errorMsg);
       setLoadingState('error');
+      
+      dispatch(addNotification({
+        message: errorMsg,
+        type: 'error'
+      }));
     }
   };
 
@@ -126,6 +170,11 @@ const ReactionSimulator: React.FC = () => {
     setResult(null);
     setLoadingState('idle');
     setErrorMessage('');
+    
+    dispatch(addNotification({
+      message: 'Formulario limpiado',
+      type: 'info'
+    }));
   };
 
   // Función para manejar el envío del formulario
@@ -178,7 +227,13 @@ const ReactionSimulator: React.FC = () => {
               <button
                 key={index}
                 type="button"
-                onClick={() => setEquation(example.equation)}
+                onClick={() => {
+                  setEquation(example.equation);
+                  dispatch(addNotification({
+                    message: `Ejemplo de ${example.label} seleccionado`,
+                    type: 'info'
+                  }));
+                }}
                 className="text-sm px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors text-blue-600 hover:text-blue-800"
                 disabled={loadingState === 'loading'}
               >
