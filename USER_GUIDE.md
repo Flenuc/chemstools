@@ -1,60 +1,120 @@
-# Guía de Usuario de ChemsTools (Pre-Alpha)
+# Guía de Usuario de ChemsTools (Alphas 1 y 2)
 
-¡Bienvenido a ChemsTools! Esta es una guía rápida para ayudarte a empezar.
+Bienvenido a ChemsTools. Esta guía cubre todas las funcionalidades disponibles desde Alpha 1 hasta Alpha 2, incluyendo herramientas de cálculo, simuladores, generador de estructuras, búsqueda avanzada y juegos de química.
 
-## 1. Registro y Creación de Cuenta
+Sugerencia: La aplicación utiliza un sistema global de notificaciones. Presta atención a los avisos de éxito, error e información que aparecen al realizar acciones.
 
-- **Registro**: En la página principal, encontrarás un formulario de "Registro". Completa tu nombre de usuario, email y contraseña para crear una cuenta.
-- **Inicio de Sesión**: Una vez registrado, usa el formulario de "Iniciar Sesión" con tu usuario y contraseña.
+## 1. Autenticación
+- Registro: Completa usuario, email y contraseña en la pantalla principal.
+- Inicio de sesión: Accede con tus credenciales. El encabezado mostrará tu estado y opción para cerrar sesión.
 
-## 2. Dashboard Principal
+## 2. Navegación general
+- Menú principal: Acceso a Dashboard, Tabla Periódica, Calculadoras, Estructuras de Lewis, Reacciones y Juegos (Quiz, ChemWordle, Memory, Balance Challenge, Periodic Speed).
+- Protección de rutas: Algunas secciones requieren sesión iniciada.
 
-Después de iniciar sesión, serás llevado a tu dashboard personal. Aquí puedes:
+## 3. Dashboard y gestión de moléculas
+- Añadir moléculas: Usa “Añadir Nueva Molécula” (formato SMILES válido).
+- Lista “Mis Moléculas”: Visualiza y gestiona tus moléculas guardadas.
+- Borrado: Puedes eliminar moléculas desde la lista.
 
-- **Añadir Moléculas**: Usa el formulario "Añadir Nueva Molécula" para guardar tus estructuras químicas. Por ahora, solo se soporta el formato SMILES.
-- **Ver tus Moléculas**: La lista "Mis Moléculas" muestra todo lo que has guardado.
+## 4. Tabla Periódica interactiva
+- Acceso: Enlace “Tabla Periódica”.
+- Interacciones:
+  - Ver detalles: Clic en un elemento para ver su ficha.
+  - Filtro cruzado: Al volver al Dashboard, la lista de moléculas se puede filtrar por el elemento seleccionado.
 
-## 3. Tabla Periódica
+## 5. Calculadora de Masa Molar
+- Introduce una fórmula química y pulsa “Calcular” para obtener la masa molar.
 
-- **Navegación**: Haz clic en el enlace "Tabla Periódica" en la parte superior para acceder a la vista interactiva.
-- **Interactividad**:
-    - **Ver Detalles**: Haz clic en cualquier elemento para ver su información detallada en el panel de la derecha.
-    - **Filtrar Moléculas**: Al hacer clic en un elemento, si vuelves al "Dashboard", la lista de "Mis Moléculas" se filtrará automáticamente para mostrar solo aquellas que contienen el elemento seleccionado.
+## 6. Calculadoras químicas
+### 6.1 Glosario de Términos Químicos
+- Busca definiciones por nombre mediante la barra de búsqueda.
 
-## 4. Calculadora de Masa Molar
+### 6.2 Calculadora de pH/pOH
+- Convierte entre pH, pOH, [H+] y [OH−].
+- Selecciona el tipo de entrada (por ejemplo pH), ingresa el valor y pulsa “Calcular”.
 
-- En el dashboard, encontrarás una calculadora simple para obtener la masa molar de cualquier compuesto químico. Simplemente introduce la fórmula y haz clic en "Calcular".
+### 6.3 Calculadora de Disoluciones
+- Calcula % m/m y % m/v.
+- Rellena al menos dos campos entre: masa de soluto (g), masa de disolvente (g), volumen de disolución (mL).
+- Opcional: Densidad (g/mL) para derivar un porcentaje a partir del otro.
 
+## 7. Generador de Estructuras de Lewis
+El generador usa RDKit en el backend y representa la estructura en el frontend. Está optimizado con caché y admite entrada por fórmula y SMILES.
 
-## Herramientas de Cálculo
+- Acceso: Desde el menú “Estructuras de Lewis”.
+- Entrada:
+  - Fórmula química (por ejemplo H2O, CO2, NH3, BF3, SF6, XeF4, etc.).
+  - SMILES: pega una cadena SMILES válida para moléculas compatibles.
+- Categorías de selección rápida: Elige entre grupos como Moléculas Simples, Hidrocarburos, Alcoholes/Éteres, P/S, Halógenos y Otros.
+- Compuestos iónicos: Detección y tratamiento especializado de sales y óxidos (p.ej., NaCl, CaCO3, Fe2O3, CuSO4). La visualización refleja la ausencia de enlaces covalentes donde corresponda.
+- Visualización:
+  - Átomos, enlaces simples/dobles/triples y pares libres.
+  - Cargas formales cuando aplica.
+  - Posicionamiento mejorado de pares solitarios para evitar solapamientos.
+  - Opcional: Render con Kekule.js.
+- Estructuras recientes: Acceso rápido a las últimas generadas; se actualiza automáticamente al crear nuevas.
+- Rendimiento: Caché en base de datos; respuestas instantáneas si la estructura ya existe.
+- Errores comunes: Si la molécula no está soportada, se mostrará un mensaje con sugerencias o una lista de ejemplos válidos.
 
-### Glosario de Términos Químicos
+## 8. Simulador de Reacciones Químicas (Balanceo)
+Balancea ecuaciones químicas automáticamente usando SymPy y muestra resultados detallados.
 
-La sección de "Glosario" te permite buscar y consultar definiciones de términos químicos comunes.
+- Acceso: “Reacciones” o “Simulador de Reacciones”.
+- Uso:
+  - Introduce una ecuación sin balancear (p.ej., Fe + O2 -> Fe2O3, C3H8 + O2 -> CO2 + H2O).
+  - Pulsa “Balancear”.
+- Resultados:
+  - Ecuación balanceada y coeficientes por compuesto (reactivos y productos).
+  - Tipo de reacción detectado (síntesis, descomposición, combustión, sustitución).
+  - Historial: Consulta reacciones balanceadas recientemente.
+- Validación y errores: Mensajes claros ante entradas inválidas o mal formateadas.
 
-1.  Navega a la página de "Glosario" a través de la barra de navegación.
-2.  Utiliza la barra de búsqueda para filtrar los términos por su nombre.
-3.  La lista se actualizará en tiempo real a medida que escribes.
+## 9. Búsqueda avanzada de compuestos (PubChem)
+- Busca por nombre (es/en), fórmula, SMILES o InChI.
+- La aplicación detecta el tipo de consulta, traduce nombres cuando es necesario y cachea resultados frecuentes.
+- Muestra nombres comunes y propiedades básicas del compuesto.
 
-### Calculadora de pH/pOH
+## 10. Juegos de Química
+Todos los juegos guardan progreso, estadísticas y cuentan con clasificaciones globales cuando aplica. Algunos requieren autenticación.
 
-Esta herramienta te permite convertir fácilmente entre pH, pOH, concentración de [H+] y concentración de [OH-].
+### 10.1 Quiz Rápido de Química (/quiz)
+- Inicia una sesión seleccionando aleatorio o dificultad (fácil/medio/difícil).
+- Responde preguntas de opción múltiple con temporizador y feedback educativo tras cada respuesta.
+- Consulta tu panel de estadísticas y la clasificación global.
 
-1.  En el dashboard, localiza la tarjeta "Calculadora de pH/pOH".
-2.  Selecciona el tipo de valor que vas a introducir (por defecto, "pH").
-3.  Escribe el valor numérico en el campo de entrada.
-4.  Haz clic en "Calcular".
-5.  Los cuatro valores correspondientes aparecerán en la sección de resultados.
+### 10.2 ChemWordle (/chemwordle)
+- Adivina la palabra química en hasta 6 intentos.
+- El teclado virtual y el grid muestran feedback tipo Wordle (correcto/presente/ausente).
+- Pistas progresivas basadas en metadatos químicos. Consulta estadísticas y leaderboard.
 
-### Calculadora de Disoluciones
+### 10.3 Memory Molecular (/memory)
+- Empareja cartas de nombre y fórmula.
+- Elige dificultad y número de pares. Seguimiento de tiempo, progreso y puntuación.
+- Revisa estadísticas personales y clasificación global.
 
-Calcula el porcentaje en masa (% m/m) y el porcentaje masa/volumen (% m/v) de una disolución.
+### 10.4 Balance Challenge (/balance-challenge)
+- Balancea ecuaciones arrastrando y soltando coeficientes.
+- Dificultades: fácil/medio/difícil con sistema de pistas progresivas.
+- Panel de estadísticas por dificultad y clasificación global.
 
-1.  En el dashboard, localiza la tarjeta "Calculadora de Disoluciones".
-2.  Rellena al menos dos de los campos requeridos:
-    * **Masa del Soluto (g)**
-    * **Masa del Disolvente (g)**
-    * **Volumen de la Disolución (mL)**
-3.  Opcionalmente, puedes introducir la **Densidad de la Disolución (g/mL)** para permitir que la calculadora derive un tipo de porcentaje a partir del otro.
-4.  Haz clic en "Calcular" para ver los resultados.
-5.  Usa el botón "Limpiar" para reiniciar el formulario.
+### 10.5 Periodic Speed (/periodic-speed)
+- Identifica rápidamente el elemento objetivo haciendo clic en la tabla periódica.
+- Dificultades: aleatorio, común, raro. Temporizador y pistas contextuales.
+- Estadísticas detalladas (precisión, rachas, mejores tiempos) y leaderboard.
+
+## 11. Notificaciones y estados
+- La app muestra notificaciones de validación, éxito, error e información en estructuras, reacciones y todos los juegos.
+- Tipos: success, error, info; se integran con el estado global para un feedback consistente.
+
+## 12. Consejos y resolución de problemas
+- Verifica formato: Fórmulas químicas válidas (mayúsculas/minúsculas, subíndices como números), SMILES correctos.
+- Tiempo de espera: Las operaciones de red usan timeouts; reintenta si tu conexión es inestable.
+- Autenticación: Si una página indica que requiere sesión, inicia sesión e inténtalo de nuevo.
+- Soporte de compuestos: Si un compuesto no está soportado por el generador de Lewis, prueba con SMILES o verifica si es iónico.
+
+## 13. Preguntas frecuentes (FAQ) rápidas
+- ¿Puedo pegar SMILES? Sí, en el Generador de Lewis.
+- ¿Hay historial de reacciones? Sí, en la sección de reacciones balanceadas.
+- ¿Dónde veo mis estadísticas de juego? En cada juego, en la pestaña de estadísticas o la pantalla de resultados.
+- ¿Qué pasa si cierro un juego a medias? Puedes abandonar desde la opción correspondiente y luego iniciar un nuevo desafío.
