@@ -4,6 +4,115 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[2.3.0-alpha] - 2025-08-13
+
+Added
+Backend: Se ha expandido significativamente el generador de estructuras de Lewis con soporte para más de 100 moléculas incluyendo:
+- Moléculas inorgánicas simples (H2O, NH3, CO2, SO2, NO2, etc.)
+- Serie completa de alcanos (CH4 hasta C6H14)
+- Alcenos y alquinos (C2H4, C2H2, C3H4, etc.)
+- Alcoholes y éteres (CH3OH, C2H5OH, dimethyl ether, etc.)
+- Aldehídos, cetonas y ácidos carboxílicos
+- Compuestos halogenados (CF4, CHCl3, CCl4, etc.)
+- Compuestos aromáticos (benceno, tolueno, fenol, anilina)
+- Compuestos de fósforo (PCl3, PCl5, PF3, PF5, POCl3)
+- Compuestos de boro (BF3, BCl3, BH3, B2H6)
+- Compuestos de azufre (SF4, SF6, H2SO4, SCl2)
+- Compuestos de gases nobles (XeF2, XeF4, XeF6, XeO3)
+- Compuestos interesantes (ClF3, IF5, IF7, N2O, O3, H2O2)
+
+Backend: Se ha añadido soporte para entrada directa de notación SMILES, permitiendo a usuarios avanzados generar estructuras de Lewis para cualquier molécula compatible introduciendo su cadena SMILES.
+
+Backend: Se ha implementado generación automática de coordenadas 2D usando RDKit AllChem.Compute2DCoords() para mejor visualización de las estructuras moleculares.
+
+Frontend: Se ha refactorizado completamente el componente LewisStructureGenerator para conectar con el backend real:
+- Eliminación de datos mock hardcodeados (solo 3 moléculas) 
+- Conexión directa con el endpoint `/api/structures/lewis-generator/` que usa RDKit
+- Transformación automática de respuestas del backend al formato esperado por el frontend
+- Manejo robusto de errores con mensajes informativos para el usuario
+
+Frontend: Se ha implementado un sistema de categorías para selección rápida de moléculas:
+- Moléculas Simples (H2O, NH3, CH4, CO2, HCl, HF, H2S)
+- Hidrocarburos (C2H6, C2H4, C2H2, C3H8, C6H6)
+- Alcoholes y Éteres (CH3OH, C2H5OH, CH2O, C3H6O)
+- Compuestos de P/S (PH3, PCl3, SO2, SF6, H2SO4)
+- Compuestos de Halógenos (BF3, ClF3, CF4, XeF4, IF5)
+- Otros (NO2, N2O, O3, H2O2)
+
+Frontend: Se ha añadido visualización de estructuras recientes generadas:
+- Fetch automático de las últimas 5 estructuras desde `/api/structures/`
+- Botones de acceso rápido con fecha de creación
+- Carga instantánea de estructuras previamente generadas
+- Actualización dinámica de la lista tras cada nueva generación
+
+Frontend: Se ha integrado completamente el sistema de notificaciones en los componentes de structures y reactions:
+- LewisStructureGenerator: notificaciones para validación, generación exitosa/fallida, selección de moléculas
+- ReactionSimulator: notificaciones para balanceo, errores, limpieza y selección de ejemplos
+- Dispatch de acciones Redux con addNotification para feedback consistente
+
+Testing: Se ha creado script test_lewis_structures.py para validación exhaustiva del sistema:
+- Pruebas automatizadas de más de 25 moléculas diferentes por categorías
+- Verificación de generación exitosa con datos completos (peso molecular, electrones de valencia, átomos, enlaces)
+- Detección de estructuras cacheadas vs nuevas generaciones
+- Prueba de entrada SMILES directa
+- Resumen detallado con tasas de éxito y estadísticas
+
+Backend: Se ha implementado soporte completo para compuestos iónicos en el generador de estructuras:
+- Detección automática de compuestos iónicos (NaCl, CaCO3, Fe2O3, CuSO4, etc.)
+- Generación especializada de estructuras sin enlaces covalentes para compuestos iónicos
+- Manejo robusto de variantes de fórmulas de PubChem (ej: CCaO3 para CaCO3)
+- Soporte para más de 40 compuestos iónicos comunes incluidos óxidos metálicos, carbonatos, sulfatos, nitrates e hidróxidos
+
+Frontend: Se ha integrado la API de PubChem para búsqueda avanzada de compuestos:
+- Búsqueda multiidioma con traducción automática de nombres (español/inglés)
+- Detección automática del tipo de consulta (nombre, fórmula, SMILES, InChI)
+- Cache local de búsquedas frecuentes para mejorar rendimiento
+- Visualización de nombres comunes y propiedades de compuestos desde PubChem
+- Sistema de compuestos recientes y cacheados con acceso rápido
+
+Frontend: Se ha mejorado significativamente el renderizado de estructuras de Lewis:
+- Algoritmo inteligente de posicionamiento de pares solitarios que evita superposiciones
+- Soporte para renderizado con Kekule.js como opción avanzada
+- Diferenciación visual entre enlaces simples, dobles y triples
+- Visualización de cargas formales en átomos
+- Layouts optimizados para moléculas simples con coordenadas hardcodeadas
+
+Backend: Se han agregado estructuras hardcodeadas para moléculas simples comunes:
+- Más de 20 moléculas simples con coordenadas optimizadas (H2O, NH3, CH4, CO2, etc.)
+- Mapeo de variantes de fórmulas (H3N → NH3, ClH → HCl, O2S → SO2)
+- Generación rápida sin cálculos de RDKit para estructuras conocidas
+- Mejora significativa en tiempo de respuesta para moléculas frecuentes
+
+Frontend: Se ha implementado el sistema de notificaciones global en todos los juegos:
+- Integración completa en BalanceChallengeGame con notificaciones para inicios, intentos, pistas y completado
+- Integración en PeriodicSpeedGame con feedback para selecciones correctas/incorrectas y pistas
+- Tipos de notificación diferenciados (success, error, info) con estilos visuales únicos
+- Sistema centralizado de Redux para gestión de notificaciones en toda la aplicación
+
+Improved
+Documentación: Se han mejorado significativamente los docstrings de todas las vistas del backend:
+- games/views.py: documentación detallada de endpoints de Quiz, ChemWordle, Memory, BalanceChallenge y PeriodicSpeed
+- structures/views.py: documentación completa de endpoints de generación de estructuras de Lewis
+- reactions/views.py: documentación mejorada de endpoints de balanceo de ecuaciones
+- Formato consistente con descripción, parámetros, respuestas JSON esperadas y errores posibles
+- Ejemplos de uso y notas importantes para cada endpoint
+
+Performance: Se ha optimizado el sistema de generación de estructuras:
+- Caché automático en base de datos para estructuras ya generadas
+- Respuesta instantánea (200 OK) para estructuras existentes
+- Generación nueva (201 Created) solo cuando es necesario
+- Reducción significativa de carga computacional para moléculas frecuentes
+
+Changed
+Arquitectura: Se ha eliminado la dependencia de datos mock en el frontend para estructuras de Lewis, estableciendo conexión directa con el backend basado en RDKit para cálculos químicos reales.
+
+UX: Se ha reorganizado la interfaz de selección rápida de moléculas de una lista plana a categorías organizadas, mejorando la navegabilidad y descubrimiento de opciones.
+
+Fixed
+Backend: Se han corregido mensajes de error en el generador de estructuras para proporcionar feedback más útil, incluyendo lista de moléculas soportadas cuando se intenta generar una no disponible.
+
+Frontend: Se ha corregido el manejo de estados para evitar conflictos entre estructuras cacheadas y nuevas generaciones, asegurando que la UI refleje correctamente el origen de los datos.
+
 [2.2.5-alpha] - 2025-08-11
 
 Added
