@@ -3305,3 +3305,1180 @@ WARNING 2025-08-10 23:18:06,231 log Bad Request: /api/games/periodic-speed/submi
 WARNING 2025-08-10 23:18:06,378 log Not Found: /api/games/periodic-speed/submit_selection/
 WARNING 2025-08-10 23:18:06,528 log Bad Request: /api/games/periodic-speed/submit_selection/
 WARNING 2025-08-10 23:18:06,529 log Bad Request: /api/games/periodic-speed/submit_selection/
+INFO 2025-08-11 20:55:32,524 autoreload Watching for file changes with StatReloader
+ERROR 2025-08-12 00:20:00,267 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 00:20:00,268 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 00:20:00,271 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 00:20:00,271 log Unauthorized: /api/molecules/
+INFO 2025-08-11 21:44:46,044 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-11 21:44:52,504 autoreload Watching for file changes with StatReloader
+WARNING 2025-08-12 00:53:06,831 log Not Found: /api/structures/
+ERROR 2025-08-12 00:53:06,859 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 00:53:06,860 log Unauthorized: /api/molecules/
+WARNING 2025-08-12 00:53:06,865 log Not Found: /api/structures/
+ERROR 2025-08-12 00:53:06,868 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 00:53:06,868 log Unauthorized: /api/molecules/
+WARNING 2025-08-12 00:53:22,438 log Not Found: /api/structures/lewis-generator/
+WARNING 2025-08-12 00:53:57,884 log Not Found: /api/structures/lewis-generator/
+INFO 2025-08-11 21:56:56,997 autoreload D:\ChemsTools\chemstools_project\backend\chems_tools\urls.py changed, reloading.
+INFO 2025-08-11 21:57:02,824 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 21:57:36,064 autoreload D:\ChemsTools\chemstools_project\backend\structures\urls.py changed, reloading.
+INFO 2025-08-11 21:57:36,731 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 21:59:11,498 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-11 21:59:12,409 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 21:59:29,508 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-11 21:59:30,164 autoreload Watching for file changes with StatReloader
+WARNING 2025-08-12 00:59:35,216 log Not Found: /api/structures/lewis-generator/
+ERROR 2025-08-12 01:08:11,355 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 01:08:11,356 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 01:08:11,362 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 01:08:11,362 log Unauthorized: /api/molecules/
+WARNING 2025-08-12 01:09:42,737 log Bad Request: /api/structures/lewis-generator/
+WARNING 2025-08-12 01:09:52,401 log Bad Request: /api/structures/lewis-generator/
+WARNING 2025-08-12 01:10:38,537 log Bad Request: /api/structures/lewis-generator/
+WARNING 2025-08-12 01:25:57,450 log Bad Request: /api/structures/lewis-generator/
+WARNING 2025-08-12 01:26:15,456 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-11 22:31:52,719 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-11 22:31:54,142 autoreload Watching for file changes with StatReloader
+ERROR 2025-08-12 01:59:09,434 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 01:59:09,435 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 01:59:09,452 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 01:59:09,452 log Unauthorized: /api/molecules/
+INFO 2025-08-11 23:00:35,981 autoreload D:\ChemsTools\chemstools_project\backend\structures\models.py changed, reloading.
+INFO 2025-08-11 23:00:36,707 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 23:03:05,509 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-11 23:03:06,181 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 23:03:41,543 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-11 23:03:42,197 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 23:03:59,613 autoreload D:\ChemsTools\chemstools_project\backend\structures\urls.py changed, reloading.
+INFO 2025-08-11 23:04:00,261 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 02:08:04,797 views Searching for compound: water (type: None)
+INFO 2025-08-12 02:08:04,848 services Buscando en PubChem: water (tipo: name)
+INFO 2025-08-12 02:08:06,260 services Compuesto guardado en cache: water (name) -> H2O
+INFO 2025-08-12 02:09:00,180 views Searching for compound: water (type: None)
+INFO 2025-08-12 02:09:00,182 services Compuesto encontrado en cache: water
+INFO 2025-08-12 02:09:00,196 views Structure found in cache for: H2O
+INFO 2025-08-12 02:09:00,203 views Searching compound: agua (type: None)
+INFO 2025-08-12 02:09:00,204 services Buscando en PubChem: agua (tipo: name)
+INFO 2025-08-12 02:09:01,640 services Compuesto guardado en cache: agua (name) -> H2O
+WARNING 2025-08-12 02:09:01,640 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-11 23:09:21,981 autoreload D:\ChemsTools\chemstools_project\backend\structures\services.py changed, reloading.
+INFO 2025-08-11 23:09:22,957 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 23:09:39,717 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-11 23:09:40,371 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 02:10:14,241 views Searching for compound: water (type: None)
+INFO 2025-08-12 02:10:14,249 services Compuesto encontrado en cache: water
+INFO 2025-08-12 02:10:14,276 views Structure found in cache for: H2O
+INFO 2025-08-12 02:10:14,292 views Searching compound: agua (type: None)
+INFO 2025-08-12 02:10:14,293 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 02:10:14,307 views No SMILES available for agua, trying with formula: H2O
+ERROR 2025-08-12 02:10:14,380 exceptions Unhandled Exception: duplicate key value violates unique constraint "structures_molecularstructure_formula_12ea0ee7_uniq"
+DETAIL:  Key (formula)=(H2O) already exists.
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "structures_molecularstructure_formula_12ea0ee7_uniq"
+DETAIL:  Key (formula)=(H2O) already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 152, in generate_lewis_structure
+    structure = MolecularStructure.objects.create(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1823, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: duplicate key value violates unique constraint "structures_molecularstructure_formula_12ea0ee7_uniq"
+DETAIL:  Key (formula)=(H2O) already exists.
+
+ERROR 2025-08-12 02:10:14,420 log Internal Server Error: /api/structures/lewis-generator/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.errors.UniqueViolation: duplicate key value violates unique constraint "structures_molecularstructure_formula_12ea0ee7_uniq"
+DETAIL:  Key (formula)=(H2O) already exists.
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 152, in generate_lewis_structure
+    structure = MolecularStructure.objects.create(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 822, in save
+    self.save_base(
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 909, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1071, in _save_table
+    results = self._do_insert(
+              ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/base.py", line 1112, in _do_insert
+    return manager._insert(
+           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1823, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+  File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+django.db.utils.IntegrityError: duplicate key value violates unique constraint "structures_molecularstructure_formula_12ea0ee7_uniq"
+DETAIL:  Key (formula)=(H2O) already exists.
+
+INFO 2025-08-11 23:10:41,710 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-11 23:10:42,367 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 02:11:05,467 views Searching for compound: water (type: None)
+INFO 2025-08-12 02:11:05,477 services Compuesto encontrado en cache: water
+INFO 2025-08-12 02:11:05,488 views Structure found in cache for: H2O
+INFO 2025-08-12 02:11:05,495 views Searching compound: agua (type: None)
+INFO 2025-08-12 02:11:05,496 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 02:11:05,501 views No SMILES available for agua, trying with formula: H2O
+ERROR 2025-08-12 02:31:00,183 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 02:31:00,184 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 02:31:00,394 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 02:31:00,395 log Unauthorized: /api/molecules/
+INFO 2025-08-12 02:31:15,480 views Searching for compound: agua (type: name)
+INFO 2025-08-12 02:31:15,486 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 02:31:29,426 views Searching compound: agua (type: name)
+INFO 2025-08-12 02:31:29,428 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 02:31:29,431 views No SMILES available for agua, trying with formula: H2O
+INFO 2025-08-12 02:32:57,831 views Searching for compound: Fe2O3 (type: None)
+INFO 2025-08-12 02:32:57,832 services Buscando en PubChem: Fe2O3 (tipo: name)
+INFO 2025-08-12 02:32:58,494 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Fe2O3/cids/JSON
+WARNING 2025-08-12 02:32:58,495 services No se encontró el compuesto: Fe2O3
+INFO 2025-08-12 02:32:58,496 services Buscando en PubChem: Fe2O3 (tipo: formula)
+INFO 2025-08-12 02:33:00,308 services Compuesto guardado en cache: fe2o3 (formula) -> Fe2O3
+INFO 2025-08-11 23:36:12,554 autoreload D:\ChemsTools\chemstools_project\backend\structures\services.py changed, reloading.
+INFO 2025-08-11 23:36:13,804 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 02:37:00,104 views Searching for compound: Fe2O3 (type: None)
+INFO 2025-08-12 02:37:00,107 services Buscando en PubChem: Fe2O3 (tipo: name)
+INFO 2025-08-12 02:37:00,713 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Fe2O3/cids/JSON
+WARNING 2025-08-12 02:37:00,714 services No se encontró el compuesto: Fe2O3
+INFO 2025-08-12 02:37:00,715 services Compuesto encontrado en cache: Fe2O3
+INFO 2025-08-12 02:37:19,440 views Searching compound: Fe2O3 (type: None)
+INFO 2025-08-12 02:37:19,441 services Buscando en PubChem: Fe2O3 (tipo: name)
+INFO 2025-08-12 02:37:20,043 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Fe2O3/cids/JSON
+WARNING 2025-08-12 02:37:20,044 services No se encontró el compuesto: Fe2O3
+INFO 2025-08-12 02:37:20,045 services Compuesto encontrado en cache: Fe2O3
+INFO 2025-08-12 02:37:20,049 views No SMILES available for Fe2O3, trying with formula: Fe2O3
+WARNING 2025-08-12 02:37:20,050 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-11 23:39:50,733 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-11 23:39:51,497 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 02:40:32,752 views Searching compound: Fe2O3 (type: formula)
+INFO 2025-08-12 02:40:32,754 services Buscando en PubChem: Fe2O3 (tipo: formula)
+INFO 2025-08-12 02:40:34,952 services Compuesto guardado en cache: fe2o3 (formula) -> Fe2O3
+INFO 2025-08-12 02:40:34,952 views No SMILES available for Fe2O3, trying with formula: Fe2O3
+INFO 2025-08-12 02:42:05,594 views Searching compound: Fe2O3 (type: formula)
+INFO 2025-08-12 02:42:05,595 services Compuesto encontrado en cache: Fe2O3
+INFO 2025-08-12 02:42:05,599 views No SMILES available for Fe2O3, trying with formula: Fe2O3
+INFO 2025-08-12 02:42:05,609 views Searching compound: Al2O3 (type: formula)
+INFO 2025-08-12 02:42:05,610 services Buscando en PubChem: Al2O3 (tipo: formula)
+INFO 2025-08-12 02:42:07,812 services Compuesto guardado en cache: al2o3 (formula) -> Al2O3
+INFO 2025-08-12 02:42:07,812 views No SMILES available for Al2O3, trying with formula: Al2O3
+INFO 2025-08-12 02:42:07,824 views Searching compound: TiO2 (type: formula)
+INFO 2025-08-12 02:42:07,826 services Buscando en PubChem: TiO2 (tipo: formula)
+INFO 2025-08-12 02:42:10,159 services Compuesto guardado en cache: tio2 (formula) -> O2Ti
+INFO 2025-08-12 02:42:10,160 views No SMILES available for TiO2, trying with formula: O2Ti
+WARNING 2025-08-12 02:42:10,161 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:10,166 views Searching compound: CuO (type: formula)
+INFO 2025-08-12 02:42:10,167 services Buscando en PubChem: CuO (tipo: formula)
+INFO 2025-08-12 02:42:12,345 services Compuesto guardado en cache: cuo (formula) -> CuO
+INFO 2025-08-12 02:42:12,345 views No SMILES available for CuO, trying with formula: CuO
+INFO 2025-08-12 02:42:12,357 views Searching compound: ZnO (type: formula)
+INFO 2025-08-12 02:42:12,358 services Buscando en PubChem: ZnO (tipo: formula)
+INFO 2025-08-12 02:42:14,871 services Compuesto guardado en cache: zno (formula) -> OZn
+INFO 2025-08-12 02:42:14,872 views No SMILES available for ZnO, trying with formula: OZn
+WARNING 2025-08-12 02:42:14,873 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:14,878 views Searching compound: NaCl (type: formula)
+INFO 2025-08-12 02:42:14,879 services Buscando en PubChem: NaCl (tipo: formula)
+INFO 2025-08-12 02:42:16,862 services Compuesto guardado en cache: nacl (formula) -> ClNa
+INFO 2025-08-12 02:42:16,862 views No SMILES available for NaCl, trying with formula: ClNa
+WARNING 2025-08-12 02:42:16,863 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:16,869 views Searching compound: CaCl2 (type: formula)
+INFO 2025-08-12 02:42:16,870 services Buscando en PubChem: CaCl2 (tipo: formula)
+INFO 2025-08-12 02:42:19,201 services Compuesto guardado en cache: cacl2 (formula) -> CaCl2
+INFO 2025-08-12 02:42:19,202 views No SMILES available for CaCl2, trying with formula: CaCl2
+INFO 2025-08-12 02:42:19,216 views Searching compound: MgBr2 (type: formula)
+INFO 2025-08-12 02:42:19,217 services Buscando en PubChem: MgBr2 (tipo: formula)
+INFO 2025-08-12 02:42:21,183 services Compuesto guardado en cache: mgbr2 (formula) -> Br2Mg
+INFO 2025-08-12 02:42:21,184 views No SMILES available for MgBr2, trying with formula: Br2Mg
+WARNING 2025-08-12 02:42:21,184 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:21,190 views Searching compound: KBr (type: formula)
+INFO 2025-08-12 02:42:21,191 services Buscando en PubChem: KBr (tipo: formula)
+INFO 2025-08-12 02:42:23,244 services Compuesto guardado en cache: kbr (formula) -> BrK
+INFO 2025-08-12 02:42:23,244 views No SMILES available for KBr, trying with formula: BrK
+WARNING 2025-08-12 02:42:23,245 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:23,251 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-12 02:42:23,252 services Buscando en PubChem: CaCO3 (tipo: formula)
+INFO 2025-08-12 02:42:25,422 services Compuesto guardado en cache: caco3 (formula) -> CCaO3
+INFO 2025-08-12 02:42:25,423 views No SMILES available for CaCO3, trying with formula: CCaO3
+WARNING 2025-08-12 02:42:25,424 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:25,430 views Searching compound: Na2CO3 (type: formula)
+INFO 2025-08-12 02:42:25,431 services Buscando en PubChem: Na2CO3 (tipo: formula)
+INFO 2025-08-12 02:42:27,651 services Compuesto guardado en cache: na2co3 (formula) -> CNa2O3
+INFO 2025-08-12 02:42:27,651 views No SMILES available for Na2CO3, trying with formula: CNa2O3
+WARNING 2025-08-12 02:42:27,652 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:27,658 views Searching compound: CuSO4 (type: formula)
+INFO 2025-08-12 02:42:27,659 services Buscando en PubChem: CuSO4 (tipo: formula)
+INFO 2025-08-12 02:42:29,764 services Compuesto guardado en cache: cuso4 (formula) -> CuO4S
+INFO 2025-08-12 02:42:29,764 views No SMILES available for CuSO4, trying with formula: CuO4S
+WARNING 2025-08-12 02:42:29,765 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:29,770 views Searching compound: FeSO4 (type: formula)
+INFO 2025-08-12 02:42:29,771 services Buscando en PubChem: FeSO4 (tipo: formula)
+INFO 2025-08-12 02:42:31,904 services Compuesto guardado en cache: feso4 (formula) -> FeO4S
+INFO 2025-08-12 02:42:31,904 views No SMILES available for FeSO4, trying with formula: FeO4S
+WARNING 2025-08-12 02:42:31,905 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:31,910 views Searching compound: MgSO4 (type: formula)
+INFO 2025-08-12 02:42:31,911 services Buscando en PubChem: MgSO4 (tipo: formula)
+INFO 2025-08-12 02:42:33,981 services Compuesto guardado en cache: mgso4 (formula) -> MgO4S
+INFO 2025-08-12 02:42:33,981 views No SMILES available for MgSO4, trying with formula: MgO4S
+WARNING 2025-08-12 02:42:33,982 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:33,988 views Searching compound: NaOH (type: formula)
+INFO 2025-08-12 02:42:33,989 services Buscando en PubChem: NaOH (tipo: formula)
+INFO 2025-08-12 02:42:35,909 services Compuesto guardado en cache: naoh (formula) -> HNaO
+INFO 2025-08-12 02:42:35,909 views No SMILES available for NaOH, trying with formula: HNaO
+WARNING 2025-08-12 02:42:35,910 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:35,916 views Searching compound: Ca(OH)2 (type: formula)
+INFO 2025-08-12 02:42:35,917 services Buscando en PubChem: Ca(OH)2 (tipo: formula)
+ERROR 2025-08-12 02:42:37,091 services PubChem API error 500: {
+  "Fault": {
+    "Code": "PUGREST.ServerError",
+    "Message": "Search status indicates failure"
+  }
+}
+
+INFO 2025-08-12 02:42:37,091 services No encontrado como formula, intentando como nombre
+INFO 2025-08-12 02:42:38,449 services Compuesto guardado en cache: ca(oh)2 (formula) -> CaH2O2
+INFO 2025-08-12 02:42:38,450 views No SMILES available for Ca(OH)2, trying with formula: CaH2O2
+WARNING 2025-08-12 02:42:38,451 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:38,456 views Searching compound: iron oxide (type: name)
+INFO 2025-08-12 02:42:38,457 services Buscando en PubChem: iron oxide (tipo: name)
+INFO 2025-08-12 02:42:39,701 services Compuesto guardado en cache: iron oxide (name) -> FeO2
+INFO 2025-08-12 02:42:39,701 views No SMILES available for iron oxide, trying with formula: FeO2
+WARNING 2025-08-12 02:42:39,702 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:39,707 views Searching compound: limestone (type: name)
+INFO 2025-08-12 02:42:39,708 services Buscando en PubChem: limestone (tipo: name)
+INFO 2025-08-12 02:42:40,325 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/limestone/cids/JSON
+WARNING 2025-08-12 02:42:40,325 services No se encontró el compuesto: limestone
+INFO 2025-08-12 02:42:40,328 services Buscando en PubChem: limestone (tipo: name)
+INFO 2025-08-12 02:42:40,548 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/limestone/cids/JSON
+WARNING 2025-08-12 02:42:40,548 services No se encontró el compuesto: limestone
+INFO 2025-08-12 02:42:40,548 views Compound not found in PubChem, trying direct generation for: limestone
+WARNING 2025-08-12 02:42:40,549 log Not Found: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:40,555 views Searching compound: salt (type: name)
+INFO 2025-08-12 02:42:40,556 services Buscando en PubChem: salt (tipo: name)
+INFO 2025-08-12 02:42:41,896 services Compuesto guardado en cache: salt (name) -> ClNa
+INFO 2025-08-12 02:42:41,896 views No SMILES available for salt, trying with formula: ClNa
+WARNING 2025-08-12 02:42:41,897 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 02:42:41,903 views Searching compound: baking soda (type: name)
+INFO 2025-08-12 02:42:41,904 services Buscando en PubChem: baking soda (tipo: name)
+INFO 2025-08-12 02:42:43,216 services Compuesto guardado en cache: baking soda (name) -> CHNaO3
+INFO 2025-08-12 02:42:43,217 views No SMILES available for baking soda, trying with formula: CHNaO3
+WARNING 2025-08-12 02:42:43,217 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-11 23:45:44,720 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-11 23:45:48,385 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 23:46:12,811 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 02:46:20,799 views Searching compound: Fe2O3 (type: formula)
+INFO 2025-08-12 02:46:20,801 services Compuesto encontrado en cache: Fe2O3
+INFO 2025-08-12 02:46:20,807 views No SMILES available for Fe2O3, trying with formula: Fe2O3
+ERROR 2025-08-12 02:46:20,820 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,820 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,825 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,825 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,830 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,830 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,838 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,838 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,846 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,846 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,853 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,853 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,859 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,859 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,864 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,865 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,869 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,869 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,875 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,875 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,881 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,881 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,888 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,888 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,893 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,894 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,898 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,899 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,903 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,903 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,908 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,909 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,913 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,914 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,918 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,918 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:46:20,923 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 73056 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:46:20,923 log Too Many Requests: /api/structures/lewis-generator/
+INFO 2025-08-11 23:46:51,618 autoreload D:\ChemsTools\chemstools_project\backend\chems_tools\settings.py changed, reloading.
+INFO 2025-08-11 23:46:52,128 autoreload D:\ChemsTools\chemstools_project\backend\chems_tools\settings.py changed, reloading.
+INFO 2025-08-11 23:46:52,277 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 23:46:52,884 autoreload Watching for file changes with StatReloader
+INFO 2025-08-11 23:47:08,818 autoreload Watching for file changes with StatReloader
+ERROR 2025-08-12 02:47:20,279 exceptions API Error: {'detail': ErrorDetail(string='Request was throttled. Expected available in 72996 seconds.', code='throttled'), 'status_code': 429}
+WARNING 2025-08-12 02:47:20,280 log Too Many Requests: /api/structures/lewis-generator/
+ERROR 2025-08-12 02:54:53,260 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 02:54:53,261 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 02:54:53,387 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 02:54:53,388 log Unauthorized: /api/molecules/
+INFO 2025-08-12 02:55:07,871 views Searching for compound: Fe2O3 (type: None)
+INFO 2025-08-12 02:55:07,877 services Buscando en PubChem: Fe2O3 (tipo: name)
+INFO 2025-08-12 02:55:08,505 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Fe2O3/cids/JSON
+WARNING 2025-08-12 02:55:08,506 services No se encontró el compuesto: Fe2O3
+INFO 2025-08-12 02:55:08,508 services Compuesto encontrado en cache: Fe2O3
+INFO 2025-08-12 02:55:21,783 views Searching compound: Fe2O3 (type: None)
+INFO 2025-08-12 02:55:21,784 services Buscando en PubChem: Fe2O3 (tipo: name)
+INFO 2025-08-12 02:55:22,409 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Fe2O3/cids/JSON
+WARNING 2025-08-12 02:55:22,409 services No se encontró el compuesto: Fe2O3
+INFO 2025-08-12 02:55:22,411 services Compuesto encontrado en cache: Fe2O3
+INFO 2025-08-12 02:55:22,415 views No SMILES available for Fe2O3, trying with formula: Fe2O3
+INFO 2025-08-12 02:56:54,233 views Searching compound: agua (type: name)
+INFO 2025-08-12 02:56:54,235 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 02:56:54,241 views No SMILES available for agua, trying with formula: H2O
+ERROR 2025-08-12 22:40:30,817 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 22:40:30,818 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 22:40:30,837 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 22:40:30,838 log Unauthorized: /api/molecules/
+INFO 2025-08-12 22:41:17,252 views Searching compound: agua (type: name)
+INFO 2025-08-12 22:41:17,254 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 22:41:17,259 views No SMILES available for agua, trying with formula: H2O
+ERROR 2025-08-12 23:07:08,331 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 23:07:08,333 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 23:07:08,478 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 23:07:08,478 log Unauthorized: /api/molecules/
+INFO 2025-08-12 20:16:51,359 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 20:16:51,365 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 20:16:51,370 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 20:16:58,640 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 20:16:58,640 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 20:16:58,640 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 20:17:11,513 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 20:17:11,538 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 20:17:11,545 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 20:17:12,331 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 20:17:12,351 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 20:17:12,352 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 23:19:33,110 views Structure found in cache for: H2O
+INFO 2025-08-12 23:19:33,618 views Structure found in cache for: NH3
+INFO 2025-08-12 23:19:34,125 views Structure found in cache for: CH4
+INFO 2025-08-12 23:19:34,633 views Structure found in cache for: CO2
+INFO 2025-08-12 23:19:35,139 views Searching compound: HCl (type: None)
+INFO 2025-08-12 23:19:35,142 services Buscando en PubChem: HCl (tipo: name)
+INFO 2025-08-12 23:19:36,727 services Compuesto guardado en cache: hcl (name) -> ClH
+INFO 2025-08-12 23:19:36,728 views No SMILES available for HCl, trying with formula: ClH
+WARNING 2025-08-12 23:19:36,728 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 23:19:37,235 views Structure found in cache for: C2H6
+INFO 2025-08-12 23:19:37,741 views Structure found in cache for: C2H4
+INFO 2025-08-12 23:19:38,249 views Searching compound: C2H2 (type: None)
+INFO 2025-08-12 23:19:38,250 services Buscando en PubChem: C2H2 (tipo: name)
+INFO 2025-08-12 23:19:39,785 services Compuesto guardado en cache: c2h2 (name) -> C2H2
+INFO 2025-08-12 23:19:39,786 views No SMILES available for C2H2, trying with formula: C2H2
+INFO 2025-08-12 23:19:40,321 views Structure found in cache for: C3H8
+INFO 2025-08-12 23:19:40,828 views Structure found in cache for: C6H6
+INFO 2025-08-12 23:19:41,335 views Structure found in cache for: CH3OH
+INFO 2025-08-12 23:19:41,842 views Structure found in cache for: C2H5OH
+INFO 2025-08-12 23:19:42,349 views Searching compound: CF4 (type: None)
+INFO 2025-08-12 23:19:42,350 services Buscando en PubChem: CF4 (tipo: name)
+INFO 2025-08-12 23:19:43,828 services Compuesto guardado en cache: cf4 (name) -> CF4
+INFO 2025-08-12 23:19:43,828 views No SMILES available for CF4, trying with formula: CF4
+INFO 2025-08-12 23:19:44,340 views Searching compound: CHCl3 (type: None)
+INFO 2025-08-12 23:19:44,341 services Buscando en PubChem: CHCl3 (tipo: name)
+INFO 2025-08-12 23:19:45,851 services Compuesto guardado en cache: chcl3 (name) -> CHCl3
+INFO 2025-08-12 23:19:45,851 views No SMILES available for CHCl3, trying with formula: CHCl3
+INFO 2025-08-12 23:19:46,362 views Searching compound: PCl3 (type: None)
+INFO 2025-08-12 23:19:46,363 services Buscando en PubChem: PCl3 (tipo: name)
+INFO 2025-08-12 23:19:47,855 services Compuesto guardado en cache: pcl3 (name) -> Cl3P
+INFO 2025-08-12 23:19:47,855 views No SMILES available for PCl3, trying with formula: Cl3P
+WARNING 2025-08-12 23:19:47,856 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 23:19:48,363 views Searching compound: SF6 (type: None)
+INFO 2025-08-12 23:19:48,364 services Buscando en PubChem: SF6 (tipo: name)
+INFO 2025-08-12 23:19:50,124 services Compuesto guardado en cache: sf6 (name) -> F6S
+INFO 2025-08-12 23:19:50,125 views No SMILES available for SF6, trying with formula: F6S
+WARNING 2025-08-12 23:19:50,125 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 23:19:50,632 views Searching compound: SO2 (type: None)
+INFO 2025-08-12 23:19:50,633 services Buscando en PubChem: SO2 (tipo: name)
+INFO 2025-08-12 23:19:52,141 services Compuesto guardado en cache: so2 (name) -> O2S
+INFO 2025-08-12 23:19:52,142 views No SMILES available for SO2, trying with formula: O2S
+WARNING 2025-08-12 23:19:52,143 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 23:19:52,651 views Structure found in cache for: H2SO4
+INFO 2025-08-12 23:19:53,158 views Searching compound: NO2 (type: None)
+INFO 2025-08-12 23:19:53,159 services Buscando en PubChem: NO2 (tipo: name)
+INFO 2025-08-12 23:19:53,905 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/NO2/cids/JSON
+WARNING 2025-08-12 23:19:53,906 services No se encontró el compuesto: NO2
+INFO 2025-08-12 23:19:53,908 services Buscando en PubChem: NO2 (tipo: formula)
+INFO 2025-08-12 23:19:55,506 services Compuesto guardado en cache: no2 (formula) -> NO2-
+INFO 2025-08-12 23:19:55,507 views No SMILES available for NO2, trying with formula: NO2-
+WARNING 2025-08-12 23:19:55,507 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 23:19:56,015 views Searching compound: N2O (type: None)
+INFO 2025-08-12 23:19:56,016 services Buscando en PubChem: N2O (tipo: name)
+INFO 2025-08-12 23:19:57,488 services Compuesto guardado en cache: n2o (name) -> N2O
+INFO 2025-08-12 23:19:57,489 views No SMILES available for N2O, trying with formula: N2O
+INFO 2025-08-12 23:19:58,003 views Searching compound: XeF4 (type: None)
+INFO 2025-08-12 23:19:58,004 services Buscando en PubChem: XeF4 (tipo: name)
+INFO 2025-08-12 23:19:59,508 services Compuesto guardado en cache: xef4 (name) -> F4Xe
+INFO 2025-08-12 23:19:59,509 views No SMILES available for XeF4, trying with formula: F4Xe
+WARNING 2025-08-12 23:19:59,509 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 23:20:00,017 views Searching compound: O3 (type: None)
+INFO 2025-08-12 23:20:00,018 services Buscando en PubChem: O3 (tipo: name)
+INFO 2025-08-12 23:20:01,682 services Compuesto guardado en cache: o3 (name) -> O3
+INFO 2025-08-12 23:20:01,682 views No SMILES available for O3, trying with formula: O3
+WARNING 2025-08-12 23:20:01,686 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 23:20:02,192 views Structure found in cache for: H2O2
+INFO 2025-08-12 23:20:02,699 views Structure found in cache for: BF3
+INFO 2025-08-12 23:20:03,213 views Searching compound: c1ccccc1 (type: None)
+INFO 2025-08-12 23:20:03,214 services Buscando en PubChem: c1ccccc1 (tipo: name)
+INFO 2025-08-12 23:20:03,931 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/c1ccccc1/cids/JSON
+WARNING 2025-08-12 23:20:03,931 services No se encontró el compuesto: c1ccccc1
+INFO 2025-08-12 23:20:03,932 services Buscando en PubChem: c1ccccc1 (tipo: name)
+INFO 2025-08-12 23:20:04,182 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/c1ccccc1/cids/JSON
+WARNING 2025-08-12 23:20:04,182 services No se encontró el compuesto: c1ccccc1
+INFO 2025-08-12 23:20:04,182 views Compound not found in PubChem, trying direct generation for: c1ccccc1
+WARNING 2025-08-12 23:20:04,183 log Not Found: /api/structures/lewis-generator/
+INFO 2025-08-12 20:21:18,183 autoreload Watching for file changes with StatReloader
+ERROR 2025-08-12 23:27:09,395 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 23:27:09,396 log Unauthorized: /api/molecules/
+ERROR 2025-08-12 23:27:09,494 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-12 23:27:09,494 log Unauthorized: /api/molecules/
+INFO 2025-08-12 23:27:34,784 views Searching for compound: agua (type: name)
+INFO 2025-08-12 23:27:34,791 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 23:27:49,206 views Searching compound: agua (type: name)
+INFO 2025-08-12 23:27:49,208 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 23:27:49,213 views No SMILES available for agua, trying with formula: H2O
+INFO 2025-08-12 23:33:58,249 views Searching for compound: PH3 (type: name)
+INFO 2025-08-12 23:33:58,251 services Buscando en PubChem: PH3 (tipo: name)
+INFO 2025-08-12 23:33:59,808 services Compuesto guardado en cache: ph3 (name) -> H3P
+INFO 2025-08-12 23:34:18,134 views Structure found in cache for: PH3
+INFO 2025-08-12 23:34:48,161 views Searching for compound: C2H6 (type: name)
+INFO 2025-08-12 23:34:48,163 services Buscando en PubChem: C2H6 (tipo: name)
+INFO 2025-08-12 23:34:49,871 services Compuesto guardado en cache: c2h6 (name) -> C2H6
+INFO 2025-08-12 23:34:58,798 views Structure found in cache for: C2H6
+INFO 2025-08-12 23:40:31,105 views Searching compound: agua (type: name)
+INFO 2025-08-12 23:40:31,108 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 23:40:31,114 views No SMILES available for agua, trying with formula: H2O
+INFO 2025-08-12 23:40:56,951 views Structure found in cache for: CO2
+INFO 2025-08-12 23:41:11,799 views Searching compound: agua (type: name)
+INFO 2025-08-12 23:41:11,800 services Compuesto encontrado en cache: agua
+INFO 2025-08-12 23:41:11,807 views No SMILES available for agua, trying with formula: H2O
+INFO 2025-08-12 23:44:19,888 views Structure found in cache for: PH3
+INFO 2025-08-12 23:51:42,489 views Structure found in cache for: H2O
+INFO 2025-08-12 20:55:44,231 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 20:55:44,254 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 20:55:44,263 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 20:55:47,540 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 20:55:47,540 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 20:55:47,540 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 23:56:30,997 views Structure found in cache for: H2O
+INFO 2025-08-12 20:57:44,551 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:00:27,700 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 21:00:27,707 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 21:00:27,783 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 21:00:28,449 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:00:28,458 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:00:28,522 autoreload Watching for file changes with StatReloader
+ERROR 2025-08-13 00:02:35,637 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 00:02:35,638 log Unauthorized: /api/molecules/
+ERROR 2025-08-13 00:02:35,668 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 00:02:35,669 log Unauthorized: /api/molecules/
+INFO 2025-08-13 00:03:00,062 views Searching for compound: H2O (type: name)
+INFO 2025-08-13 00:03:00,065 services Buscando en PubChem: H2O (tipo: name)
+INFO 2025-08-13 00:03:01,649 services Compuesto guardado en cache: h2o (name) -> H2O
+INFO 2025-08-13 00:03:02,872 views Searching compound: H2O (type: name)
+INFO 2025-08-13 00:03:02,873 services Compuesto encontrado en cache: H2O
+INFO 2025-08-13 00:03:02,877 views No SMILES available for H2O, trying with formula: H2O
+INFO 2025-08-13 00:03:25,942 views Searching compound: PH3 (type: name)
+INFO 2025-08-13 00:03:25,943 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:03:25,947 views No SMILES available for PH3, trying with formula: H3P
+WARNING 2025-08-13 00:03:25,948 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:03:29,126 views Searching for compound: PH3 (type: name)
+INFO 2025-08-13 00:03:29,127 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:03:32,126 views Searching compound: PH3 (type: name)
+INFO 2025-08-13 00:03:32,127 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:03:32,133 views No SMILES available for PH3, trying with formula: H3P
+WARNING 2025-08-13 00:03:32,134 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:04:02,958 views Searching compound: PH3 (type: name)
+INFO 2025-08-13 00:04:02,959 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:04:02,965 views No SMILES available for PH3, trying with formula: H3P
+WARNING 2025-08-13 00:04:02,965 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:04:25,084 views Searching for compound: P (type: name)
+INFO 2025-08-13 00:04:25,086 services Buscando en PubChem: P (tipo: name)
+INFO 2025-08-13 00:04:26,989 services Compuesto guardado en cache: p (name) -> P
+INFO 2025-08-13 00:04:32,871 views Searching compound: P (type: name)
+INFO 2025-08-13 00:04:32,872 services Compuesto encontrado en cache: P
+INFO 2025-08-13 00:04:32,878 views No SMILES available for P, trying with formula: P
+WARNING 2025-08-13 00:04:32,879 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:04:53,357 views Searching compound: P (type: name)
+INFO 2025-08-13 00:04:53,358 services Compuesto encontrado en cache: P
+INFO 2025-08-13 00:04:53,365 views No SMILES available for P, trying with formula: P
+WARNING 2025-08-13 00:04:53,366 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:04:57,080 views Searching compound: ph3 (type: name)
+INFO 2025-08-13 00:04:57,082 services Compuesto encontrado en cache: ph3
+INFO 2025-08-13 00:04:57,086 views No SMILES available for ph3, trying with formula: H3P
+WARNING 2025-08-13 00:04:57,086 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:05:04,286 views Searching compound: o3 (type: name)
+INFO 2025-08-13 00:05:04,287 services Compuesto encontrado en cache: o3
+INFO 2025-08-13 00:05:04,293 views No SMILES available for o3, trying with formula: O3
+WARNING 2025-08-13 00:05:04,306 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:05:25,893 views Searching compound: no2 (type: formula)
+INFO 2025-08-13 00:05:25,894 services Compuesto encontrado en cache: no2
+INFO 2025-08-13 00:05:25,898 views No SMILES available for no2, trying with formula: NO2-
+WARNING 2025-08-13 00:05:25,899 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:05:33,736 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:05:33,737 services Compuesto encontrado en cache: CaCO3
+INFO 2025-08-13 00:05:33,743 views No SMILES available for CaCO3, trying with formula: CCaO3
+WARNING 2025-08-13 00:05:33,744 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:05:45,381 views Searching compound: CACO3 (type: formula)
+INFO 2025-08-13 00:05:45,382 services Compuesto encontrado en cache: CACO3
+INFO 2025-08-13 00:05:45,386 views No SMILES available for CACO3, trying with formula: CCaO3
+WARNING 2025-08-13 00:05:45,387 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 21:08:25,951 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:08:25,974 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:08:25,991 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:08:27,036 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:08:27,036 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:09:01,613 autoreload Watching for file changes with StatReloader
+INFO 2025-08-13 00:09:27,382 views Searching compound: H2O (type: formula)
+INFO 2025-08-13 00:09:27,383 services Buscando en PubChem: H2O (tipo: formula)
+INFO 2025-08-13 00:09:30,540 services Compuesto guardado en cache: h2o (formula) -> H2O
+INFO 2025-08-13 00:09:30,541 views No SMILES available for H2O, trying with formula: H2O
+INFO 2025-08-13 00:09:30,608 views Searching compound: CH4 (type: formula)
+INFO 2025-08-13 00:09:30,609 services Buscando en PubChem: CH4 (tipo: formula)
+INFO 2025-08-13 00:09:32,753 services Compuesto guardado en cache: ch4 (formula) -> CH4
+INFO 2025-08-13 00:09:32,753 views No SMILES available for CH4, trying with formula: CH4
+INFO 2025-08-13 00:09:32,838 views Searching compound: C2H6 (type: formula)
+INFO 2025-08-13 00:09:32,840 services Buscando en PubChem: C2H6 (tipo: formula)
+INFO 2025-08-13 00:09:35,347 services Compuesto guardado en cache: c2h6 (formula) -> C2H6
+INFO 2025-08-13 00:09:35,348 views No SMILES available for C2H6, trying with formula: C2H6
+INFO 2025-08-13 00:09:49,902 views Structure found in cache for: H2O
+ERROR 2025-08-13 00:22:25,119 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 00:22:25,120 log Unauthorized: /api/molecules/
+ERROR 2025-08-13 00:22:25,136 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 00:22:25,137 log Unauthorized: /api/molecules/
+INFO 2025-08-13 00:22:32,290 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:22:32,291 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:22:32,296 views No SMILES available for PH3, trying with formula: H3P
+ERROR 2025-08-13 00:22:32,297 exceptions Unhandled Exception: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+ERROR 2025-08-13 00:22:32,328 log Internal Server Error: /api/structures/lewis-generator/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+INFO 2025-08-13 00:23:07,534 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:23:07,535 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:23:07,548 views No SMILES available for PH3, trying with formula: H3P
+ERROR 2025-08-13 00:23:07,549 exceptions Unhandled Exception: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+ERROR 2025-08-13 00:23:07,567 log Internal Server Error: /api/structures/lewis-generator/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+INFO 2025-08-13 00:24:09,533 views Searching for compound: PH3 (type: None)
+INFO 2025-08-13 00:24:09,535 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:24:12,302 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:24:12,303 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:24:12,307 views No SMILES available for PH3, trying with formula: H3P
+ERROR 2025-08-13 00:24:12,307 exceptions Unhandled Exception: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+ERROR 2025-08-13 00:24:12,324 log Internal Server Error: /api/structures/lewis-generator/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+INFO 2025-08-13 00:24:18,397 views Searching for compound: sal (type: name)
+INFO 2025-08-13 00:24:18,399 services Buscando en PubChem: sal (tipo: name)
+INFO 2025-08-13 00:24:19,432 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/sal/cids/JSON
+WARNING 2025-08-13 00:24:19,432 services No se encontró el compuesto: sal
+INFO 2025-08-13 00:24:19,433 services Buscando en PubChem: sodium chloride (tipo: name)
+INFO 2025-08-13 00:24:20,761 services Compuesto guardado en cache: sodium chloride (name) -> ClNa
+INFO 2025-08-13 00:24:26,982 views Searching compound: ClNa (type: name)
+INFO 2025-08-13 00:24:26,983 services Buscando en PubChem: ClNa (tipo: name)
+INFO 2025-08-13 00:24:28,577 services Compuesto guardado en cache: clna (name) -> ClNa
+INFO 2025-08-13 00:24:28,577 views No SMILES available for ClNa, trying with formula: ClNa
+ERROR 2025-08-13 00:24:28,578 exceptions Unhandled Exception: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+ERROR 2025-08-13 00:24:28,593 log Internal Server Error: /api/structures/lewis-generator/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    result = LewisStructureGenerator.generate_lewis_structure(formula)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+INFO 2025-08-12 21:24:39,675 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:39,962 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:39,989 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:39,985 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:41,735 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:41,736 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:41,740 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:41,740 autoreload Watching for file changes with StatReloader
+INFO 2025-08-13 00:24:43,095 views Searching compound: ClNa (type: name)
+INFO 2025-08-13 00:24:43,097 services Compuesto encontrado en cache: ClNa
+INFO 2025-08-13 00:24:43,101 views No SMILES available for ClNa, trying with formula: ClNa
+ERROR 2025-08-13 00:24:43,101 exceptions Unhandled Exception: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    # Si no hay SMILES, intentar usar la fórmula molecular
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+ERROR 2025-08-13 00:24:43,133 log Internal Server Error: /api/structures/lewis-generator/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/structures/views.py", line 166, in generate_lewis_structure
+    # Si no hay SMILES, intentar usar la fórmula molecular
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'LewisStructureGenerator' where it is not associated with a value
+INFO 2025-08-12 21:24:52,934 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:52,975 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:52,981 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:53,009 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:24:53,926 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:53,938 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:53,970 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:24:53,976 autoreload Watching for file changes with StatReloader
+INFO 2025-08-13 00:26:57,623 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:26:57,625 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:26:57,630 views No SMILES available for PH3, trying with formula: H3P
+INFO 2025-08-13 00:30:34,643 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:30:34,645 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:30:34,658 views No SMILES available for PH3, trying with formula: H3P
+INFO 2025-08-13 00:30:49,759 views Structure found in cache for: H2O
+INFO 2025-08-13 00:30:49,898 views Searching compound: NH3 (type: None)
+INFO 2025-08-13 00:30:49,900 services Buscando en PubChem: NH3 (tipo: name)
+INFO 2025-08-13 00:30:51,645 services Compuesto guardado en cache: nh3 (name) -> H3N
+INFO 2025-08-13 00:30:51,645 views No SMILES available for NH3, trying with formula: H3N
+WARNING 2025-08-13 00:30:51,646 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:30:51,698 views Structure found in cache for: CH4
+INFO 2025-08-13 00:30:51,838 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:30:51,840 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:30:51,844 views No SMILES available for PH3, trying with formula: H3P
+INFO 2025-08-13 00:30:51,980 views Searching compound: H2S (type: None)
+INFO 2025-08-13 00:30:51,982 services Buscando en PubChem: H2S (tipo: name)
+INFO 2025-08-13 00:30:53,622 services Compuesto guardado en cache: h2s (name) -> H2S
+INFO 2025-08-13 00:30:53,623 views No SMILES available for H2S, trying with formula: H2S
+INFO 2025-08-13 00:30:53,692 views Searching compound: CO2 (type: None)
+INFO 2025-08-13 00:30:53,693 services Buscando en PubChem: CO2 (tipo: name)
+INFO 2025-08-13 00:30:55,199 services Compuesto guardado en cache: co2 (name) -> CO2
+INFO 2025-08-13 00:30:55,200 views No SMILES available for CO2, trying with formula: CO2
+INFO 2025-08-13 00:30:55,264 views Searching compound: HCl (type: None)
+INFO 2025-08-13 00:30:55,266 services Compuesto encontrado en cache: HCl
+INFO 2025-08-13 00:30:55,270 views No SMILES available for HCl, trying with formula: ClH
+WARNING 2025-08-13 00:30:55,271 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:30:55,401 views Searching compound: BF3 (type: None)
+INFO 2025-08-13 00:30:55,402 services Buscando en PubChem: BF3 (tipo: name)
+INFO 2025-08-13 00:30:56,861 services Compuesto guardado en cache: bf3 (name) -> BF3
+INFO 2025-08-13 00:30:56,861 views No SMILES available for BF3, trying with formula: BF3
+INFO 2025-08-13 00:30:56,920 views Searching compound: SO2 (type: None)
+INFO 2025-08-13 00:30:56,924 services Compuesto encontrado en cache: SO2
+INFO 2025-08-13 00:30:56,930 views No SMILES available for SO2, trying with formula: O2S
+WARNING 2025-08-13 00:30:56,931 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:31:20,760 views Searching compound: NH3 (type: None)
+INFO 2025-08-13 00:31:20,761 services Compuesto encontrado en cache: NH3
+INFO 2025-08-13 00:31:20,765 views No SMILES available for NH3, trying with formula: H3N
+WARNING 2025-08-13 00:31:20,766 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:31:20,905 views Searching compound: HCl (type: None)
+INFO 2025-08-13 00:31:20,906 services Compuesto encontrado en cache: HCl
+INFO 2025-08-13 00:31:20,910 views No SMILES available for HCl, trying with formula: ClH
+WARNING 2025-08-13 00:31:20,911 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:31:21,044 views Searching compound: SO2 (type: None)
+INFO 2025-08-13 00:31:21,045 services Compuesto encontrado en cache: SO2
+INFO 2025-08-13 00:31:21,049 views No SMILES available for SO2, trying with formula: O2S
+WARNING 2025-08-13 00:31:21,050 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:31:29,372 views Searching for compound: NH3 (type: None)
+INFO 2025-08-13 00:31:29,374 services Compuesto encontrado en cache: NH3
+INFO 2025-08-13 00:32:38,747 views Structure found in cache for: H2O
+INFO 2025-08-13 00:32:38,929 views Searching compound: NH3 (type: None)
+INFO 2025-08-13 00:32:38,931 services Buscando en PubChem: NH3 (tipo: name)
+INFO 2025-08-13 00:32:40,687 services Compuesto guardado en cache: nh3 (name) -> H3N
+INFO 2025-08-13 00:32:40,687 views No SMILES available for NH3, trying with formula: H3N
+WARNING 2025-08-13 00:32:40,688 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:32:40,759 views Structure found in cache for: CH4
+INFO 2025-08-13 00:32:40,904 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:32:40,906 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:32:40,910 views No SMILES available for PH3, trying with formula: H3P
+INFO 2025-08-13 00:32:41,052 views Structure found in cache for: H2S
+INFO 2025-08-13 00:32:41,219 views Structure found in cache for: CO2
+INFO 2025-08-13 00:32:41,355 views Searching compound: HCl (type: None)
+INFO 2025-08-13 00:32:41,357 services Compuesto encontrado en cache: HCl
+INFO 2025-08-13 00:32:41,361 views No SMILES available for HCl, trying with formula: ClH
+WARNING 2025-08-13 00:32:41,361 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:32:41,494 views Structure found in cache for: BF3
+INFO 2025-08-13 00:32:41,636 views Searching compound: SO2 (type: None)
+INFO 2025-08-13 00:32:41,637 services Buscando en PubChem: SO2 (tipo: name)
+INFO 2025-08-13 00:32:43,541 services Compuesto guardado en cache: so2 (name) -> O2S
+INFO 2025-08-13 00:32:43,542 views No SMILES available for SO2, trying with formula: O2S
+WARNING 2025-08-13 00:32:43,543 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:32:43,600 views Searching compound: O2 (type: None)
+INFO 2025-08-13 00:32:43,601 services Buscando en PubChem: O2 (tipo: name)
+INFO 2025-08-13 00:32:45,704 services Compuesto guardado en cache: o2 (name) -> O2
+INFO 2025-08-13 00:32:45,705 views No SMILES available for O2, trying with formula: O2
+INFO 2025-08-13 00:32:45,777 views Searching compound: N2 (type: None)
+INFO 2025-08-13 00:32:45,779 services Buscando en PubChem: N2 (tipo: name)
+INFO 2025-08-13 00:32:47,494 services Compuesto guardado en cache: n2 (name) -> N2
+INFO 2025-08-13 00:32:47,494 views No SMILES available for N2, trying with formula: N2
+INFO 2025-08-13 00:34:18,925 views Searching for compound: agua (type: name)
+INFO 2025-08-13 00:34:18,930 services Compuesto encontrado en cache: agua
+INFO 2025-08-13 00:34:20,282 views Searching compound: agua (type: name)
+INFO 2025-08-13 00:34:20,284 services Compuesto encontrado en cache: agua
+INFO 2025-08-13 00:34:20,288 views No SMILES available for agua, trying with formula: H2O
+INFO 2025-08-13 00:34:30,877 views Searching compound: PH3 (type: name)
+INFO 2025-08-13 00:34:30,878 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:34:30,884 views No SMILES available for PH3, trying with formula: H3P
+INFO 2025-08-13 00:34:49,831 views Searching compound: PH3 (type: name)
+INFO 2025-08-13 00:34:49,833 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:34:49,844 views No SMILES available for PH3, trying with formula: H3P
+INFO 2025-08-13 00:34:57,823 views Searching compound: o3 (type: name)
+INFO 2025-08-13 00:34:57,824 services Compuesto encontrado en cache: o3
+INFO 2025-08-13 00:34:57,828 views No SMILES available for o3, trying with formula: O3
+WARNING 2025-08-13 00:34:57,837 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:35:04,885 views Searching compound: o3 (type: name)
+INFO 2025-08-13 00:35:04,887 services Compuesto encontrado en cache: o3
+INFO 2025-08-13 00:35:04,892 views No SMILES available for o3, trying with formula: O3
+WARNING 2025-08-13 00:35:04,893 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:35:11,781 views Searching compound: clna (type: name)
+INFO 2025-08-13 00:35:11,782 services Compuesto encontrado en cache: clna
+INFO 2025-08-13 00:35:11,786 views No SMILES available for clna, trying with formula: ClNa
+WARNING 2025-08-13 00:35:11,786 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:35:17,724 views Searching for compound: C6H12O6 (type: formula)
+INFO 2025-08-13 00:35:17,726 services Buscando en PubChem: C6H12O6 (tipo: formula)
+INFO 2025-08-13 00:35:20,293 services Compuesto guardado en cache: c6h12o6 (formula) -> C6H12O6
+INFO 2025-08-13 00:35:21,597 views Searching compound: C6H12O6 (type: formula)
+INFO 2025-08-13 00:35:21,598 services Compuesto encontrado en cache: C6H12O6
+INFO 2025-08-13 00:35:21,603 views No SMILES available for C6H12O6, trying with formula: C6H12O6
+WARNING 2025-08-13 00:35:21,604 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:35:41,157 views Searching compound: CC(=O)C (type: smiles)
+INFO 2025-08-13 00:35:41,158 services Buscando en PubChem: CC(=O)C (tipo: smiles)
+INFO 2025-08-13 00:35:43,935 services Compuesto guardado en cache: cc(=o)c (smiles) -> C3H6O
+INFO 2025-08-13 00:35:43,936 views No SMILES available for CC(=O)C, trying with formula: C3H6O
+INFO 2025-08-13 00:36:06,684 views Searching compound: CCO (type: smiles)
+INFO 2025-08-13 00:36:06,685 services Buscando en PubChem: CCO (tipo: smiles)
+INFO 2025-08-13 00:36:09,734 services Compuesto guardado en cache: cco (smiles) -> C2H6O
+INFO 2025-08-13 00:36:09,734 views No SMILES available for CCO, trying with formula: C2H6O
+INFO 2025-08-13 00:36:23,044 views Searching compound: O (type: smiles)
+INFO 2025-08-13 00:36:23,045 services Buscando en PubChem: O (tipo: smiles)
+INFO 2025-08-13 00:36:25,245 services Compuesto guardado en cache: o (smiles) -> H2O
+INFO 2025-08-13 00:36:25,246 views No SMILES available for O, trying with formula: H2O
+INFO 2025-08-13 00:37:25,957 views Searching compound: C6H12O6 (type: formula)
+INFO 2025-08-13 00:37:25,958 services Compuesto encontrado en cache: C6H12O6
+INFO 2025-08-13 00:37:25,962 views No SMILES available for C6H12O6, trying with formula: C6H12O6
+WARNING 2025-08-13 00:37:25,963 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:37:34,659 views Searching for compound: C6H12O6 (type: None)
+INFO 2025-08-13 00:37:34,660 services Buscando en PubChem: C6H12O6 (tipo: name)
+INFO 2025-08-13 00:37:36,191 services Compuesto guardado en cache: c6h12o6 (name) -> C6H12O6
+INFO 2025-08-13 00:37:44,988 views Searching compound: C6H12O6 (type: None)
+INFO 2025-08-13 00:37:44,989 services Compuesto encontrado en cache: C6H12O6
+INFO 2025-08-13 00:37:44,993 views No SMILES available for C6H12O6, trying with formula: C6H12O6
+WARNING 2025-08-13 00:37:44,994 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:38:27,725 views Searching compound: C6H12O6 (type: None)
+INFO 2025-08-13 00:38:27,726 services Compuesto encontrado en cache: C6H12O6
+INFO 2025-08-13 00:38:27,730 views No SMILES available for C6H12O6, trying with formula: C6H12O6
+WARNING 2025-08-13 00:38:27,731 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:38:44,621 views Searching for compound: NH3 (type: None)
+INFO 2025-08-13 00:38:44,623 services Compuesto encontrado en cache: NH3
+INFO 2025-08-12 21:39:19,404 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:39:19,415 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:39:19,421 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:39:19,442 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:39:20,773 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:39:20,773 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:39:20,773 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:39:20,773 autoreload Watching for file changes with StatReloader
+INFO 2025-08-13 00:39:53,885 views Searching compound: NH3 (type: None)
+INFO 2025-08-13 00:39:53,887 services Compuesto encontrado en cache: NH3
+INFO 2025-08-13 00:39:53,893 views No SMILES available for NH3, trying with formula: H3N
+INFO 2025-08-13 00:39:54,018 views Searching compound: HCl (type: None)
+INFO 2025-08-13 00:39:54,019 services Compuesto encontrado en cache: HCl
+INFO 2025-08-13 00:39:54,023 views No SMILES available for HCl, trying with formula: ClH
+INFO 2025-08-13 00:39:54,141 views Searching compound: SO2 (type: None)
+INFO 2025-08-13 00:39:54,143 services Compuesto encontrado en cache: SO2
+INFO 2025-08-13 00:39:54,149 views No SMILES available for SO2, trying with formula: O2S
+INFO 2025-08-13 00:41:23,969 views Structure found in cache for: H2O
+INFO 2025-08-13 00:41:24,103 views Searching compound: NH3 (type: None)
+INFO 2025-08-13 00:41:24,104 services Compuesto encontrado en cache: NH3
+INFO 2025-08-13 00:41:24,108 views No SMILES available for NH3, trying with formula: H3N
+INFO 2025-08-13 00:41:24,228 views Structure found in cache for: CH4
+INFO 2025-08-13 00:41:24,354 views Structure found in cache for: CO2
+INFO 2025-08-13 00:41:24,512 views Searching compound: HCl (type: None)
+INFO 2025-08-13 00:41:24,514 services Compuesto encontrado en cache: HCl
+INFO 2025-08-13 00:41:24,518 views No SMILES available for HCl, trying with formula: ClH
+INFO 2025-08-13 00:41:24,647 views Searching compound: PH3 (type: None)
+INFO 2025-08-13 00:41:24,648 services Compuesto encontrado en cache: PH3
+INFO 2025-08-13 00:41:24,651 views No SMILES available for PH3, trying with formula: H3P
+INFO 2025-08-13 00:41:24,768 views Structure found in cache for: H2S
+INFO 2025-08-13 00:41:24,909 views Structure found in cache for: BF3
+INFO 2025-08-13 00:41:25,050 views Searching compound: SO2 (type: None)
+INFO 2025-08-13 00:41:25,051 services Compuesto encontrado en cache: SO2
+INFO 2025-08-13 00:41:25,055 views No SMILES available for SO2, trying with formula: O2S
+INFO 2025-08-13 00:41:25,190 views Structure found in cache for: O2
+INFO 2025-08-13 00:41:25,315 views Structure found in cache for: N2
+ERROR 2025-08-13 00:43:32,287 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 00:43:32,288 log Unauthorized: /api/molecules/
+ERROR 2025-08-13 00:43:32,297 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 00:43:32,297 log Unauthorized: /api/molecules/
+INFO 2025-08-13 00:43:39,009 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:43:39,010 services Compuesto encontrado en cache: CaCO3
+INFO 2025-08-13 00:43:39,014 views No SMILES available for CaCO3, trying with formula: CCaO3
+WARNING 2025-08-13 00:43:39,015 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:43:46,550 views Searching compound: c1ccccc1 (type: smiles)
+INFO 2025-08-13 00:43:46,552 services Buscando en PubChem: c1ccccc1 (tipo: smiles)
+INFO 2025-08-13 00:43:48,491 services Compuesto guardado en cache: c1ccccc1 (smiles) -> C6H6
+INFO 2025-08-13 00:43:48,492 views No SMILES available for c1ccccc1, trying with formula: C6H6
+INFO 2025-08-13 00:50:25,468 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:50:25,469 services Compuesto encontrado en cache: CaCO3
+INFO 2025-08-13 00:50:25,473 views No SMILES available for CaCO3, trying with formula: CCaO3
+WARNING 2025-08-13 00:50:25,474 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-12 21:50:52,014 autoreload D:\ChemsTools\chemstools_project\backend\structures\services.py changed, reloading.
+INFO 2025-08-12 21:50:52,016 autoreload D:\ChemsTools\chemstools_project\backend\structures\services.py changed, reloading.
+INFO 2025-08-12 21:50:52,038 autoreload D:\ChemsTools\chemstools_project\backend\structures\services.py changed, reloading.
+INFO 2025-08-12 21:50:52,105 autoreload D:\ChemsTools\chemstools_project\backend\structures\services.py changed, reloading.
+INFO 2025-08-12 21:50:53,279 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:50:53,279 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:50:53,279 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:50:53,280 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:51:09,297 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:51:09,337 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:51:09,364 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:51:09,402 autoreload D:\ChemsTools\chemstools_project\backend\structures\views.py changed, reloading.
+INFO 2025-08-12 21:51:10,181 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:51:10,200 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:51:10,216 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:51:10,246 autoreload Watching for file changes with StatReloader
+INFO 2025-08-13 00:51:41,323 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:51:41,324 services Buscando en PubChem: CaCO3 (tipo: formula)
+INFO 2025-08-13 00:51:44,037 services Compuesto guardado en cache: caco3 (formula) -> CCaO3
+INFO 2025-08-13 00:51:44,037 views No SMILES available for CaCO3, trying with formula: CCaO3
+WARNING 2025-08-13 00:51:44,038 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:52:50,453 views Structure found in cache for: CO2
+INFO 2025-08-12 21:53:04,308 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 21:53:04,339 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 21:53:04,358 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 21:53:04,362 autoreload D:\ChemsTools\chemstools_project\backend\structures\utils.py changed, reloading.
+INFO 2025-08-12 21:53:05,171 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:05,206 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:05,206 autoreload Watching for file changes with StatReloader
+INFO 2025-08-12 21:53:05,208 autoreload Watching for file changes with StatReloader
+INFO 2025-08-13 00:53:16,561 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:53:16,563 services Compuesto encontrado en cache: CaCO3
+INFO 2025-08-13 00:53:16,569 views No SMILES available for CaCO3, trying with formula: CCaO3
+WARNING 2025-08-13 00:53:16,569 log Bad Request: /api/structures/lewis-generator/
+INFO 2025-08-13 00:54:15,896 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:54:15,899 services Compuesto encontrado en cache: CaCO3
+INFO 2025-08-13 00:54:28,054 views Structure found in cache for: H2O
+INFO 2025-08-13 00:54:28,211 views Searching compound: NH3 (type: None)
+INFO 2025-08-13 00:54:28,213 services Compuesto encontrado en cache: NH3
+INFO 2025-08-13 00:54:28,217 views Using hardcoded structure for H3N
+INFO 2025-08-13 00:54:28,349 views Structure found in cache for: CH4
+INFO 2025-08-13 00:54:28,490 views Structure found in cache for: CO2
+INFO 2025-08-13 00:54:28,646 views Searching compound: HCl (type: None)
+INFO 2025-08-13 00:54:28,648 services Compuesto encontrado en cache: HCl
+INFO 2025-08-13 00:54:28,652 views Using hardcoded structure for ClH
+INFO 2025-08-13 00:54:28,794 views Searching compound: CaCO3 (type: None)
+INFO 2025-08-13 00:54:28,795 services Buscando en PubChem: CaCO3 (tipo: name)
+INFO 2025-08-13 00:54:31,140 services Compuesto guardado en cache: caco3 (name) -> CCaO3
+INFO 2025-08-13 00:54:31,197 views Searching compound: NaCl (type: None)
+INFO 2025-08-13 00:54:31,198 services Buscando en PubChem: NaCl (tipo: name)
+INFO 2025-08-13 00:54:33,032 services Compuesto guardado en cache: nacl (name) -> ClNa
+INFO 2025-08-13 00:54:33,093 views Searching compound: CuSO4 (type: None)
+INFO 2025-08-13 00:54:33,095 services Buscando en PubChem: CuSO4 (tipo: name)
+INFO 2025-08-13 00:54:35,030 services Compuesto guardado en cache: cuso4 (name) -> CuO4S
+INFO 2025-08-13 00:54:35,084 views Searching compound: Fe2O3 (type: None)
+INFO 2025-08-13 00:54:35,086 services Buscando en PubChem: Fe2O3 (tipo: name)
+INFO 2025-08-13 00:54:35,896 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/Fe2O3/cids/JSON
+WARNING 2025-08-13 00:54:35,896 services No se encontró el compuesto: Fe2O3
+INFO 2025-08-13 00:54:35,899 services Compuesto encontrado en cache: Fe2O3
+INFO 2025-08-13 00:55:02,814 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:55:02,815 services Compuesto encontrado en cache: CaCO3
+INFO 2025-08-13 00:55:12,804 views Searching compound: CaCO3 (type: formula)
+INFO 2025-08-13 00:55:12,806 services Compuesto encontrado en cache: CaCO3
+INFO 2025-08-13 00:55:18,725 views Searching compound: fe2o3 (type: formula)
+INFO 2025-08-13 00:55:18,726 services Compuesto encontrado en cache: fe2o3
+INFO 2025-08-13 00:56:05,891 views Searching for compound: H2SO4 (type: formula)
+INFO 2025-08-13 00:56:05,893 services Buscando en PubChem: H2SO4 (tipo: formula)
+INFO 2025-08-13 00:56:08,637 services Compuesto guardado en cache: h2so4 (formula) -> H2O4S
+INFO 2025-08-13 00:56:10,916 views Searching compound: H2SO4 (type: formula)
+INFO 2025-08-13 00:56:10,917 services Compuesto encontrado en cache: H2SO4
+INFO 2025-08-13 00:56:30,581 views Searching for compound: N2O5 (type: formula)
+INFO 2025-08-13 00:56:30,583 services Buscando en PubChem: N2O5 (tipo: formula)
+INFO 2025-08-13 00:56:33,696 services Compuesto guardado en cache: n2o5 (formula) -> N2O5
+INFO 2025-08-13 00:56:46,637 views Searching compound: N2O5 (type: formula)
+INFO 2025-08-13 00:56:46,638 services Compuesto encontrado en cache: N2O5
+INFO 2025-08-13 00:57:02,621 views Searching for compound: MgBr2 (type: formula)
+INFO 2025-08-13 00:57:02,623 services Compuesto encontrado en cache: MgBr2
+INFO 2025-08-13 00:57:09,708 views Searching compound: MgBr2 (type: formula)
+INFO 2025-08-13 00:57:09,709 services Compuesto encontrado en cache: MgBr2
