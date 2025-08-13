@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { addNotification } from '@/store/notificationsSlice';
 
 // Type definitions for the backend API response
 interface AtomData {
@@ -32,6 +34,13 @@ interface StructureResponse {
   mol_data: string;
   lewis_data: LewisData;
   created_at: string;
+  // PubChem fields
+  query?: string;
+  iupac_name?: string;
+  pubchem_cid?: number;
+  common_names?: string[];
+  molecular_weight?: number;
+  source?: string;
 }
 
 interface ApiError {
@@ -40,26 +49,66 @@ interface ApiError {
 }
 
 const LewisStructureGenerator: React.FC = () => {
+  const dispatch = useDispatch();
+  
   // State management
-  const [formula, setFormula] = useState<string>('');
+  const [query, setQuery] = useState<string>('');
+  const [queryType, setQueryType] = useState<string>('auto');
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchLoading, setSearchLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [structureData, setStructureData] = useState<StructureResponse | null>(null);
+  const [searchResult, setSearchResult] = useState<any | null>(null);
   const [validationError, setValidationError] = useState<string>('');
   const [kekuleLoaded, setKekuleLoaded] = useState<boolean>(false);
+  const [recentStructures, setRecentStructures] = useState<StructureResponse[]>([]);
+  const [cachedCompounds, setCachedCompounds] = useState<any[]>([]);
+  const [showSearchHelp, setShowSearchHelp] = useState<boolean>(false);
   
   // Refs for canvas and molecular viewer
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const viewerContainerRef = useRef<HTMLDivElement>(null);
 
-  // Supported molecules for quick selection
-  const supportedMolecules = [
-    'H2O', 'CH4', 'NH3', 'CO2', 'C2H6', 'C2H4', 'C2H2', 
-    'HCl', 'HF', 'H2S', 'PH3', 'CH3OH', 'CH2O', 'C2H5OH',
-    'SO2', 'PCl3', 'BF3', 'SF6', 'ClF3', 'XeF4'
+  // Query type options
+  const queryTypes = [
+    { value: 'auto', label: 'Detección Automática', icon: '🔍' },
+    { value: 'name', label: 'Nombre (Español/Inglés)', icon: '📝' },
+    { value: 'formula', label: 'Fórmula Molecular', icon: '⚛️' },
+    { value: 'smiles', label: 'SMILES', icon: '🧬' },
+    { value: 'inchi', label: 'InChI', icon: '🔐' }
   ];
 
-  // Load Kekule.js dynamically
+  // Example queries for quick selection - now supporting multiple types
+  const exampleQueries = {
+    'Nombres Comunes': [
+      { query: 'agua', type: 'name' },
+      { query: 'water', type: 'name' },
+      { query: 'sal', type: 'name' },
+      { query: 'azúcar', type: 'name' },
+      { query: 'vinagre', type: 'name' },
+      { query: 'alcohol', type: 'name' },
+      { query: 'acetona', type: 'name' },
+      { query: 'benceno', type: 'name' }
+    ],
+    'Fórmulas Moleculares': [
+      { query: 'H2O', type: 'formula' },
+      { query: 'CO2', type: 'formula' },
+      { query: 'NH3', type: 'formula' },
+      { query: 'CH4', type: 'formula' },
+      { query: 'C6H12O6', type: 'formula' },
+      { query: 'H2SO4', type: 'formula' },
+      { query: 'NaCl', type: 'formula' },
+      { query: 'CaCO3', type: 'formula' }
+    ],
+    'SMILES': [
+      { query: 'O', type: 'smiles' },
+      { query: 'CCO', type: 'smiles' },
+      { query: 'CC(=O)C', type: 'smiles' },
+      { query: 'c1ccccc1', type: 'smiles' }
+    ]
+  };
+
+  // Load Kekule.js dynamically and fetch initial data
   useEffect(() => {
     const loadKekule = async () => {
       try {
@@ -85,120 +134,220 @@ const LewisStructureGenerator: React.FC = () => {
       }
     };
     
+    const loadInitialData = async () => {
+      // Load recent structures
+      const structures = await fetchRecentStructures();
+      setRecentStructures(structures.slice(0, 5));
+      
+      // Load cached compounds from PubChem
+      const cached = await fetchCachedCompounds();
+      setCachedCompounds(cached.slice(0, 10));
+    };
+    
     loadKekule();
+    loadInitialData();
   }, []);
 
-  // Formula validation
-  const validateFormula = (input: string): boolean => {
-    const formulaRegex = /^[A-Z][a-z]?(\d*[A-Z][a-z]?\d*)*$/;
-    return formulaRegex.test(input);
+  // Validate query based on type
+  const validateQuery = (input: string, type: string): boolean => {
+    if (!input || input.trim() === '') return false;
+    
+    switch (type) {
+      case 'formula':
+        // Basic formula validation
+        const formulaRegex = /^[A-Z][a-z]?(\d*[A-Z][a-z]?\d*)*$/;
+        return formulaRegex.test(input);
+      case 'smiles':
+        // Basic SMILES validation (very simplified)
+        return input.length > 0;
+      case 'inchi':
+        // InChI starts with 'InChI='
+        return input.startsWith('InChI=');
+      case 'name':
+      case 'auto':
+        // Names can be anything
+        return input.length > 0;
+      default:
+        return true;
+    }
   };
 
   // Handle input change with validation
-  const handleFormulaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
-    setFormula(value);
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
+    setSearchResult(null);
     
-    if (value && !validateFormula(value)) {
-      setValidationError('Formato inválido de fórmula molecular. Usa formato como H2O, CH4, etc.');
-    } else {
+    // Clear validation error when typing
+    if (validationError) {
       setValidationError('');
     }
     
-    // Clear previous results when input changes
-    if (value !== structureData?.formula) {
+    // Clear previous results when input changes significantly
+    if (value !== structureData?.query && value !== structureData?.formula) {
       setStructureData(null);
       setError(null);
     }
   };
 
-  // Mock API call for demo purposes
-  const generateStructure = async (formulaInput: string): Promise<StructureResponse> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock data for common molecules
-    const mockData: Record<string, StructureResponse> = {
-      'CO2': {
-        id: 1,
-        formula: 'CO2',
-        mol_data: '',
-        lewis_data: {
-          formula: 'CO2',
-          total_valence_electrons: 16,
-          atom_counts: { C: 1, O: 2 },
-          molecular_weight: 44.01,
-          atoms: [
-            { index: 0, symbol: 'O', formal_charge: 0, lone_pairs: 2, hybridization: 'sp', position: [-2, 0] },
-            { index: 1, symbol: 'C', formal_charge: 0, lone_pairs: 0, hybridization: 'sp', position: [0, 0] },
-            { index: 2, symbol: 'O', formal_charge: 0, lone_pairs: 2, hybridization: 'sp', position: [2, 0] }
-          ],
-          bonds: [
-            { begin_atom: 0, end_atom: 1, order: 2, is_aromatic: false },
-            { begin_atom: 1, end_atom: 2, order: 2, is_aromatic: false }
-          ]
-        },
-        created_at: new Date().toISOString()
-      },
-      'H2O': {
-        id: 2,
-        formula: 'H2O',
-        mol_data: '',
-        lewis_data: {
-          formula: 'H2O',
-          total_valence_electrons: 8,
-          atom_counts: { H: 2, O: 1 },
-          molecular_weight: 18.015,
-          atoms: [
-            { index: 0, symbol: 'O', formal_charge: 0, lone_pairs: 2, hybridization: 'sp3', position: [0, 0] },
-            { index: 1, symbol: 'H', formal_charge: 0, lone_pairs: 0, hybridization: 's', position: [-1.2, 0.8] },
-            { index: 2, symbol: 'H', formal_charge: 0, lone_pairs: 0, hybridization: 's', position: [1.2, 0.8] }
-          ],
-          bonds: [
-            { begin_atom: 0, end_atom: 1, order: 1, is_aromatic: false },
-            { begin_atom: 0, end_atom: 2, order: 1, is_aromatic: false }
-          ]
-        },
-        created_at: new Date().toISOString()
-      },
-      'NH3': {
-        id: 3,
-        formula: 'NH3',
-        mol_data: '',
-        lewis_data: {
-          formula: 'NH3',
-          total_valence_electrons: 8,
-          atom_counts: { N: 1, H: 3 },
-          molecular_weight: 17.031,
-          atoms: [
-            { index: 0, symbol: 'N', formal_charge: 0, lone_pairs: 1, hybridization: 'sp3', position: [0, 0] },
-            { index: 1, symbol: 'H', formal_charge: 0, lone_pairs: 0, hybridization: 's', position: [-1, -1] },
-            { index: 2, symbol: 'H', formal_charge: 0, lone_pairs: 0, hybridization: 's', position: [1, -1] },
-            { index: 3, symbol: 'H', formal_charge: 0, lone_pairs: 0, hybridization: 's', position: [0, 1.2] }
-          ],
-          bonds: [
-            { begin_atom: 0, end_atom: 1, order: 1, is_aromatic: false },
-            { begin_atom: 0, end_atom: 2, order: 1, is_aromatic: false },
-            { begin_atom: 0, end_atom: 3, order: 1, is_aromatic: false }
-          ]
-        },
-        created_at: new Date().toISOString()
-      }
-    };
+  // Handle query type change
+  const handleQueryTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setQueryType(e.target.value);
+    setValidationError('');
+  };
 
-    if (mockData[formulaInput]) {
-      return mockData[formulaInput];
-    } else {
-      throw new Error(`Estructura no disponible para ${formulaInput}. Usa CO2, H2O o NH3 para la demostración.`);
+  // Search compound info from PubChem
+  const searchCompound = async (searchQuery: string, searchType?: string): Promise<any> => {
+    try {
+      const params = new URLSearchParams({ q: searchQuery });
+      if (searchType && searchType !== 'auto') {
+        params.append('type', searchType);
+      }
+      
+      const response = await fetch(`http://localhost:8000/api/structures/search/?${params}`);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Compound not found');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Error searching compound');
+    }
+  };
+
+  // API call to backend for Lewis structure generation
+  const generateStructure = async (queryInput: string, queryTypeInput?: string): Promise<StructureResponse> => {
+    try {
+      const response = await fetch('http://localhost:8000/api/structures/lewis-generator/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: queryInput,
+          query_type: queryTypeInput !== 'auto' ? queryTypeInput : undefined
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json() as ApiError;
+        throw new Error(errorData.details || errorData.error || 'Error al generar la estructura');
+      }
+
+      const data = await response.json() as StructureResponse;
+      
+      // Transform backend response to match our interface if needed
+      // The backend already returns the correct format, but we ensure compatibility
+      return {
+        id: data.id,
+        formula: data.formula,
+        mol_data: data.mol_data || '',
+        lewis_data: {
+          formula: data.lewis_data.formula,
+          total_valence_electrons: data.lewis_data.total_valence_electrons,
+          atom_counts: data.lewis_data.atom_counts,
+          atoms: data.lewis_data.atoms.map((atom: any) => ({
+            index: atom.index,
+            symbol: atom.symbol,
+            formal_charge: atom.formal_charge,
+            lone_pairs: atom.lone_pairs,
+            hybridization: atom.hybridization,
+            position: atom.position
+          })),
+          bonds: data.lewis_data.bonds.map((bond: any) => ({
+            begin_atom: bond.begin_atom,
+            end_atom: bond.end_atom,
+            order: bond.order,
+            is_aromatic: bond.is_aromatic
+          })),
+          molecular_weight: data.lewis_data.molecular_weight
+        },
+        created_at: data.created_at
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Error inesperado al conectar con el servidor');
+    }
+  };
+
+  // Fetch recent structures from backend
+  const fetchRecentStructures = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/structures/');
+      if (response.ok) {
+        const structures = await response.json();
+        return structures;
+      }
+    } catch (error) {
+      console.error('Error fetching recent structures:', error);
+    }
+    return [];
+  };
+
+  // Fetch cached compounds from PubChem cache
+  const fetchCachedCompounds = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/structures/cached-compounds/?limit=10');
+      if (response.ok) {
+        const compounds = await response.json();
+        return compounds;
+      }
+    } catch (error) {
+      console.error('Error fetching cached compounds:', error);
+    }
+    return [];
+  };
+
+  // Handle compound search
+  const handleSearch = async () => {
+    if (!query || query.trim() === '') {
+      setValidationError('Por favor, ingresa una búsqueda');
+      return;
+    }
+
+    setSearchLoading(true);
+    setError(null);
+    setSearchResult(null);
+
+    try {
+      const result = await searchCompound(query, queryType);
+      setSearchResult(result);
+      
+      dispatch(addNotification({
+        message: `Compuesto encontrado: ${result.molecular_formula}`,
+        type: 'success'
+      }));
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Compuesto no encontrado';
+      setError(errorMessage);
+      
+      dispatch(addNotification({
+        message: errorMessage,
+        type: 'error'
+      }));
+    } finally {
+      setSearchLoading(false);
     }
   };
 
   // Handle structure generation
-  const handleSubmit = async (e: React.MouseEvent | React.KeyboardEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.MouseEvent | React.KeyboardEvent) => {
+    if (e) e.preventDefault();
     
-    if (!formula || !validateFormula(formula)) {
-      setValidationError('Por favor, ingresa una fórmula molecular válida');
+    if (!query || query.trim() === '') {
+      const message = 'Por favor, ingresa una búsqueda válida';
+      setValidationError(message);
+      dispatch(addNotification({
+        message,
+        type: 'error'
+      }));
       return;
     }
 
@@ -207,23 +356,60 @@ const LewisStructureGenerator: React.FC = () => {
     setStructureData(null);
 
     try {
-      const result = await generateStructure(formula);
+      dispatch(addNotification({
+        message: `Generando estructura de Lewis para "${query}"...`,
+        type: 'info'
+      }));
+      
+      const result = await generateStructure(query, queryType);
       setStructureData(result);
       setError(null);
+      
+      // Show additional info if from PubChem
+      let successMessage = `Estructura de Lewis generada exitosamente`;
+      if (result.source === 'pubchem_new' || result.source === 'pubchem_formula') {
+        successMessage += ` (desde PubChem: ${result.iupac_name || result.formula})`;
+      }
+      
+      dispatch(addNotification({
+        message: successMessage,
+        type: 'success'
+      }));
+      
+      // Update recent structures list
+      setRecentStructures(prev => [result, ...prev.filter(s => s.formula !== result.formula)].slice(0, 5));
+      
+      // Update cached compounds if new from PubChem
+      if (result.pubchem_cid) {
+        const cached = await fetchCachedCompounds();
+        setCachedCompounds(cached.slice(0, 10));
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Error al generar la estructura';
       setError(errorMessage);
       setStructureData(null);
+      
+      dispatch(addNotification({
+        message: errorMessage,
+        type: 'error'
+      }));
     } finally {
       setLoading(false);
     }
   };
 
   // Quick select handler
-  const handleQuickSelect = (selectedFormula: string) => {
-    setFormula(selectedFormula);
+  const handleQuickSelect = (selectedQuery: string, selectedType: string = 'auto') => {
+    setQuery(selectedQuery);
+    setQueryType(selectedType);
     setValidationError('');
     setError(null);
+    setSearchResult(null);
+    
+    dispatch(addNotification({
+      message: `Búsqueda "${selectedQuery}" seleccionada`,
+      type: 'info'
+    }));
   };
 
   // Enhanced molecular structure renderer with better visuals
@@ -242,6 +428,20 @@ const LewisStructureGenerator: React.FC = () => {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const scale = 60;
+    
+    // Helper function to get bonds connected to an atom
+    const getBondsForAtom = (atomIndex: number) => {
+      return bonds.filter(bond => 
+        bond.begin_atom === atomIndex || bond.end_atom === atomIndex
+      );
+    };
+    
+    // Helper function to calculate angle between two atoms
+    const getAngleTo = (atom1: any, atom2: any) => {
+      const dx = atom2.position[0] - atom1.position[0];
+      const dy = atom2.position[1] - atom1.position[1];
+      return Math.atan2(dy, dx);
+    };
 
     // Enhanced color scheme
     const atomColors: Record<string, string> = {
@@ -359,25 +559,99 @@ const LewisStructureGenerator: React.FC = () => {
       }
 
       // Draw lone pairs with improved visualization
-      if (atom.lone_pairs > 0) {
-        ctx.fillStyle = '#e74c3c';
-        const pairRadius = 4;
-        const lpDistance = 28;
+      if (atom.lone_pairs > 0 && atom.symbol !== 'H') { // Hydrogen doesn't show lone pairs
+        ctx.fillStyle = '#2c3e50';
+        const pairRadius = 3;
+        const lpDistance = 25;
+        const dotSpacing = 5;
         
-        for (let i = 0; i < atom.lone_pairs; i++) {
-          const angle = (i * 2 * Math.PI) / Math.max(atom.lone_pairs, 2) - Math.PI / 2;
+        // Get bonds connected to this atom to avoid overlapping
+        const atomBonds = getBondsForAtom(atom.index);
+        const bondAngles: number[] = [];
+        
+        // Calculate angles to bonded atoms
+        atomBonds.forEach(bond => {
+          const otherAtomIndex = bond.begin_atom === atom.index ? bond.end_atom : bond.begin_atom;
+          const otherAtom = atoms[otherAtomIndex];
+          bondAngles.push(getAngleTo(atom, otherAtom));
+        });
+        
+        // Sort bond angles
+        bondAngles.sort((a, b) => a - b);
+        
+        // Find the best positions for lone pairs (avoiding bonds)
+        const lpAngles: number[] = [];
+        
+        if (atom.symbol === 'O' && atomBonds.length === 2 && atom.lone_pairs === 2) {
+          // Special case for water-like molecules
+          // Place lone pairs perpendicular to the bonds
+          const avgBondAngle = bondAngles.reduce((a, b) => a + b, 0) / bondAngles.length;
+          lpAngles.push(avgBondAngle + Math.PI/2);
+          lpAngles.push(avgBondAngle - Math.PI/2);
+        } else if (atom.symbol === 'N' && atomBonds.length === 3 && atom.lone_pairs === 1) {
+          // Special case for ammonia-like molecules
+          // Place lone pair opposite to the average bond direction
+          const avgBondAngle = bondAngles.reduce((a, b) => a + b, 0) / bondAngles.length;
+          lpAngles.push(avgBondAngle + Math.PI);
+        } else if (atomBonds.length === 1) {
+          // For terminal atoms with one bond
+          const bondAngle = bondAngles[0];
+          if (atom.lone_pairs === 1) {
+            lpAngles.push(bondAngle + Math.PI);
+          } else if (atom.lone_pairs === 2) {
+            lpAngles.push(bondAngle + 2*Math.PI/3);
+            lpAngles.push(bondAngle - 2*Math.PI/3);
+          } else if (atom.lone_pairs === 3) {
+            lpAngles.push(bondAngle + Math.PI/2);
+            lpAngles.push(bondAngle + Math.PI);
+            lpAngles.push(bondAngle - Math.PI/2);
+          }
+        } else if (atomBonds.length === 0) {
+          // For isolated atoms
+          for (let i = 0; i < atom.lone_pairs; i++) {
+            lpAngles.push((i * 2 * Math.PI) / atom.lone_pairs);
+          }
+        } else {
+          // General case: distribute lone pairs in the largest gaps between bonds
+          const gaps: {angle: number, size: number}[] = [];
+          
+          for (let i = 0; i < bondAngles.length; i++) {
+            const nextIndex = (i + 1) % bondAngles.length;
+            let gapSize = bondAngles[nextIndex] - bondAngles[i];
+            if (gapSize < 0) gapSize += 2 * Math.PI;
+            const gapAngle = bondAngles[i] + gapSize / 2;
+            gaps.push({angle: gapAngle, size: gapSize});
+          }
+          
+          // Sort gaps by size (largest first)
+          gaps.sort((a, b) => b.size - a.size);
+          
+          // Place lone pairs in the largest gaps
+          for (let i = 0; i < Math.min(atom.lone_pairs, gaps.length); i++) {
+            lpAngles.push(gaps[i].angle);
+          }
+        }
+        
+        // Draw the lone pairs
+        lpAngles.forEach(angle => {
           const lpX = x + Math.cos(angle) * lpDistance;
-          const lpY = y + Math.sin(angle) * lpDistance;
+          const lpY = y - Math.sin(angle) * lpDistance; // Note the negative for Y
           
           // Draw two dots for each lone pair
+          const perpAngle = angle + Math.PI/2;
+          const dot1X = lpX + Math.cos(perpAngle) * dotSpacing/2;
+          const dot1Y = lpY - Math.sin(perpAngle) * dotSpacing/2;
+          const dot2X = lpX - Math.cos(perpAngle) * dotSpacing/2;
+          const dot2Y = lpY + Math.sin(perpAngle) * dotSpacing/2;
+          
           ctx.beginPath();
-          ctx.arc(lpX - 3, lpY, pairRadius, 0, 2 * Math.PI);
+          ctx.arc(dot1X, dot1Y, pairRadius, 0, 2 * Math.PI);
           ctx.fill();
           
           ctx.beginPath();
-          ctx.arc(lpX + 3, lpY, pairRadius, 0, 2 * Math.PI);
+          ctx.arc(dot2X, dot2Y, pairRadius, 0, 2 * Math.PI);
           ctx.fill();
-        }
+        });
       }
     });
   };
@@ -424,68 +698,244 @@ const LewisStructureGenerator: React.FC = () => {
           )}
         </div>
 
-        {/* Input Section */}
+        {/* Enhanced Input Section with PubChem Integration */}
         <div className="mb-8">
-          <div className="flex flex-col lg:flex-row gap-4 items-end">
-            <div className="flex-1">
-              <label htmlFor="formula" className="block text-sm font-semibold text-gray-700 mb-3">
-                Fórmula Molecular
-              </label>
-              <input
-                id="formula"
-                type="text"
-                value={formula}
-                onChange={handleFormulaChange}
-                placeholder="Ingresa la fórmula molecular (ej: H2O, CH4, NH3, CO2)"
-                className={`w-full px-6 py-4 border-2 rounded-xl text-lg focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition-all ${
-                  validationError ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                }`}
-                disabled={loading}
-                onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
-              />
-              {validationError && (
-                <p className="mt-2 text-sm text-red-600 flex items-center gap-2 bg-red-50 p-2 rounded-lg">
-                  <span className="text-red-500">⚠️</span>
-                  {validationError}
-                </p>
-              )}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-800">Búsqueda de Compuestos</h3>
+              <button
+                onClick={() => setShowSearchHelp(!showSearchHelp)}
+                className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
+              >
+                <span>❔</span> Ayuda
+              </button>
             </div>
-            <button
-              onClick={handleSubmit}
-              disabled={loading || !!validationError || !formula}
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 focus:ring-4 focus:ring-blue-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 transition-all transform hover:scale-105 disabled:hover:scale-100"
-            >
-              {loading ? (
-                <>
-                  <span className="animate-spin text-xl">⏳</span>
-                  Generando...
-                </>
-              ) : (
-                <>
-                  <span className="text-xl">🔍</span>
-                  Generar Estructura
-                </>
-              )}
-            </button>
+            
+            {showSearchHelp && (
+              <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-900 mb-2">Puedes buscar por:</h4>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  <li>• <strong>Nombres comunes:</strong> agua, water, sal, azúcar, acetona</li>
+                  <li>• <strong>Fórmulas moleculares:</strong> H2O, CO2, NaCl, C6H12O6</li>
+                  <li>• <strong>SMILES:</strong> O, CCO, CC(=O)C, c1ccccc1</li>
+                  <li>• <strong>Nombres IUPAC:</strong> ethanoic acid, sodium chloride</li>
+                  <li>• <strong>InChI:</strong> InChI=1S/H2O/h1H2</li>
+                </ul>
+                <p className="mt-2 text-xs text-blue-700">
+                  💡 El sistema busca automáticamente en PubChem para encontrar cualquier compuesto!
+                </p>
+              </div>
+            )}
+            
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="query" className="block text-sm font-semibold text-gray-700 mb-2">
+                  Búsqueda de Compuesto
+                </label>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <select
+                    value={queryType}
+                    onChange={handleQueryTypeChange}
+                    className="sm:w-auto px-3 py-3 border-2 border-gray-300 rounded-lg bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    disabled={loading}
+                  >
+                    {queryTypes.map(type => (
+                      <option key={type.value} value={type.value}>
+                        {type.icon} {type.label}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    id="query"
+                    type="text"
+                    value={query}
+                    onChange={handleQueryChange}
+                    placeholder={queryType === 'formula' ? "Ej: H2O, CO2, CH4" : queryType === 'name' ? "Ej: agua, water, sal" : "Ingresa tu búsqueda..."}
+                    className={`flex-1 px-4 py-3 border-2 rounded-lg text-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all ${
+                      validationError ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                    disabled={loading}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
+                  />
+                </div>
+                {validationError && (
+                  <p className="mt-2 text-sm text-red-600 flex items-center gap-2 bg-red-50 p-2 rounded-lg">
+                    <span className="text-red-500">⚠️</span>
+                    {validationError}
+                  </p>
+                )}
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                <button
+                  onClick={handleSearch}
+                  disabled={searchLoading || !query}
+                  className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white font-semibold rounded-lg hover:from-green-600 hover:to-teal-600 focus:ring-2 focus:ring-green-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all transform hover:scale-105 disabled:hover:scale-100 whitespace-nowrap"
+                >
+                  {searchLoading ? (
+                    <>
+                      <span className="animate-spin">⏳</span>
+                      <span className="hidden sm:inline">Buscando...</span>
+                      <span className="sm:hidden">Buscar</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>🔍</span>
+                      <span>Buscar Info</span>
+                    </>
+                  )}
+                </button>
+                
+                <button
+                  onClick={() => handleSubmit()}
+                  disabled={loading || !query}
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 focus:ring-2 focus:ring-blue-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all transform hover:scale-105 disabled:hover:scale-100 whitespace-nowrap"
+                >
+                  {loading ? (
+                    <>
+                      <span className="animate-spin">⏳</span>
+                      <span className="hidden sm:inline">Generando...</span>
+                      <span className="sm:hidden">Generar</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>⚛️</span>
+                      <span>Generar Lewis</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+            
+            {/* Search Result Preview */}
+            {searchResult && (
+              <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
+                <h4 className="font-semibold text-gray-800 mb-2">Compuesto encontrado:</h4>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+                  <div>
+                    <span className="text-gray-600">Fórmula:</span>
+                    <span className="ml-2 font-mono font-semibold">{searchResult.molecular_formula}</span>
+                  </div>
+                  {searchResult.iupac_name && (
+                    <div>
+                      <span className="text-gray-600">IUPAC:</span>
+                      <span className="ml-2">{searchResult.iupac_name}</span>
+                    </div>
+                  )}
+                  {searchResult.molecular_weight && (
+                    <div>
+                      <span className="text-gray-600">Peso:</span>
+                      <span className="ml-2">
+                        {typeof searchResult.molecular_weight === 'number' 
+                          ? `${searchResult.molecular_weight.toFixed(2)} g/mol`
+                          : `${searchResult.molecular_weight} g/mol`}
+                      </span>
+                    </div>
+                  )}
+                  {searchResult.pubchem_cid && (
+                    <div>
+                      <span className="text-gray-600">PubChem CID:</span>
+                      <span className="ml-2">{searchResult.pubchem_cid}</span>
+                    </div>
+                  )}
+                </div>
+                {searchResult.common_names && searchResult.common_names.length > 0 && (
+                  <div className="mt-2">
+                    <span className="text-gray-600 text-sm">Nombres comunes:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {searchResult.common_names.slice(0, 5).map((name: string, idx: number) => (
+                        <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Quick Select */}
+        {/* Example Queries - Now with multiple types */}
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Selección Rápida:</h3>
-          <div className="flex flex-wrap gap-3">
-            {supportedMolecules.map((mol) => (
-              <button
-                key={mol}
-                onClick={() => handleQuickSelect(mol)}
-                className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-blue-200 text-gray-700 hover:text-blue-700 rounded-lg transition-all transform hover:scale-105 border border-gray-300 hover:border-blue-300"
-                disabled={loading}
-              >
-                {mol}
-              </button>
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">Ejemplos de Búsqueda:</h3>
+          <div className="space-y-4">
+            {Object.entries(exampleQueries).map(([category, queries]) => (
+              <div key={category}>
+                <h4 className="text-sm font-medium text-gray-600 mb-2">{category}</h4>
+                <div className="flex flex-wrap gap-2">
+                  {queries.map((example) => (
+                    <button
+                      key={example.query}
+                      onClick={() => handleQuickSelect(example.query, example.type)}
+                      className="px-3 py-1.5 text-sm font-medium bg-gradient-to-r from-gray-100 to-gray-200 hover:from-blue-100 hover:to-blue-200 text-gray-700 hover:text-blue-700 rounded-lg transition-all transform hover:scale-105 border border-gray-300 hover:border-blue-300"
+                      disabled={loading}
+                      title={`Tipo: ${example.type}`}
+                    >
+                      {example.query}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
+
+        {/* Popular Compounds from Cache */}
+        {cachedCompounds.length > 0 && (
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Compuestos Populares (desde PubChem):</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              {cachedCompounds.map((compound) => (
+                <button
+                  key={`${compound.query}-${compound.query_type}`}
+                  onClick={() => {
+                    setQuery(compound.query);
+                    setQueryType(compound.query_type);
+                    handleSubmit();
+                  }}
+                  className="p-3 bg-gradient-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 rounded-lg border border-purple-200 hover:border-purple-300 transition-all transform hover:scale-105"
+                  disabled={loading}
+                >
+                  <div className="text-sm font-semibold text-purple-800">{compound.molecular_formula}</div>
+                  <div className="text-xs text-purple-600 mt-1">{compound.query}</div>
+                  <div className="text-xs text-gray-500 mt-1">🔥 {compound.access_count} usos</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Recent Structures */}
+        {recentStructures.length > 0 && (
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Estructuras Recientes:</h3>
+            <div className="flex flex-wrap gap-3">
+              {recentStructures.map((structure) => (
+                <button
+                  key={structure.id}
+                  onClick={() => {
+                    setQuery(structure.query || structure.formula);
+                    setStructureData(structure);
+                    setValidationError('');
+                    setError(null);
+                    dispatch(addNotification({
+                      message: `Mostrando estructura guardada de ${structure.formula}`,
+                      type: 'info'
+                    }));
+                  }}
+                  className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-100 to-pink-100 hover:from-purple-200 hover:to-pink-200 text-purple-700 hover:text-purple-800 rounded-lg transition-all transform hover:scale-105 border border-purple-300 hover:border-purple-400"
+                  disabled={loading}
+                >
+                  <span className="font-mono">{structure.formula}</span>
+                  <span className="text-xs ml-2 opacity-75">
+                    ({new Date(structure.created_at).toLocaleDateString()})
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Error Display */}
         {error && (
