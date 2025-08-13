@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
+import { addNotification } from '../../../store/notificationsSlice';
 import {
   startChallenge,
   submitCoefficients,
@@ -64,8 +65,6 @@ const BalanceChallengeGame: React.FC = () => {
       dispatch(clearHints());
       const result = await dispatch(startChallenge(difficulty)).unwrap();
       
-      console.log('Start challenge result:', result); // Debug log
-      
       // Check if result has game data directly (without success wrapper)
       if (result?.game || result?.id) {
         setGameState('playing');
@@ -77,24 +76,40 @@ const BalanceChallengeGame: React.FC = () => {
           // Update the game state directly if needed
           initializeCoefficients(result.compounds?.all_compounds || []);
         }
+        dispatch(addNotification({
+          message: `Desafío de balanceo iniciado (${difficulty})`,
+          type: 'success'
+        }));
       } else if (result?.success) {
         // Original success wrapper format
         setGameState('playing');
         setGameStartTime(Date.now());
         setTimeElapsed(0);
         setFeedback(null);
+        dispatch(addNotification({
+          message: `Desafío de balanceo iniciado (${difficulty})`,
+          type: 'success'
+        }));
       } else {
-        console.error('Failed to start challenge. Result:', result);
+        const errorMessage = result?.error || result?.detail || 'Error al iniciar el desafío';
+        dispatch(addNotification({
+          message: errorMessage,
+          type: 'error'
+        }));
         setFeedback({
           type: 'error',
-          message: result?.error || result?.detail || 'Error al iniciar el desafío'
+          message: errorMessage
         });
       }
     } catch (error: any) {
-      console.error('Error starting challenge:', error);
+      const errorMessage = error?.message || 'Error al conectar con el servidor';
+      dispatch(addNotification({
+        message: errorMessage,
+        type: 'error'
+      }));
       setFeedback({
         type: 'error',
-        message: error?.message || 'Error al conectar con el servidor'
+        message: errorMessage
       });
     }
   };
@@ -140,29 +155,44 @@ const BalanceChallengeGame: React.FC = () => {
         timeTaken: timeElapsed
       })).unwrap();
 
-      console.log('Submit attempt result:', result); // Debug log
-
       // Handle different response structures
       const isCorrect = result?.is_correct || result?.attempt?.is_correct || false;
       const gameCompleted = result?.game_completed || result?.game?.is_completed || false;
       const validationResult = result?.validation_result || result?.attempt?.validation_result;
 
+      const message = isCorrect ? 
+        '¡Excelente! Has balanceado la ecuación correctamente' : 
+        'Intento incorrecto. La ecuación no está balanceada';
+      
+      dispatch(addNotification({
+        message,
+        type: isCorrect ? 'success' : 'error'
+      }));
+
       setFeedback({
         type: isCorrect ? 'success' : 'error',
-        message: isCorrect ? 
-          '¡Excelente! Has balanceado la ecuación correctamente' : 
-          'Intento incorrecto. La ecuación no está balanceada',
+        message,
         details: validationResult
       });
 
       if (gameCompleted || isCorrect) {
         setGameState('completed');
+        if (isCorrect) {
+          dispatch(addNotification({
+            message: '¡Desafío completado exitosamente!',
+            type: 'success'
+          }));
+        }
       }
     } catch (error: any) {
-      console.error('Error submitting attempt:', error);
+      const errorMessage = error?.message || 'Error al enviar el intento';
+      dispatch(addNotification({
+        message: errorMessage,
+        type: 'error'
+      }));
       setFeedback({
         type: 'error',
-        message: error?.message || 'Error al enviar el intento'
+        message: errorMessage
       });
     }
   };
@@ -176,21 +206,32 @@ const BalanceChallengeGame: React.FC = () => {
         hintType
       })).unwrap();
       
-      console.log('Get hint result:', result); // Debug log
-      
-      // If hint is successfully added to state, no need for feedback
-      // Only show error if there's an actual error
-      if (result?.error || result?.detail) {
+      // If hint is successfully added to state
+      if (result?.hint) {
+        dispatch(addNotification({
+          message: 'Pista obtenida',
+          type: 'info'
+        }));
+      } else if (result?.error || result?.detail) {
+        const errorMessage = result.error || result.detail || 'Error al obtener la pista';
+        dispatch(addNotification({
+          message: errorMessage,
+          type: 'error'
+        }));
         setFeedback({
           type: 'error',
-          message: result.error || result.detail || 'Error al obtener la pista'
+          message: errorMessage
         });
       }
     } catch (error: any) {
-      console.error('Error getting hint:', error);
+      const errorMessage = error?.message || 'Error al obtener la pista';
+      dispatch(addNotification({
+        message: errorMessage,
+        type: 'error'
+      }));
       setFeedback({
         type: 'error',
-        message: error?.message || 'Error al obtener la pista'
+        message: errorMessage
       });
     }
   };
