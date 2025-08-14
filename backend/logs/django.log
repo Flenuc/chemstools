@@ -4482,3 +4482,109 @@ INFO 2025-08-13 00:57:02,621 views Searching for compound: MgBr2 (type: formula)
 INFO 2025-08-13 00:57:02,623 services Compuesto encontrado en cache: MgBr2
 INFO 2025-08-13 00:57:09,708 views Searching compound: MgBr2 (type: formula)
 INFO 2025-08-13 00:57:09,709 services Compuesto encontrado en cache: MgBr2
+WARNING 2025-08-13 23:39:48,087 log Not Found: /api/
+ERROR 2025-08-13 23:39:57,932 exceptions API Error: {'detail': ErrorDetail(string='Method "HEAD" not allowed.', code='method_not_allowed'), 'status_code': 405}
+WARNING 2025-08-13 23:39:57,933 log Method Not Allowed: /api/structures/
+ERROR 2025-08-13 23:40:47,632 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-13 23:40:47,632 log Bad Request: /api/telemetry/log/
+INFO 2025-08-13 23:41:29,481 views Searching for compound: agua (type: name)
+INFO 2025-08-13 23:41:29,483 services Compuesto encontrado en cache: agua
+INFO 2025-08-13 23:41:32,000 views Searching compound: agua (type: name)
+INFO 2025-08-13 23:41:32,001 services Compuesto encontrado en cache: agua
+INFO 2025-08-13 23:41:32,005 views Using hardcoded structure for H2O
+ERROR 2025-08-13 23:45:49,090 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 23:45:49,092 log Unauthorized: /api/molecules/
+ERROR 2025-08-13 23:45:49,104 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-13 23:45:49,104 log Unauthorized: /api/molecules/
+ERROR 2025-08-14 00:11:58,359 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-14 00:11:58,365 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-14 00:43:13,315 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-14 00:43:13,316 log Unauthorized: /api/auth/token/
+ERROR 2025-08-14 00:43:13,645 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-14 00:43:13,645 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-14 00:43:36,038 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-14 00:43:36,039 log Unauthorized: /api/auth/token/
+ERROR 2025-08-14 00:43:36,343 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-14 00:43:36,344 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-14 00:43:57,502 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 00:43:57,504 log Unauthorized: /api/molecules/
+ERROR 2025-08-14 00:43:58,064 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 00:43:58,064 log Unauthorized: /api/molecules/
+ERROR 2025-08-14 00:44:17,524 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-14 00:44:17,524 log Unauthorized: /api/auth/token/
+ERROR 2025-08-14 00:44:17,747 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-14 00:44:17,747 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-14 00:45:38,893 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-14 00:45:38,894 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-14 00:54:10,964 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-14 00:54:10,965 log Unauthorized: /api/auth/token/
+ERROR 2025-08-14 00:54:11,703 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-14 00:54:11,704 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-14 00:54:52,908 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-14 00:54:52,910 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-14 00:58:14,151 exceptions API Error: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')], 'status_code': 400}
+WARNING 2025-08-14 00:58:14,152 log Bad Request: /api/auth/register/
+ERROR 2025-08-14 00:58:34,967 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-14 00:58:34,967 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-14 00:58:36,863 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-14 00:58:36,864 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-14 01:03:03,332 exceptions API Error: {'structure_data': [ErrorDetail(string='La cadena SMILES proporcionada no es válida.', code='invalid')], 'status_code': 400}
+WARNING 2025-08-14 01:03:03,333 log Bad Request: /api/molecules/
+INFO 2025-08-14 01:03:28,315 views Searching for compound: delta-9-THC (type: None)
+INFO 2025-08-14 01:03:28,319 services Buscando en PubChem: delta-9-THC (tipo: name)
+INFO 2025-08-14 01:03:30,337 services Compuesto guardado en cache: delta-9-thc (name) -> C21H30O2
+ERROR 2025-08-14 01:03:54,147 exceptions API Error: {'structure_data': [ErrorDetail(string='La cadena SMILES proporcionada no es válida.', code='invalid')], 'status_code': 400}
+WARNING 2025-08-14 01:03:54,148 log Bad Request: /api/molecules/
+INFO 2025-08-14 01:12:01,184 views Searching for compound: vinagre (type: name)
+INFO 2025-08-14 01:12:01,192 services Buscando en PubChem: vinagre (tipo: name)
+INFO 2025-08-14 01:12:01,824 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/vinagre/cids/JSON
+WARNING 2025-08-14 01:12:01,825 services No se encontró el compuesto: vinagre
+INFO 2025-08-14 01:12:01,827 services Buscando en PubChem: acetic acid (tipo: name)
+INFO 2025-08-14 01:12:02,759 services Compuesto guardado en cache: acetic acid (name) -> C2H4O2
+INFO 2025-08-14 01:12:07,381 views Searching compound: vinagre (type: name)
+INFO 2025-08-14 01:12:07,383 services Buscando en PubChem: vinagre (tipo: name)
+INFO 2025-08-14 01:12:07,998 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/vinagre/cids/JSON
+WARNING 2025-08-14 01:12:07,999 services No se encontró el compuesto: vinagre
+INFO 2025-08-14 01:12:08,000 services Compuesto encontrado en cache: acetic acid
+ERROR 2025-08-14 20:55:28,891 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 20:55:28,909 log Unauthorized: /api/molecules/
+ERROR 2025-08-14 20:55:29,108 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 20:55:29,108 log Unauthorized: /api/molecules/
+ERROR 2025-08-14 21:11:24,745 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-14 21:11:24,746 log Unauthorized: /api/auth/token/
+ERROR 2025-08-14 21:11:25,700 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-14 21:11:25,700 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-14 21:11:37,594 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-14 21:11:37,594 log Unauthorized: /api/auth/token/
+ERROR 2025-08-14 21:11:38,122 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-14 21:11:38,122 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-14 21:11:49,069 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-14 21:11:49,069 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-14 21:12:01,897 log Not Found: /api/calculate/molecular-weight/
+ERROR 2025-08-14 21:14:54,137 exceptions API Error: {'structure_data': [ErrorDetail(string='La cadena SMILES proporcionada no es válida.', code='invalid')], 'status_code': 400}
+WARNING 2025-08-14 21:14:54,138 log Bad Request: /api/molecules/
+ERROR 2025-08-14 21:15:05,663 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-14 21:15:05,664 log Bad Request: /api/telemetry/log/
+INFO 2025-08-14 21:15:45,358 views Searching for compound: h2o (type: None)
+INFO 2025-08-14 21:15:45,361 services Compuesto encontrado en cache: h2o
+INFO 2025-08-14 21:15:59,572 views Structure found in cache for: h2o
+INFO 2025-08-14 21:17:35,795 views Searching for compound: C5H5N5O (type: None)
+INFO 2025-08-14 21:17:35,797 services Buscando en PubChem: C5H5N5O (tipo: name)
+INFO 2025-08-14 21:17:36,622 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/C5H5N5O/cids/JSON
+WARNING 2025-08-14 21:17:36,622 services No se encontró el compuesto: C5H5N5O
+INFO 2025-08-14 21:17:36,625 services Buscando en PubChem: C5H5N5O (tipo: formula)
+INFO 2025-08-14 21:17:38,733 services Compuesto guardado en cache: c5h5n5o (formula) -> C5H5N5O
+INFO 2025-08-14 21:17:54,278 views Searching compound: C5H5N5O (type: None)
+INFO 2025-08-14 21:17:54,279 services Buscando en PubChem: C5H5N5O (tipo: name)
+INFO 2025-08-14 21:17:54,985 services Compound not found: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/C5H5N5O/cids/JSON
+WARNING 2025-08-14 21:17:54,985 services No se encontró el compuesto: C5H5N5O
+INFO 2025-08-14 21:17:54,987 services Compuesto encontrado en cache: C5H5N5O
+ERROR 2025-08-14 21:26:46,118 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 21:26:46,118 log Unauthorized: /api/games/chemwordle/leaderboard/
+ERROR 2025-08-14 21:26:46,125 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 21:26:46,126 log Unauthorized: /api/games/chemwordle/stats/
+ERROR 2025-08-14 21:26:46,656 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 21:26:46,656 log Unauthorized: /api/games/chemwordle/leaderboard/
+ERROR 2025-08-14 21:26:46,658 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-14 21:26:46,658 log Unauthorized: /api/games/chemwordle/stats/
+WARNING 2025-08-14 21:57:07,937 log Not Found: /api/calculate/molecular-weight/
