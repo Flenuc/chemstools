@@ -28,7 +28,7 @@ SECRET_KEY = 'ap11g%4tgv50-cf3bl(6+u8x2$e7s=jax4gxo^@j+nj-9)zqty'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', '*']  # '*' permite cualquier host (cambiar en producción)
 
 # Enable APPEND_SLASH for Django REST Framework routers
 APPEND_SLASH = True
@@ -178,7 +178,63 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000", # Permitir peticiones desde frontend
     "http://127.0.0.1:3000",
+    "http://localhost:80",   # Nginx local
+    "http://127.0.0.1:80",   # Nginx local
+    "http://localhost",       # Sin puerto
+    "http://127.0.0.1",       # Sin puerto
 ]
+
+# Función para permitir orígenes dinámicos (útil para IPs de red local)
+def cors_allow_particular_origins(origin):
+    """Permite orígenes de la red local"""
+    allowed_patterns = [
+        r'^http://192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 192.168.x.x
+        r'^http://10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 10.x.x.x
+        r'^http://172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 172.16-31.x.x
+        r'^http://localhost(:\d+)?$',  # localhost con cualquier puerto
+        r'^http://127\.0\.0\.1(:\d+)?$',  # 127.0.0.1 con cualquier puerto
+    ]
+    import re
+    for pattern in allowed_patterns:
+        if re.match(pattern, origin):
+            return True
+    return False
+
+# Usar el callback para verificación dinámica de orígenes
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^http://192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 192.168.x.x
+    r'^http://10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 10.x.x.x
+    r'^http://172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 172.16-31.x.x
+]
+
+# Permitir credenciales en las peticiones CORS
+CORS_ALLOW_CREDENTIALS = True
+
+# Headers permitidos en las peticiones CORS
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# Métodos HTTP permitidos
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Para desarrollo: permitir todos los orígenes (cambiar en producción)
+# CORS_ALLOW_ALL_ORIGINS = True  # ¡Solo para desarrollo!
 
 # test settings 
 if 'test' in sys.argv:
