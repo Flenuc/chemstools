@@ -2,6 +2,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { addNotification } from '@/store/notificationsSlice';
 
+// Helper function to get the correct API URL
+const getApiUrl = () => {
+  if (typeof window !== 'undefined') {
+    const port = window.location.port;
+    // Si estamos en el puerto 80 (o sin puerto) o cualquier otro puerto que no sea 3000
+    // asumimos que estamos detrás de nginx y usamos rutas relativas
+    if (!port || port === '80' || port !== '3000') {
+      return '/api';
+    }
+    // Si estamos en el puerto 3000 (desarrollo local sin nginx)
+    return 'http://localhost:8000/api';
+  }
+  return 'http://localhost:8000/api';
+};
+
 // Type definitions for the backend API response
 interface AtomData {
   index: number;
@@ -204,7 +219,8 @@ const LewisStructureGenerator: React.FC = () => {
         params.append('type', searchType);
       }
       
-      const response = await fetch(`http://localhost:8000/api/structures/search/?${params}`);
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/structures/search/?${params}`);
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -223,7 +239,8 @@ const LewisStructureGenerator: React.FC = () => {
   // API call to backend for Lewis structure generation
   const generateStructure = async (queryInput: string, queryTypeInput?: string): Promise<StructureResponse> => {
     try {
-      const response = await fetch('http://localhost:8000/api/structures/lewis-generator/', {
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/structures/lewis-generator/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -280,7 +297,8 @@ const LewisStructureGenerator: React.FC = () => {
   // Fetch recent structures from backend
   const fetchRecentStructures = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/structures/');
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/structures/`);
       if (response.ok) {
         const structures = await response.json();
         return structures;
@@ -294,7 +312,8 @@ const LewisStructureGenerator: React.FC = () => {
   // Fetch cached compounds from PubChem cache
   const fetchCachedCompounds = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/structures/cached-compounds/?limit=10');
+      const apiUrl = getApiUrl();
+      const response = await fetch(`${apiUrl}/structures/cached-compounds/?limit=10`);
       if (response.ok) {
         const compounds = await response.json();
         return compounds;
