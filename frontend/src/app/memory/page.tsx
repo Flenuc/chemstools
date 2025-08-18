@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import MemoryGame from '@/components/features/games/MemoryGame';
 import MemoryGameStats from '@/components/features/games/MemoryGameStats';
-import Header from '@/components/core/Header';
+
 
 const MemoryPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'game' | 'stats'>('game');
@@ -20,7 +20,7 @@ const MemoryPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-8">
-      <Header />
+      
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">

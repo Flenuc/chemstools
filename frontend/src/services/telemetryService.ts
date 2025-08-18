@@ -10,13 +10,12 @@ const sessionId = Date.now().toString(36) + Math.random().toString(36).substring
  * @param details - Un objeto con datos adicionales.
  */
 export const logTelemetryEvent = (eventName: string, details: object = {}) => {
+  // Enviamos directamente el objeto, no necesitamos JSON.stringify
+  // ya que api.post lo maneja internamente
   api.post('telemetry/log/', {
-    method: 'POST',
-    body: JSON.stringify({
-      event_name: eventName,
-      details,
-      session_id: sessionId,
-    }),
+    event_name: eventName,
+    details,
+    session_id: sessionId,
   }).catch(error => {
     // No hacemos nada si falla, para no interrumpir al usuario.
     console.warn('Failed to log telemetry event:', error);

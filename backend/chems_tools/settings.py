@@ -77,7 +77,10 @@ INSTALLED_APPS = [
     'reactions',
     
     # games app for quiz and other games
-    'games.apps.GamesConfig'
+    'games.apps.GamesConfig',
+    
+    # monitoring app for metrics and health checks
+    'monitoring',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'

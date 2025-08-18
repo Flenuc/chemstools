@@ -2,30 +2,26 @@
 'use client';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Form, Input, Button } from 'antd';
+import { motion } from 'framer-motion';
 import { addMolecule } from '../../store/moleculesSlice';
 import { addNotification } from '../../store/notificationsSlice';
-import { api } from '../../services/api'; // FIX: Import 'api' object instead of default
+import { api } from '../../services/api';
 import { logTelemetryEvent } from '@/services/telemetryService';
 
 export default function AddMoleculeForm() {
-  const [name, setName] = useState('');
-  const [structure, setStructure] = useState('');
+  const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const dispatch = useDispatch();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (values: { name: string; structure: string }) => {
     setIsLoading(true);
-    setError('');
     try {
-      // FIX: Use api.post for creating a new molecule
-      const newMolecule = await api.post('molecules/', { name, structure_data: structure, format: 'SMILES' });
+      const newMolecule = await api.post('molecules/', { name: values.name, structure_data: values.structure, format: 'SMILES' });
       dispatch(addMolecule(newMolecule));
-      logTelemetryEvent('molecule_created', { name, structure });
-      dispatch(addNotification({ message: `Molécula "${name}" guardada.`, type: 'success' }));
-      setName('');
-      setStructure('');
+      logTelemetryEvent('molecule_created', values);
+      dispatch(addNotification({ message: `Molécula \"${values.name}\" guardada.`, type: 'success' }));
+      form.resetFields();
     } catch (err: any) {
       dispatch(addNotification({ message: err.message || 'Error al guardar.', type: 'error' }));
     } finally {
@@ -34,32 +30,29 @@ export default function AddMoleculeForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded-lg bg-white shadow-sm space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900" >Añadir Nueva Molécula</h3>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
-            <div>
-<label className="block text-sm font-medium text-gray-900">Nombre:</label>
-        <input 
-          type="text" 
-          value={name} 
-          onChange={e => setName(e.target.value)} 
-          className="w-full p-2 border rounded mt-1 text-gray-900" 
-          required 
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-900">Estructura (SMILES):</label>
-        <input 
-          type="text" 
-          value={structure} 
-          onChange={e => setStructure(e.target.value)} 
-          className="w-full p-2 border rounded mt-1 text-gray-900" 
-          required 
-        />
-       </div> 
-      <button type="submit" disabled={isLoading} className="w-full p-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:bg-gray-400">
-        {isLoading ? 'Guardando...' : 'Guardar Molécula'}
-      </button>
-    </form>
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      <Form form={form} onFinish={handleSubmit} layout="vertical" className="p-4 border rounded-lg bg-white shadow-sm space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Añadir Nueva Molécula</h3>
+        <Form.Item
+          name="name"
+          label={<span className="text-gray-900">Nombre</span>}
+          rules={[{ required: true, message: 'Por favor, introduce el nombre de la molécula.' }]}
+        >
+          <Input className="w-full p-2 border rounded mt-1 text-gray-900" />
+        </Form.Item>
+        <Form.Item
+          name="structure"
+          label={<span className="text-gray-900">Estructura (SMILES)</span>}
+          rules={[{ required: true, message: 'Por favor, introduce la estructura en formato SMILES.' }]}
+        >
+          <Input className="w-full p-2 border rounded mt-1 text-gray-900" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={isLoading} className="w-full">
+            {isLoading ? 'Guardando...' : 'Guardar Molécula'}
+          </Button>
+        </Form.Item>
+      </Form>
+    </motion.div>
   );
 }

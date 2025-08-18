@@ -4,6 +4,188 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[1.0.0-beta] - 2025-08-18
+
+Added
+
+BACKEND - Infraestructura de Rendimiento:
+
+Backend: Se ha implementado un sistema completo de paralelización para cálculos científicos:
+- Módulo backend/core/parallel_computing.py con ThreadPoolExecutor y ProcessPoolExecutor configurables
+- Gestión automática de recursos con detección de CPUs disponibles
+- Fallback inteligente a procesamiento secuencial en caso de error
+- Decorador @parallelize para facilitar la integración en funciones existentes
+- Monitoreo de rendimiento integrado con métricas de ejecución
+- Speedup demostrado de hasta 4x en operaciones paralelas
+
+Backend: Se ha creado un sistema de cache inteligente con TTL adaptativo:
+- Módulo backend/core/intelligent_cache.py con Redis como backend principal
+- TTL adaptativo basado en la carga del sistema (CPU, memoria)
+- Compresión automática para datos grandes (>512 bytes)
+- Estrategias de invalidación configurables (Aggressive, Balanced, Conservative, Adaptive)
+- Métricas detalladas de hit rate y performance
+- Decorador @cached con configuración flexible
+- Cache hit rate del 66.7% alcanzado en pruebas con speedup de hasta 1430x para datos cacheados
+
+Backend: Se ha optimizado la generación de estructuras moleculares:
+- Módulo backend/structures/parallel_utils.py para procesamiento paralelo
+- Generación paralela de múltiples estructuras de Lewis
+- Cálculo paralelo de propiedades moleculares con RDKit
+- Validación batch de estructuras químicas
+- Optimización de coordenadas 2D en paralelo
+- Integración completa con cache inteligente
+
+Backend: Se han implementado endpoints de procesamiento batch:
+- POST /api/structures/batch/generate/ para generación batch de estructuras
+- POST /api/structures/batch/validate/ para validación paralela de moléculas
+- POST /api/structures/batch/stream/ con streaming de resultados (Server-Sent Events)
+- GET /api/structures/batch/status/{job_id}/ para tracking de trabajos
+- GET /api/structures/batch/metrics/ para métricas de rendimiento en tiempo real
+- Throughput de 50+ estructuras/segundo en hardware moderno
+
+Backend: Se ha desarrollado un sistema completo de monitoreo de rendimiento:
+- Módulo backend/core/performance_monitoring.py con métricas en tiempo real
+- Tracking de CPU, memoria, disco y operaciones de I/O
+- Exportación de métricas en formato Prometheus
+- Sistema de alertas configurables por umbrales
+- Dashboard interno de monitoreo con visualización de métricas
+- Health checks automáticos para servicios críticos
+- Decorador @monitor_performance para instrumentación de funciones
+
+FRONTEND - Migración a Ant Design y Framer Motion:
+
+Frontend: Se ha implementado un nuevo sistema de navegación escalable:
+- Componente NavigationSidebar.tsx con drawer responsive para móviles
+- Componente DesktopSidebar.tsx con sidebar colapsable para escritorio
+- Categorización de contenido (Herramientas, Juegos, Demos, Educación)
+- Búsqueda integrada en el sidebar con filtrado en tiempo real
+- Badges informativos para nuevas funcionalidades
+- Soporte completo para autenticación con menú de usuario
+- Layout wrapper AppLayout.tsx que integra ambos componentes
+
+Frontend: Se ha migrado completamente la página de Glossary a Ant Design:
+- Índice alfabético interactivo para filtrar términos rápidamente
+- Búsqueda optimizada con debounce que filtra en términos y definiciones
+- Visualización con Cards de Ant Design con texto expandible
+- Indicadores visuales de cantidad total y filtrada de términos
+- Animaciones suaves con Framer Motion y AnimatePresence
+- Estados de carga, error y vacío con componentes especializados
+- Diseño responsive con gradientes y efectos glassmorphism
+- Botón flotante para volver arriba en listados largos
+
+Frontend: Se ha refinado el componente LewisStructureGenerator con nueva UI:
+- Migración completa a componentes de Ant Design (Card, Input, Select, Button, Alert, Tag, Tooltip)
+- Animaciones con Framer Motion para transiciones suaves
+- Header animado con gradiente de colores y efectos visuales
+- Cards con degradado de colores para secciones principales
+- Iconos animados con rebote y rotación para elementos moleculares
+- Integración del sistema de ayuda con tooltips contextuales
+- Mantenimiento de toda la funcionalidad original (búsqueda PubChem, renderizado Kekule.js)
+
+DEVOPS - Monitoreo Avanzado con Prometheus y Grafana:
+
+DevOps: Se ha configurado un stack completo de monitoreo:
+- Prometheus (puerto 9090) recolectando métricas de todos los servicios
+- Grafana (puerto 3001) con dashboards preconfigurados
+- AlertManager (puerto 9093) para gestión de alertas
+- Exportadores especializados: Redis Exporter (9121), Node Exporter (9100), PostgreSQL Exporter (9187)
+- Configuración de scraping cada 15 segundos para métricas en tiempo real
+
+DevOps: Se han creado dashboards personalizados en Grafana:
+- Dashboard principal de ChemsTools Performance con 15+ paneles
+- Métricas del sistema (CPU, memoria, disco, red)
+- Métricas de base de datos (conexiones, tamaño, queries)
+- Métricas de Redis (latencia, memoria, comandos procesados)
+- Métricas de aplicación (usuarios, moléculas, eventos)
+- Visualización de cache hit rates y performance
+- Gráficos de tendencias y alertas visuales
+
+DevOps: Se han implementado endpoints de monitoreo en Django:
+- GET /api/monitoring/metrics/ con métricas en formato Prometheus
+- GET /api/monitoring/health/ con health checks completos
+- GET /api/monitoring/dashboard/ con dashboard HTML interactivo
+- POST /api/monitoring/alerts/ para gestión de alertas
+- Integración con telemetría existente para métricas de aplicación
+
+DevOps: Se ha creado documentación completa de monitoreo:
+- Guía GRAFANA_GUIDE.md con instrucciones detalladas
+- Configuración de datasources (Prometheus, PostgreSQL, Redis)
+- Queries útiles de PromQL para análisis avanzado
+- Configuración de alertas y notificaciones
+- Troubleshooting y mejores prácticas
+
+INFRAESTRUCTURA - Nginx y Acceso Remoto:
+
+Infrastructure: Se ha implementado un servidor proxy reverso Nginx completo para permitir el acceso desde dispositivos externos en la red local:
+- Creación de archivo de configuración nginx.conf en docker/nginx/ con soporte completo para proxy reverso
+- Configuración de upstreams para backend (puerto 8000) y frontend (puerto 3000)
+- Implementación de rutas específicas para API (/api/), administración Django (/admin/), archivos estáticos (/static/), y archivos media (/media/)
+- Soporte para WebSockets tanto para backend (/ws/) como para Hot Module Replacement del frontend (/_next/webpack-hmr)
+- Configuración de compresión gzip para optimizar el rendimiento de transferencia de datos
+- Headers de seguridad configurados (X-Frame-Options, X-Content-Type-Options, X-XSS-Protection)
+- Endpoint de health check (/health) para monitoreo del servicio
+
+Infrastructure: Se ha creado Dockerfile especializado para el contenedor de Nginx:
+- Imagen base nginx:alpine para menor tamaño y mejor seguridad
+- Eliminación de configuración por defecto y aplicación de configuración personalizada
+- Creación de directorios necesarios para logs
+- Exposición del puerto 80 para acceso HTTP estándar
+
+Backend: Se ha actualizado la configuración de CORS en Django settings.py para permitir acceso desde dispositivos externos:
+- Actualización de ALLOWED_HOSTS para incluir wildcard (*) en desarrollo
+- Configuración expandida de CORS_ALLOWED_ORIGINS con soporte para localhost, 127.0.0.1 y puerto 80
+- Implementación de CORS_ALLOWED_ORIGIN_REGEXES para permitir dinámicamente IPs de redes locales (192.168.x.x, 10.x.x.x, 172.16-31.x.x)
+- Habilitación de CORS_ALLOW_CREDENTIALS para soporte de autenticación con cookies
+- Configuración completa de CORS_ALLOW_HEADERS incluyendo authorization, content-type, y x-csrftoken
+- Definición de todos los métodos HTTP permitidos en CORS_ALLOW_METHODS (GET, POST, PUT, DELETE, PATCH, OPTIONS)
+
+Frontend: Se ha implementado detección automática de entorno para usar URLs de API correctas:
+- Creación de función getBaseUrl() en api.ts que detecta si el acceso es a través de nginx (puerto 80) o directo (puerto 3000)
+- Uso de rutas relativas (/api) cuando se accede a través de nginx para evitar problemas de CORS
+- Fallback a http://localhost:8000/api para desarrollo local sin nginx
+- Soporte para Server-Side Rendering con detección de entorno servidor/cliente
+
+Frontend: Se ha actualizado el componente LewisStructureGenerator para usar URLs dinámicas:
+- Implementación de función helper getApiUrl() para determinar la URL base correcta
+- Actualización de todas las llamadas fetch para usar URLs dinámicas en lugar de hardcodeadas
+- Soporte completo para acceso desde dispositivos externos sin errores de CORS
+
+Documentation: Se ha creado documentación completa para la configuración de Nginx:
+- README.md en docker/nginx/ con instrucciones detalladas de uso
+- Guía de acceso desde dispositivos externos con ejemplos de IPs
+- Instrucciones de configuración de firewall para Windows, Linux y macOS
+- Tabla de rutas y endpoints disponibles a través del proxy
+- Sección de solución de problemas comunes
+- Recomendaciones de seguridad para producción
+
+Improved
+Docker: Se ha actualizado docker-compose.yml para incluir el servicio de nginx:
+- Definición del servicio nginx con build desde docker/nginx/
+- Mapeo del puerto 80 del host al puerto 80 del contenedor
+- Configuración de dependencias para asegurar que backend y frontend estén listos
+- Montaje de volúmenes para configuración y logs
+- Política de reinicio unless-stopped para alta disponibilidad
+
+Frontend: Se ha mejorado la robustez del servicio de API:
+- Detección inteligente del entorno de ejecución (desarrollo vs producción)
+- Manejo automático de diferentes configuraciones de red
+- Compatibilidad mejorada con dispositivos móviles y tablets
+
+Changed
+Backend: Se ha modificado la configuración de CORS de una lista estática a un sistema dinámico que acepta orígenes basados en patrones regex, permitiendo mayor flexibilidad para redes locales.
+
+Frontend: Se han actualizado todas las llamadas a la API para usar URLs dinámicas en lugar de URLs hardcodeadas a localhost:8000, mejorando la portabilidad del código.
+
+Fixed
+Frontend: Se ha corregido el error "Failed to fetch" que ocurría al acceder desde dispositivos externos debido a que el frontend intentaba conectarse a localhost:8000 en lugar de usar rutas relativas.
+
+Infrastructure: Se ha solucionado el problema de configuración de nginx donde la directiva add_header dentro del bloque if causaba errores de sintaxis, moviendo los headers CORS al contexto correcto.
+
+Security
+Backend: Se han agregado notas y comentarios en settings.py indicando que las configuraciones permisivas de CORS y ALLOWED_HOSTS son solo para desarrollo y deben ser restringidas en producción.
+
+Documentation: Se han incluido advertencias de seguridad en el README de nginx sobre la importancia de restringir accesos y usar HTTPS en entornos de producción.
+
 [2.3.0-alpha] - 2025-08-13
 
 Added

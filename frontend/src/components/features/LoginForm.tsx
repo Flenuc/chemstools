@@ -1,53 +1,191 @@
 'use client';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { Form, Input, Button, Alert, Space } from 'antd';
+import { UserOutlined, LockOutlined, LoginOutlined } from '@ant-design/icons';
+import { motion, AnimatePresence } from 'framer-motion';
 import { setTokens, setUser } from '@/store/authSlice';
-import { api } from '@/services/api'; // FIX: Import 'api' object instead of default
-import { logTelemetryEvent } from '@/services/telemetryService';
+import { api } from '@/services/api';
+import { addNotification } from '@/store/notificationsSlice';
+
+interface LoginFormValues {
+  username: string;
+  password: string;
+}
 
 export default function LoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [form] = Form.useForm<LoginFormValues>();
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (values: LoginFormValues) => {
     setError('');
+    setLoading(true);
+    
     try {
-      // FIX: Use api.post for the token request
-      const tokenData = await api.post('auth/token/', { username, password });
+      // Request authentication token
+      const tokenData = await api.post('auth/token/', values);
       dispatch(setTokens(tokenData));
 
-      // FIX: Use api.get for the user data request, passing headers in options
+      // Get user data
       const userData = await api.get('auth/me/', {
         headers: { Authorization: `Bearer ${tokenData.access}` },
       });
-      logTelemetryEvent('login_success', { username });
+      
       dispatch(setUser(userData));
+      
+      // Mostrar notificación de éxito
+      dispatch(addNotification({ 
+        message: '¡Bienvenido a ChemsTools!', 
+        type: 'success' 
+      }));
+      
+      // Clear form on success
+      form.resetFields();
+      
+      // Redirigir a la página principal
+      router.push('/');
     } catch (err: any) {
-      logTelemetryEvent('login_failed', { username, error: err.message });
       setError(err.message || 'Error al iniciar sesión');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white p-8 border rounded-xl shadow-lg space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 text-center">Iniciar Sesión</h2>
-      {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Usuario</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Contraseña</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-gray-900" />
-        </div>
-        <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Login
-        </button>
-      </form>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full max-w-md mx-auto"
+    >
+      <div className="bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-gray-100">
+        <motion.div
+          initial={{ scale: 0.9 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.1, type: 'spring', stiffness: 200 }}
+          className="text-center mb-8"
+        >
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Iniciar Sesión
+          </h2>
+          <p className="text-gray-500 mt-2">Bienvenido a ChemsTools</p>
+        </motion.div>
+
+        <AnimatePresence mode="wait">
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mb-4"
+            >
+              <Alert
+                message={error}
+                type="error"
+                showIcon
+                closable
+                onClose={() => setError('')}
+                className="rounded-lg"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <Form
+          form={form}
+          name="login"
+          onFinish={handleSubmit}
+          autoComplete="off"
+          layout="vertical"
+          requiredMark={false}
+          className="space-y-4"
+        >
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Form.Item
+              name="username"
+              label="Usuario"
+              rules={[
+                { required: true, message: 'Por favor ingresa tu usuario' },
+                { min: 3, message: 'El usuario debe tener al menos 3 caracteres' }
+              ]}
+            >
+              <Input
+                prefix={<UserOutlined className="text-gray-400" />}
+                placeholder="Ingresa tu usuario"
+                size="large"
+                className="rounded-lg hover:border-blue-400 focus:border-blue-500 transition-colors"
+              />
+            </Form.Item>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <Form.Item
+              name="password"
+              label="Contraseña"
+              rules={[
+                { required: true, message: 'Por favor ingresa tu contraseña' },
+                { min: 6, message: 'La contraseña debe tener al menos 6 caracteres' }
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined className="text-gray-400" />}
+                placeholder="Ingresa tu contraseña"
+                size="large"
+                className="rounded-lg hover:border-blue-400 focus:border-blue-500 transition-colors"
+              />
+            </Form.Item>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="pt-2"
+          >
+            <Form.Item className="mb-0">
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                size="large"
+                icon={<LoginOutlined />}
+                className="w-full h-12 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 border-0 text-white font-medium text-base hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+              </Button>
+            </Form.Item>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-center pt-4"
+          >
+            <Space split="·" className="text-sm">
+              <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
+                ¿Olvidaste tu contraseña?
+              </a>
+              <a href="/register" className="text-blue-600 hover:text-blue-700 transition-colors">
+                Crear cuenta
+              </a>
+            </Space>
+          </motion.div>
+        </Form>
+      </div>
+    </motion.div>
   );
 }

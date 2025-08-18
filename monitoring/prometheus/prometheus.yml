@@ -1,0 +1,70 @@
+# Prometheus Configuration for ChemsTools
+# ========================================
+
+global:
+  scrape_interval: 15s          # How frequently to scrape targets
+  evaluation_interval: 15s      # How frequently to evaluate rules
+  scrape_timeout: 10s          # Timeout for scraping
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alert_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'
+
+  # Django application metrics
+  - job_name: 'django'
+    metrics_path: '/api/monitoring/metrics'
+    static_configs:
+      - targets: ['backend:8000']
+        labels:
+          service: 'django-backend'
+          environment: 'production'
+    scrape_interval: 10s
+
+  # Redis metrics via redis_exporter
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis_exporter:9121']
+        labels:
+          service: 'redis'
+          instance: 'cache'
+
+  # Node/System metrics
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node_exporter:9100']
+        labels:
+          service: 'system'
+          host: 'docker'
+
+  # PostgreSQL metrics
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['postgres_exporter:9187']
+        labels:
+          service: 'postgresql'
+          database: 'chemstools_db'
+
+  # Nginx metrics (if nginx-prometheus-exporter is added)
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:80']
+        labels:
+          service: 'nginx'
+    metrics_path: '/metrics'
+    scrape_interval: 30s

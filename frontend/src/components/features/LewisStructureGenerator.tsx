@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { addNotification } from '@/store/notificationsSlice';
+import { Card, Input, Select, Button, Alert, Tag, Tooltip, Divider, Space, Typography, Table, Collapse, Spin } from 'antd';
+import { SearchOutlined, ExperimentOutlined, QuestionCircleOutlined, HistoryOutlined, FireOutlined } from '@ant-design/icons';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const { Title, Text, Paragraph } = Typography;
+const { Panel } = Collapse;
+const { Option } = Select;
+
+// Create motion component aliases to avoid JSX parsing issues
+const MotionDiv = motion.div;
 
 // Helper function to get the correct API URL
 const getApiUrl = () => {
@@ -694,40 +704,65 @@ const LewisStructureGenerator: React.FC = () => {
   }, [structureData, kekuleLoaded]);
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
-      <div className="bg-white rounded-2xl shadow-2xl p-8">
+    <MotionDiv
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="max-w-6xl mx-auto p-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+      <Card className="shadow-2xl" bordered={false}>
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center items-center gap-4 mb-6">
-            <div className="text-5xl animate-pulse">⚛️</div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <MotionDiv 
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-center mb-8"
+        >
+          <Space size="large" align="center" className="mb-6">
+            <MotionDiv 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="text-5xl"
+            >⚛️</MotionDiv>
+            <Title level={1} className="!mb-0 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Generador de Estructuras de Lewis
-            </h1>
-            <div className="text-5xl animate-bounce">🧪</div>
-          </div>
-          <p className="text-gray-600 text-lg">Genera y visualiza estructuras de Lewis precisas a partir de fórmulas moleculares</p>
+            </Title>
+            <MotionDiv 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 1, repeat: Infinity }}
+              className="text-5xl"
+            >🧪</MotionDiv>
+          </Space>
+          <Paragraph className="text-lg text-gray-600">
+            Genera y visualiza estructuras de Lewis precisas a partir de fórmulas moleculares
+          </Paragraph>
           {kekuleLoaded ? (
-            <div className="mt-2 text-green-600 text-sm flex items-center justify-center gap-2">
-              <span>✅</span> Kekule.js cargado - Renderizado avanzado disponible
-            </div>
+            <Tag icon={<span>✅</span>} color="success">
+              Kekule.js cargado - Renderizado avanzado disponible
+            </Tag>
           ) : (
-            <div className="mt-2 text-blue-600 text-sm flex items-center justify-center gap-2">
-              <span>⚡</span> Usando renderizado canvas mejorado
-            </div>
+            <Tag icon={<span>⚡</span>} color="processing">
+              Usando renderizado canvas mejorado
+            </Tag>
           )}
-        </div>
+        </MotionDiv>
 
         {/* Enhanced Input Section with PubChem Integration */}
-        <div className="mb-8">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
+        <MotionDiv 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-8"
+        >
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-800">Búsqueda de Compuestos</h3>
-              <button
+              <Title level={3}>Búsqueda de Compuestos</Title>
+              <Button 
+                type="text" 
+                icon={<QuestionCircleOutlined />}
                 onClick={() => setShowSearchHelp(!showSearchHelp)}
-                className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
               >
-                <span>❔</span> Ayuda
-              </button>
+                Ayuda
+              </Button>
             </div>
             
             {showSearchHelp && (
@@ -872,8 +907,8 @@ const LewisStructureGenerator: React.FC = () => {
                 )}
               </div>
             )}
-          </div>
-        </div>
+          </Card>
+        </MotionDiv>
 
         {/* Example Queries - Now with multiple types */}
         <div className="mb-8">
@@ -1068,8 +1103,8 @@ const LewisStructureGenerator: React.FC = () => {
             </div>
           </div>
         )}
-      </div>
-    </div>
+      </Card>
+    </MotionDiv>
   );
 };
 

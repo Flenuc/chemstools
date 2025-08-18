@@ -1,0 +1,64 @@
+@theme {
+  /* Colores personalizados de ChemsTools */
+  --color-primary-50: #E6FFFA;
+  --color-primary-100: #B2F5EA;
+  --color-primary-200: #81E6D9;
+  --color-primary-300: #4FD1C5;
+  --color-primary-400: #38B2AC;
+  --color-primary-500: #319795;
+  --color-primary-600: #2C7A7B;
+  --color-primary-700: #285E61;
+  --color-primary-800: #234E52;
+  --color-primary-900: #1D4044;
+
+  /* Override de colores base */
+  --color-blue-500: #319795;
+  --color-blue-600: #2C7A7B;
+  
+  /* Configuración de fuentes */
+  --font-family-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* Configuración de contenedores personalizados */
+@layer utilities {
+  .container-xs {
+    max-width: 512px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .container-sm {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .container-md {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .container-lg {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .container-xl {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

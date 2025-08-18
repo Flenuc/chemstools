@@ -1,9 +1,10 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import { fetchMolecules, Molecule, deleteMolecule, updateMolecule } from '../../store/moleculesSlice';
-import { useMemo } from 'react';
+import { List, Button, Popconfirm, Modal, Input, Form } from 'antd';
+import { motion } from 'framer-motion';
 
 export default function MoleculeList() {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,7 +12,10 @@ export default function MoleculeList() {
   const { selectedElementSymbol } = useSelector((state: RootState) => state.filters);
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
-    // Filtra las moléculas basándose en el símbolo seleccionado
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingMolecule, setEditingMolecule] = useState<Molecule | null>(null);
+  const [form] = Form.useForm();
+
   const filteredMolecules = useMemo(() => {
     if (!selectedElementSymbol) {
       return items ?? [];
@@ -20,9 +24,21 @@ export default function MoleculeList() {
     return (items ?? []).filter(mol => regex.test(mol.structure_data));
   }, [items, selectedElementSymbol]);
 
-    const handleDelete = (id: number) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar esta molécula?')) {
-      dispatch(deleteMolecule(id));
+  const handleDelete = (id: number) => {
+    dispatch(deleteMolecule(id));
+  };
+
+  const showEditModal = (molecule: Molecule) => {
+    setEditingMolecule(molecule);
+    form.setFieldsValue(molecule);
+    setIsModalVisible(true);
+  };
+
+  const handleUpdate = (values: { name: string; structure_data: string }) => {
+    if (editingMolecule) {
+      dispatch(updateMolecule({ ...editingMolecule, ...values }));
+      setIsModalVisible(false);
+      setEditingMolecule(null);
     }
   };
 
@@ -36,28 +52,47 @@ export default function MoleculeList() {
   if (status === 'failed') return <p className="text-red-500">Error al cargar las moléculas: {error}</p>;
 
   return (
-    <div className="space-y-3 p-4 border rounded-lg bg-white shadow-sm text-gray-900">
-      <h3 className="text-lg font-semibold text-gray-900">
-        {selectedElementSymbol 
-          ? `Moléculas que contienen ${selectedElementSymbol}` 
-          : 'Mis Moléculas'}
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="p-4 border rounded-lg bg-white shadow-sm">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        {selectedElementSymbol ? `Moléculas que contienen ${selectedElementSymbol}` : 'Mis Moléculas'}
       </h3>
-      {filteredMolecules.length === 0 ? (
-        <p>No se encontraron moléculas.</p>
-      ) : (
-        <ul className="divide-y divide-black-200 text-gray-900">
-          {filteredMolecules.map((mol: Molecule) => (
-            <li key={mol.id} className="p-2 hover:bg-black-50 text-gray-900">
-              {mol.name} ({mol.format}: {mol.structure_data})
-                <div className="space-x-2">
-                  <button className="text-sm text-blue-600 hover:text-blue-800">Editar</button>
-                  <button onClick={() => handleDelete(mol.id)} className="text-sm text-red-600 hover:text-red-800">Eliminar</button>
-                </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-    
+      <List
+        itemLayout="horizontal"
+        dataSource={filteredMolecules}
+        renderItem={(mol: Molecule) => (
+          <List.Item
+            actions={[
+              <Button type="link" onClick={() => showEditModal(mol)}>Editar</Button>,
+              <Popconfirm title="¿Seguro de eliminar?" onConfirm={() => handleDelete(mol.id)}>
+                <Button type="link" danger>Eliminar</Button>
+              </Popconfirm>,
+            ]}
+          >
+            <List.Item.Meta
+              title={<span className="text-gray-900">{mol.name}</span>}
+              description={`${mol.format}: ${mol.structure_data}`}
+            />
+          </List.Item>
+        )}
+      />
+      <Modal
+        title="Editar Molécula"
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={null}
+      >
+        {editingMolecule && (
+          <Form form={form} layout="vertical" onFinish={handleUpdate} initialValues={editingMolecule}>
+            <Form.Item name="name" label="Nombre" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Form.Item name="structure_data" label="Estructura (SMILES)" rules={[{ required: true }]}>
+              <Input />
+            </Form.Item>
+            <Button type="primary" htmlType="submit">Guardar Cambios</Button>
+          </Form>
+        )}
+      </Modal>
+    </motion.div>
   );
 }

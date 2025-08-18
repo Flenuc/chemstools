@@ -1,0 +1,44 @@
+apiVersion: 1
+
+datasources:
+  # Prometheus datasource
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: "15s"
+      queryTimeout: "60s"
+      httpMethod: "POST"
+
+  # Redis datasource (direct connection)
+  - name: Redis
+    type: redis-datasource
+    access: proxy
+    url: redis://redis:6379
+    editable: true
+    jsonData:
+      client: standalone
+      poolSize: 10
+      timeout: 10
+    secureJsonData:
+      password: ""
+
+  # PostgreSQL datasource
+  - name: PostgreSQL
+    type: postgres
+    access: proxy
+    url: db:5432
+    database: chemstools_db
+    user: chemstools_user
+    secureJsonData:
+      password: "chemstools_password"
+    jsonData:
+      sslmode: "disable"
+      maxOpenConns: 0
+      maxIdleConns: 2
+      connMaxLifetime: 14400
+      postgresVersion: 1300
+      timescaledb: false

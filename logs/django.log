@@ -1,0 +1,2 @@
+INFO 2025-08-15 23:53:03,414 parallel_computing Initializing ParallelExecutor with 24 workers
+INFO 2025-08-15 23:53:03,516 parallel_computing Parallel operation 'parallel_map' completed: duration=0.10s, items=10, errors=0, throughput=98.0 items/s

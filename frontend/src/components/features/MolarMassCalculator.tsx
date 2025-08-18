@@ -1,24 +1,26 @@
 'use client';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Form, Input, Button, Card, Spin, Alert } from 'antd';
+import { motion } from 'framer-motion';
 import { addNotification } from '@/store/notificationsSlice';
-import { api } from '@/services/api'; // FIX: Import 'api' object instead of default
+import { api } from '@/services/api';
 import { logTelemetryEvent } from '@/services/telemetryService';
 
 export default function MolarMassCalculator() {
-  const [formula, setFormula] = useState('H2O');
+  const [form] = Form.useForm();
   const [result, setResult] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [formula, setFormula] = useState('');
   const dispatch = useDispatch();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (values: { formula: string }) => {
     setIsLoading(true);
     setResult(null);
+    setFormula(values.formula);
     try {
-      // FIX: Use api.post for the calculation request
-      const data = await api.post('calculate/molecular-weight/', { formula });
-      logTelemetryEvent('molar_mass_calculated', { formula });
+      const data = await api.post('calculate/molecular-weight/', { formula: values.formula });
+      logTelemetryEvent('molar_mass_calculated', { formula: values.formula });
       setResult(data.molecular_weight);
     } catch (err: any) {
       dispatch(addNotification({ message: err.message, type: 'error' }));
@@ -28,34 +30,34 @@ export default function MolarMassCalculator() {
   };
 
   return (
-    <div className="bg-white p-6 border rounded-xl shadow-lg">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Calculadora de Masa Molar</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Fórmula Química:</label>
-          <input
-            type="text"
-            value={formula}
-            onChange={(e) => setFormula(e.target.value)}
-            placeholder="Ej: C6H12O6"
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500"
+    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+      <Card title="Calculadora de Masa Molar" className="shadow-lg">
+        <Form form={form} onFinish={handleSubmit} layout="vertical">
+          <Form.Item
+            name="formula"
+            label="Fórmula Química"
+            initialValue="H2O"
+            rules={[{ required: true, message: 'Por favor, introduce una fórmula química.' }]}
+          >
+            <Input placeholder="Ej: C6H12O6" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={isLoading} block>
+              {isLoading ? 'Calculando...' : 'Calcular'}
+            </Button>
+          </Form.Item>
+        </Form>
+        {isLoading && <div className="text-center mt-4"><Spin /></div>}
+        {result !== null && (
+          <Alert
+            message={`Masa Molar de ${formula}:`}
+            description={`${result.toFixed(4)} g/mol`}
+            type="success"
+            showIcon
+            className="mt-4"
           />
-        </div>
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:bg-gray-400"
-        >
-          {isLoading ? 'Calculando...' : 'Calcular'}
-        </button>
-      </form>
-      {result !== null && (
-        <div className="mt-4 p-3 bg-blue-100 border-l-4 border-blue-500 text-blue-800 rounded-r-lg">
-          <p>
-            Masa Molar de <strong>{formula}</strong>: <strong className="text-xl">{result.toFixed(4)} g/mol</strong>
-          </p>
-        </div>
-      )}
-    </div>
+        )}
+      </Card>
+    </motion.div>
   );
 }

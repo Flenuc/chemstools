@@ -1,25 +1,23 @@
-import { store } from '@/store';
 import { setTokens, logout } from '@/store/authSlice';
+
+// Lazy import del store para evitar dependencias circulares
+let store: any;
+const getStore = () => {
+  if (!store) {
+    store = require('@/store').store;
+  }
+  return store;
+};
 
 // Detectar si estamos accediendo a través de nginx (puerto 80) o directamente
 // Si accedemos por el puerto 80 (nginx), usar rutas relativas
 // Si accedemos por el puerto 3000 (desarrollo directo), usar localhost:8000
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') {
-    // Cliente
-    const port = window.location.port;
-    const protocol = window.location.protocol;
-    const hostname = window.location.hostname;
-    
-    // Si estamos en el puerto 80 (o sin puerto, que es lo mismo) o cualquier otro puerto que no sea 3000
-    // asumimos que estamos detrás de nginx y usamos rutas relativas
-    if (!port || port === '80' || port !== '3000') {
-      return '/api';
-    }
-    // Si estamos en el puerto 3000 (desarrollo local sin nginx)
-    return 'http://localhost:8000/api';
+    // Cliente - siempre usar rutas relativas para que Next.js maneje el proxy
+    return '/api';
   }
-  // Servidor (SSR)
+  // Servidor (SSR) - usar la URL del backend directamente
   return process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000/api';
 };
 
@@ -27,7 +25,8 @@ const BASE_URL = getBaseUrl();
 
 // Función para refrescar el token
 const refreshAccessToken = async (): Promise<boolean> => {
-  const { auth } = store.getState();
+  const currentStore = getStore();
+  const { auth } = currentStore.getState();
   
   if (!auth.refreshToken) {
     console.warn('No refresh token available');
@@ -48,7 +47,7 @@ const refreshAccessToken = async (): Promise<boolean> => {
     if (response.ok) {
       const data = await response.json();
       console.log('Token refreshed successfully');
-      store.dispatch(setTokens({
+      currentStore.dispatch(setTokens({
         access: data.access,
         refresh: data.refresh || auth.refreshToken, // Usar el nuevo refresh token si está disponible
       }));
@@ -62,12 +61,13 @@ const refreshAccessToken = async (): Promise<boolean> => {
   
   // Si no se pudo refrescar, hacer logout
   console.warn('Refreshing token failed, logging out user');
-  store.dispatch(logout());
+  currentStore.dispatch(logout());
   return false;
 };
 
 const baseFetch = async (endpoint: string, options: RequestInit = {}) => {
-  const { auth } = store.getState();
+  const currentStore = getStore();
+  const { auth } = currentStore.getState();
   
   // FIX: Use the Headers constructor to correctly handle different HeadersInit types.
   const headers = new Headers(options.headers);
@@ -98,7 +98,7 @@ const baseFetch = async (endpoint: string, options: RequestInit = {}) => {
     
     if (refreshSuccess) {
       // Retry the original request with the new token
-      const newAuth = store.getState().auth;
+      const newAuth = currentStore.getState().auth;
       if (newAuth.accessToken) {
         headers.set('Authorization', `Bearer ${newAuth.accessToken}`);
         response = await fetch(url, { ...config, headers });

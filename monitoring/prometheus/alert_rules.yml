@@ -1,0 +1,110 @@
+groups:
+  - name: chemstools_alerts
+    interval: 30s
+    rules:
+      # High CPU usage alert
+      - alert: HighCPUUsage
+        expr: rate(process_cpu_seconds_total[5m]) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: "{{ $labels.service }}"
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is above 80% (current value: {{ $value }}%)"
+
+      # High memory usage alert
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is above 85% (current value: {{ $value }}%)"
+
+      # Redis down alert
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis is down"
+          description: "Redis instance {{ $labels.instance }} is down"
+
+      # Database down alert
+      - alert: PostgreSQLDown
+        expr: up{job="postgresql"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: postgresql
+        annotations:
+          summary: "PostgreSQL is down"
+          description: "PostgreSQL database is not responding"
+
+      # Low cache hit rate
+      - alert: LowCacheHitRate
+        expr: redis_keyspace_hits_total / (redis_keyspace_hits_total + redis_keyspace_misses_total) < 0.5
+        for: 10m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Low cache hit rate"
+          description: "Cache hit rate is below 50% (current value: {{ $value }})"
+
+      # High response time
+      - alert: HighResponseTime
+        expr: http_request_duration_seconds{quantile="0.95"} > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: api
+        annotations:
+          summary: "High API response time"
+          description: "95th percentile response time is above 1 second"
+
+      # Disk space low
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 20
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space"
+          description: "Disk space is below 20% (current available: {{ $value }}%)"
+
+      # Too many 5xx errors
+      - alert: High5xxErrors
+        expr: rate(django_http_responses_total{status=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: api
+        annotations:
+          summary: "High rate of 5xx errors"
+          description: "5xx error rate is above 5% (current rate: {{ $value }})"
+
+      # Database connection pool exhausted
+      - alert: DatabaseConnectionPoolExhausted
+        expr: pg_stat_database_numbackends / pg_settings_max_connections > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: postgresql
+        annotations:
+          summary: "Database connection pool nearly exhausted"
+          description: "Database connections are above 80% of maximum"
+
+      # Container restart
+      - alert: ContainerRestart
+        expr: rate(container_last_seen[5m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container restarted"
+          description: "Container {{ $labels.name }} has restarted"

@@ -4588,3 +4588,633 @@ WARNING 2025-08-14 21:26:46,656 log Unauthorized: /api/games/chemwordle/leaderbo
 ERROR 2025-08-14 21:26:46,658 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
 WARNING 2025-08-14 21:26:46,658 log Unauthorized: /api/games/chemwordle/stats/
 WARNING 2025-08-14 21:57:07,937 log Not Found: /api/calculate/molecular-weight/
+INFO 2025-08-16 02:59:37,869 parallel_computing Initializing ParallelExecutor with 24 workers
+INFO 2025-08-16 02:59:37,892 parallel_computing Parallel operation 'test_squares' completed: duration=0.02s, items=20, errors=0, throughput=894.7 items/s
+INFO 2025-08-16 02:59:37,913 parallel_computing Parallel operation 'test_squares' completed: duration=0.02s, items=20, errors=0, throughput=984.3 items/s
+INFO 2025-08-16 02:59:37,914 parallel_computing Initializing ParallelExecutor with 4 workers
+INFO 2025-08-16 02:59:37,915 parallel_computing Parallel operation 'test_batch' completed: duration=0.00s, items=20, errors=0, throughput=28282.6 items/s
+WARNING 2025-08-16 03:11:00,178 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:11:06,692 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:11:16,690 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:11:26,688 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:11:36,689 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:11:46,689 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:11:56,686 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:12:06,687 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:12:16,687 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:12:26,685 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:12:36,688 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:12:46,685 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:12:56,683 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:13:06,683 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:13:16,684 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:13:26,682 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:13:36,683 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:13:46,685 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:13:56,680 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:14:06,683 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:14:16,682 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:14:26,679 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:14:36,679 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:14:46,679 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:14:56,677 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:15:06,678 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:15:16,676 log Not Found: /api/monitoring/metrics
+WARNING 2025-08-16 03:15:26,675 log Not Found: /api/monitoring/metrics
+ERROR 2025-08-16 03:15:36,390 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:15:37,702 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:15:47,692 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:15:57,693 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:16:07,709 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:16:17,692 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:16:28,556 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:16:29,578 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:16:37,692 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:16:47,692 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:16:57,690 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from authentication.models import User
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:17:07,690 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from users.models import CustomUser as User
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:17:17,692 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from users.models import CustomUser as User
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:17:27,688 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from users.models import CustomUser as User
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:17:37,688 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 96, in get
+    from users.models import CustomUser as User
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'authentication'
+ERROR 2025-08-16 03:17:50,707 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:17:57,687 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:17:59,777 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:18:07,695 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:18:17,686 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:18:27,685 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:18:37,687 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:18:47,685 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:18:57,683 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:19:07,683 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import UsageAnalytics
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:19:17,718 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import TelemetryEvent
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+ERROR 2025-08-16 03:19:27,681 log Internal Server Error: /api/monitoring/metrics/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/monitoring/views.py", line 98, in get
+    from telemetry.models import TelemetryEvent
+ImportError: cannot import name 'UsageAnalytics' from 'telemetry.models' (/app/telemetry/models.py)
+WARNING 2025-08-16 03:27:05,295 log Not Found: /favicon.ico
+ERROR 2025-08-16 04:06:38,045 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 04:06:38,048 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-16 04:21:54,759 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 04:21:54,760 log Unauthorized: /api/molecules/
+ERROR 2025-08-16 04:21:54,766 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 04:21:54,766 log Unauthorized: /api/molecules/
+ERROR 2025-08-16 04:35:14,542 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 04:35:14,542 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-16 04:37:15,620 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 04:37:15,621 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-16 04:40:47,593 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 04:40:47,593 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-16 04:55:09,297 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 04:55:09,298 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-16 16:15:53,494 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-16 16:15:53,498 log Unauthorized: /api/auth/token/
+ERROR 2025-08-16 16:15:53,506 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 16:15:53,507 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-16 17:06:23,781 log Internal Server Error: /api/auth/register
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/utils/deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to backend:8000/api/auth/register/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+ERROR 2025-08-16 17:08:16,389 exceptions API Error: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')], 'status_code': 400}
+WARNING 2025-08-16 17:08:16,398 log Bad Request: /api/auth/register/
+ERROR 2025-08-16 17:09:33,391 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 17:09:33,392 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-16 17:10:11,082 log Not Found: /api/health/
+WARNING 2025-08-16 17:10:40,880 log Not Found: /api/auth/login/
+ERROR 2025-08-16 17:10:40,942 exceptions API Error: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')], 'status_code': 400}
+WARNING 2025-08-16 17:10:40,942 log Bad Request: /api/auth/register/
+WARNING 2025-08-16 17:10:48,757 log Not Found: /api/auth/
+ERROR 2025-08-16 17:11:19,427 exceptions API Error: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')], 'status_code': 400}
+WARNING 2025-08-16 17:11:19,428 log Bad Request: /api/auth/register/
+ERROR 2025-08-16 17:13:38,001 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-16 17:13:38,002 log Unauthorized: /api/auth/token/
+ERROR 2025-08-16 17:13:38,042 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 17:13:38,043 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-16 17:19:07,292 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 17:19:07,293 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-16 17:20:09,821 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 17:20:09,822 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-16 17:22:56,638 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-16 17:22:56,641 log Unauthorized: /api/auth/token/
+ERROR 2025-08-16 17:22:56,721 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 17:22:56,722 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-16 17:23:03,389 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 17:23:03,390 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-16 17:25:09,790 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 17:25:09,790 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-16 17:30:33,471 exceptions API Error: {'email': [ErrorDetail(string='Enter a valid email address.', code='invalid')], 'status_code': 400}
+WARNING 2025-08-16 17:30:33,471 log Bad Request: /api/auth/register/
+ERROR 2025-08-16 17:33:43,272 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-16 17:33:43,273 log Unauthorized: /api/auth/token/
+ERROR 2025-08-16 17:33:43,323 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 17:33:43,323 log Unauthorized: /api/telemetry/log/
+ERROR 2025-08-16 17:35:19,339 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 17:35:19,340 log Bad Request: /api/telemetry/log/
+ERROR 2025-08-16 17:39:38,311 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 17:39:38,311 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-16 17:39:38,355 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 17:39:38,355 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-16 17:47:13,863 exceptions API Error: {'username': [ErrorDetail(string='This field is required.', code='required')], 'password': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 17:47:13,864 log Bad Request: /api/auth/register/
+ERROR 2025-08-16 18:00:09,800 exceptions API Error: {'username': [ErrorDetail(string='This field is required.', code='required')], 'password': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 18:00:09,802 log Bad Request: /api/auth/register/
+ERROR 2025-08-16 18:03:29,936 exceptions API Error: {'event_name': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 18:03:29,942 log Bad Request: /api/telemetry/log/
+WARNING 2025-08-16 18:11:45,162 log Not Found: /api/test-diagnostics
+WARNING 2025-08-16 18:11:53,065 log Not Found: /api/test-diagnostics
+WARNING 2025-08-16 18:12:06,815 log Not Found: /api/test-diagnostics
+ERROR 2025-08-16 18:12:34,222 exceptions API Error: {'detail': ErrorDetail(string='Authentication credentials were not provided.', code='not_authenticated'), 'status_code': 401}
+WARNING 2025-08-16 18:12:34,223 log Unauthorized: /api/telemetry/log/
+WARNING 2025-08-16 18:14:14,915 log Not Found: /api/calculate/molecular-weight/
+WARNING 2025-08-16 18:36:35,590 log Not Found: /api/calculate/molecular-weight/
+ERROR 2025-08-16 18:38:14,109 exceptions API Error: {'name': [ErrorDetail(string='This field is required.', code='required')], 'structure_data': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 18:38:14,109 log Bad Request: /api/molecules/5/
+ERROR 2025-08-16 18:39:24,182 exceptions API Error: {'name': [ErrorDetail(string='This field is required.', code='required')], 'structure_data': [ErrorDetail(string='This field is required.', code='required')], 'status_code': 400}
+WARNING 2025-08-16 18:39:24,183 log Bad Request: /api/molecules/6/
+ERROR 2025-08-16 18:56:43,216 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 18:56:43,227 log Unauthorized: /api/molecules/
+ERROR 2025-08-16 19:24:49,543 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 19:24:49,545 log Unauthorized: /api/molecules/
+INFO 2025-08-16 19:25:37,687 views Searching for compound: agua (type: name)
+INFO 2025-08-16 19:25:37,692 services Compuesto encontrado en cache: agua
+INFO 2025-08-16 19:25:40,596 views Searching compound: agua (type: name)
+INFO 2025-08-16 19:25:40,598 services Compuesto encontrado en cache: agua
+INFO 2025-08-16 19:25:40,603 views Using hardcoded structure for H2O
+ERROR 2025-08-16 19:44:11,807 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 19:44:11,810 log Unauthorized: /api/molecules/
+ERROR 2025-08-16 19:46:34,095 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 19:46:34,095 log Unauthorized: /api/molecules/
+ERROR 2025-08-16 20:01:20,862 exceptions API Error: {'detail': ErrorDetail(string='Method "GET" not allowed.', code='method_not_allowed'), 'status_code': 405}
+WARNING 2025-08-16 20:01:20,866 log Method Not Allowed: /api/auth/register/
+ERROR 2025-08-16 20:02:09,092 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 20:02:09,093 log Unauthorized: /api/games/quiz/start_session/
+ERROR 2025-08-16 20:07:23,268 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 20:07:23,269 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-16 20:18:29,059 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 20:18:29,059 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-16 20:18:37,525 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 20:18:37,526 log Unauthorized: /api/molecules/
+ERROR 2025-08-16 20:19:49,116 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-16 20:19:49,117 log Unauthorized: /api/auth/token/
+ERROR 2025-08-16 20:28:37,631 exceptions API Error: {'detail': ErrorDetail(string='No active account found with the given credentials', code='no_active_account'), 'status_code': 401}
+WARNING 2025-08-16 20:28:37,632 log Unauthorized: /api/auth/token/
+ERROR 2025-08-16 20:33:48,303 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 20:33:48,304 log Unauthorized: /api/games/balance-challenge/end_challenge/
+ERROR 2025-08-16 21:59:28,486 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 21:59:28,512 log Unauthorized: /api/molecules/
+ERROR 2025-08-16 22:01:29,360 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 22:01:29,361 log Unauthorized: /api/games/balance-challenge/current_challenge/
+ERROR 2025-08-16 22:40:24,367 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-16 22:40:24,368 log Unauthorized: /api/data/periodic-table/
+ERROR 2025-08-17 00:10:27,204 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-17 00:10:27,205 log Unauthorized: /api/molecules/
+INFO 2025-08-17 00:10:43,781 views Searching for compound: agua (type: name)
+INFO 2025-08-17 00:10:43,797 services Compuesto encontrado en cache: agua
+ERROR 2025-08-17 00:27:22,721 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-17 00:27:22,722 log Unauthorized: /api/molecules/
+ERROR 2025-08-17 00:32:48,570 exceptions API Error: {'detail': ErrorDetail(string='Method "GET" not allowed.', code='method_not_allowed'), 'status_code': 405}
+WARNING 2025-08-17 00:32:48,571 log Method Not Allowed: /api/auth/register/
+ERROR 2025-08-17 00:42:26,817 exceptions API Error: {'detail': ErrorDetail(string='Given token not valid for any token type', code='token_not_valid'), 'code': ErrorDetail(string='token_not_valid', code='token_not_valid'), 'messages': [{'token_class': ErrorDetail(string='AccessToken', code='token_not_valid'), 'token_type': ErrorDetail(string='access', code='token_not_valid'), 'message': ErrorDetail(string='Token is invalid or expired', code='token_not_valid')}], 'status_code': 401}
+WARNING 2025-08-17 00:42:26,818 log Unauthorized: /api/games/chemwordle/submit_guess/

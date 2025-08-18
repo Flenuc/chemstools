@@ -32,5 +32,6 @@ urlpatterns = [
     path('api/structures/', include('structures.urls')),
     path('api/reactions/', include('reactions.urls')),
     path('api/games/', include('games.urls')),
+    path('api/monitoring/', include('monitoring.urls')),
 ]
 
