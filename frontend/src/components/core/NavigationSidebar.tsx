@@ -29,6 +29,7 @@ import {
   BugOutlined,
   CodeOutlined,
   DashboardOutlined,
+  DeploymentUnitOutlined
 } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store';
@@ -74,6 +75,14 @@ const NavigationSidebar: React.FC = () => {
           description: 'Tabla periódica interactiva'
         },
 
+        {
+          key: 'Moleculas',
+          label: 'Moléculas',
+          path: '/molecules',
+          icon: <DeploymentUnitOutlined />,
+          description: 'Generador de moléculas'
+        },
+        
         {
           key: 'calculator',
           label: 'Calculadora de Masa Molar',

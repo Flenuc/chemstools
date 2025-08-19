@@ -21,6 +21,7 @@ import {
   AppstoreOutlined,
   SearchOutlined,
   BellOutlined,
+  DeploymentUnitOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 
@@ -68,6 +69,11 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
           key: 'periodic-table',
           icon: <TableOutlined />,
           label: <Link href="/periodic-table">Tabla Periódica</Link>,
+        },
+        {
+          key: 'molecules',
+          icon: <DeploymentUnitOutlined />,
+          label: <Link href="/molecules">Generador de Moléculas</Link>,
         },
         {
           key: 'calculator',
