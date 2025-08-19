@@ -4,6 +4,105 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[1.1.0-beta] - 2025-08-18
+
+Added
+Backend: Se ha implementado la Calculadora de pH/pOH Avanzada con funcionalidades profesionales, transformando la calculadora básica en una herramienta científica robusta.
+
+Backend: Se ha creado un sistema de validación químicamente preciso usando cerberus con esquemas especializados:
+- ph_calculation_schema: Para cálculos básicos de pH/pOH con validación de rangos (pH 0-14, temperatura 0-100°C)
+- buffer_calculation_schema: Para sistemas buffer con validación de componentes y concentraciones
+- ionic_strength_schema: Para cálculos de fuerza iónica con iones y cargas
+- Validación específica por tipo de entrada (pH, pOH, concentraciones H+/OH-)
+- Generación automática de warnings químicos contextuales para condiciones extremas
+
+Backend: Se ha desarrollado un sistema de cálculos químicos avanzados en chemistry_utils.py con funciones científicas profesionales:
+- calculate_ionic_strength(): Implementa I = 0.5 × Σ(ci × zi²) para sistemas multiónicos
+- calculate_activity_coefficient(): Ecuación de Debye-Hückel extendida con parámetros de tamaño iónico específicos
+- calculate_buffer_capacity(): Fórmula completa β = 2.303 × (Kw/[H+] + [H+] + Σ términos buffer)
+- correct_kw_for_temperature(): Corrección de constante del agua con interpolación entre 0-100°C
+- comprehensive_ph_calculation(): Motor principal que integra todas las correcciones químicas
+- Constantes químicas precisas: KW_TEMPERATURE_CORRECTION, ACTIVITY_COEFFICIENTS, COMMON_BUFFERS
+- Decoradores de rendimiento: @parallelize, @cached(ttl), @monitor_performance
+
+Backend: Se ha implementado el modelo PHCalculationHistory para persistencia completa del historial de cálculos:
+- Almacenamiento con UUID como primary key y metadatos completos (usuario, tipo, tiempo de cálculo)
+- Campos especializados: input_data (JSON), results (JSON), calculation_steps, warnings, temperature, ionic_strength
+- Métodos avanzados: export_to_dict(), get_formatted_results(), is_buffer_calculation(), get_stats_for_user()
+- Índices optimizados para consultas frecuentes por usuario, tipo de cálculo y fecha
+- Soporte para usuarios anónimos y estadísticas agregadas por usuario
+
+Backend: Se han creado serializers avanzados con validación integrada y funcionalidades profesionales:
+- AdvancedPHCalculatorSerializer: Validación completa con cerberus + cálculo automático integrado
+- PHCalculationHistorySerializer: Manejo del historial con campos formateados y metadatos
+- BufferCalculationSerializer: Especializado para sistemas buffer con análisis de componentes
+- ExportSerializer: Validación para exportaciones en múltiples formatos (CSV, PDF, JSON)
+- Generación automática de pasos detallados del cálculo para propósitos educativos
+
+Backend: Se han implementado views profesionales en advanced_views.py con manejo robusto de errores:
+- AdvancedPHCalculatorView: Endpoint principal que integra validación, cálculo y guardado automático
+- PHCalculationHistoryViewSet: CRUD completo con filtros avanzados (tipo, warnings, rango de fechas)
+- ExportPHCalculationsView: Exportación asíncrona en CSV, PDF y JSON con URLs temporales
+- PHCalculationStatsView: Estadísticas detalladas con insights químicos y análisis de patrones de uso
+- BufferCalculatorView: Cálculos especializados de buffer con análisis de efectividad
+- Logging detallado y manejo de excepciones específicas para debugging químico
+
+Backend: Se ha desarrollado un sistema de exportación profesional en export_utils.py:
+- export_to_csv(): Usando pandas con formato científico, encoding UTF-8-sig para Excel
+- export_to_pdf(): Con reportlab incluyendo tablas profesionales, estadísticas y metadatos
+- export_to_json(): Estructura completa con información de exportación y versionado
+- PHCalculationPDFGenerator: Clase para PDFs avanzados con header, análisis y anexos
+- CSVExporter: Optimizado para datos científicos con notación científica apropiada
+- create_download_url(): URLs temporales con expiración automática (24h default)
+- cleanup_expired_exports(): Función utilitaria para limpieza automática de archivos
+
+Backend: Se han implementado 8 nuevos endpoints API con rate limiting diferenciado:
+- POST /api/calculators/advanced-ph-calculator/ (30/min): Cálculo principal con todas las funcionalidades
+- GET /api/calculators/ph-calculation-history/ (100/min): ViewSet completo del historial
+- POST /api/calculators/export-ph-calculations/ (5/min): Exportación controlada en múltiples formatos
+- GET /api/calculators/ph-calculation-stats/ (100/min): Estadísticas con insights químicos
+- POST /api/calculators/buffer-calculator/ (20/min): Cálculos especializados de buffer
+- Mantenimiento de backward compatibility con endpoints básicos existentes
+
+Backend: Se ha creado una suite exhaustiva de pruebas en test_advanced_ph.py con >85% de cobertura:
+- TestAdvancedPHValidation: 25+ pruebas de validación con casos edge complejos
+- TestChemistryUtils: Validación de precisión química contra literatura científica
+- TestAdvancedPHCalculator: Pruebas de API endpoints con autenticación y casos reales
+- TestPHCalculationHistory: Persistencia, filtros y aislamiento de usuarios
+- TestExportFunctionality: Exportación en todos los formatos con validación de contenido
+- TestPerformanceOptimizations: Pruebas de cache, paralelización y datasets grandes
+- PHCalculationTestFixtures: Fixtures reutilizables con datos químicos realistas
+
+Backend: Se ha añadido el comando de management populate_ph_examples.py para poblado de datos:
+- 20+ ejemplos químicos realistas: agua pura, ácidos/bases fuertes, sistemas buffer
+- Casos especiales: corrección de temperatura, alta fuerza iónica, pH extremos
+- Sistemas fisiológicos: buffer fosfato (pH 7.4), agua de mar, lluvia ácida
+- Sistemas buffer profesionales: acetato, fosfato, Tris, carbonato con análisis completo
+- Soporte para usuario demo y limpieza de ejemplos existentes
+
+Infrastructure: Se han actualizado las dependencias en requirements.txt para funcionalidades avanzadas:
+- cerberus>=1.3.4: Validación de esquemas químicos robusta
+- reportlab>=4.0.0: Generación de PDFs profesionales con gráficos
+- pandas>=1.3.0: Manipulación de datos científicos para exportación
+- matplotlib>=3.7.0 + seaborn>=0.12.0: Gráficos estadísticos para PDFs
+- django-ratelimit>=4.1.0: Rate limiting avanzado con Redis backend
+
+Changed
+Architecture: Se ha adoptado un patrón de separación clara entre validación (validators.py), cálculos químicos (chemistry_utils.py), persistencia (models.py) y presentación (advanced_views.py), mejorando mantenibilidad y testing.
+
+Performance: Se ha implementado un sistema de cache inteligente con TTL configurable, optimización de consultas ORM con índices especializados, y preparación para paralelización de cálculos intensivos.
+
+API Design: Se ha establecido un patrón consistente de respuestas JSON con campos success/error, metadatos completos (calculation_id, tiempo, metodología), y manejo unificado de warnings químicos.
+
+Documentation: Se han mejorado significativamente todos los docstrings con ejemplos químicos específicos, parámetros detallados y referencias a literatura científica para mejor comprensión del código.
+
+Fixed
+Validation: Se han corregido los validadores personalizados de cerberus para usar reglas estándar (min/max) en lugar de validadores custom que causaban warnings, asegurando validación química precisa.
+
+Testing: Se han solucionado problemas de importación en la suite de pruebas agregando django.db.models.Min y configurando correctamente los fixtures para casos químicos realistas.
+
+Backend: Se ha corregido el manejo de casos edge en cálculos químicos incluyendo concentraciones extremadamente bajas, pH cercanos a neutro con corrección de actividad, y sistemas buffer con componentes desbalanceados.
+
 [1.0.0-beta] - 2025-08-18
 
 Added

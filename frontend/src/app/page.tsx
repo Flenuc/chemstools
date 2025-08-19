@@ -4,10 +4,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import MoleculeList from '@/components/features/MoleculeList';
 import AddMoleculeForm from '@/components/features/AddMoleculeForm';
-import MolarMassCalculator from '@/components/chemistry/MolarMassCalculatorEnhanced';
 import PHCalculator from '@/components/features/PHCalculator';
 import SolutionCalculator from '@/components/features/SolutionCalculator';
-import LewisStructureGenerator from '@/components/features/LewisStructureGenerator';
+
 
 export default function Home() {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
@@ -20,9 +19,9 @@ export default function Home() {
             <div className="lg:col-span-2">
               <AddMoleculeForm />
               <MoleculeList />
-              <MolarMassCalculator />
+              
               <SolutionCalculator />
-              <LewisStructureGenerator />
+              
             </div>
             <div className="space-y-8">
               

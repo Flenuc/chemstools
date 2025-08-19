@@ -73,6 +73,15 @@ const NavigationSidebar: React.FC = () => {
           icon: <TableOutlined />,
           description: 'Tabla periódica interactiva'
         },
+
+        {
+          key: 'calculator',
+          label: 'Calculadora de Masa Molar',
+          path: '/molar-calculator',
+          icon: <CalculatorOutlined />,
+          description: 'Calculadora de masa molar'
+        },
+
         {
           key: 'simulator',
           label: 'Simulador de Reacciones',
@@ -83,10 +92,10 @@ const NavigationSidebar: React.FC = () => {
         {
           key: 'lewis-structures',
           label: 'Estructuras de Lewis',
-          path: '/',
+          path: '/lewis',
           icon: <ApartmentOutlined />,
           description: 'Generador de estructuras de Lewis',
-          badge: 'New'
+          
         },
         {
           key: 'glossary',

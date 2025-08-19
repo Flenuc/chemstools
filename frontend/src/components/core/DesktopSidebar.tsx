@@ -70,6 +70,11 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
           label: <Link href="/periodic-table">Tabla Periódica</Link>,
         },
         {
+          key: 'calculator',
+          icon: <CalculatorOutlined />,
+          label: <Link href="/molar-calculator">Calculadora de Masa Molar</Link>,
+        },
+        {
           key: 'simulator',
           icon: <FireOutlined />,
           label: <Link href="/simulator">Simulador</Link>,
@@ -78,9 +83,9 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
           key: 'lewis',
           icon: <ApartmentOutlined />,
           label: (
-            <Badge count="New" size="small">
-              <Link href="/">Estructuras Lewis</Link>
-            </Badge>
+            
+              <Link href="lewis">Estructuras Lewis</Link>
+            
           ),
         },
         {
