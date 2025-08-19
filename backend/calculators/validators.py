@@ -176,7 +176,9 @@ def validate_ph_input(data: Dict[str, Any]) -> Tuple[bool, Dict[str, Any], List[
     if is_valid and 'input_type' in data and 'input_value' in data:
         specific_errors = _validate_ph_input_value(data['input_type'], data['input_value'])
         if specific_errors:
-            validator.errors = {'input_value': specific_errors}
+            # Use the validator's _error method to add custom validation errors
+            for error in specific_errors:
+                validator._error('input_value', error)
             is_valid = False
     
     warnings = []
