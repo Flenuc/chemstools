@@ -22,6 +22,7 @@ import {
   SearchOutlined,
   BellOutlined,
   DeploymentUnitOutlined,
+  CalculatorFilled,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 
@@ -79,6 +80,10 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
           key: 'calculator',
           icon: <CalculatorOutlined />,
           label: <Link href="/molar-calculator">Calculadora de Masa Molar</Link>,
+        },
+        { key: 'ph-calculator',
+          icon: <CalculatorFilled />,
+          label: <Link href="/calculators/advanced-ph">Calculadora de PH</Link>,
         },
         {
           key: 'simulator',

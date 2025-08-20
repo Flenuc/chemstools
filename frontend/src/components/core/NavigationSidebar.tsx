@@ -29,7 +29,8 @@ import {
   BugOutlined,
   CodeOutlined,
   DashboardOutlined,
-  DeploymentUnitOutlined
+  DeploymentUnitOutlined,
+  CalculatorFilled,
 } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store';
@@ -89,6 +90,13 @@ const NavigationSidebar: React.FC = () => {
           path: '/molar-calculator',
           icon: <CalculatorOutlined />,
           description: 'Calculadora de masa molar'
+        },
+
+        { key: 'PH-calculator',
+          label: 'Calculadora de PH',
+          path: '/calculators/advanced-ph',
+          icon: <CalculatorFilled />,
+          description: 'Calculadora de PH'
         },
 
         {
