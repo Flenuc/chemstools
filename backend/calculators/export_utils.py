@@ -176,6 +176,128 @@ def export_to_pdf(calculations, include_steps=False, include_warnings=True) -> T
     return file_path, file_size
 
 
+def export_to_xlsx(calculations, include_steps=False, include_warnings=True) -> Tuple[str, int]:
+    """
+    Exporta cálculos a formato Excel (XLSX) usando pandas.
+    
+    Args:
+        calculations: QuerySet de PHCalculationHistory
+        include_steps: Incluir pasos detallados
+        include_warnings: Incluir warnings
+        
+    Returns:
+        Tuple[str, int]: (ruta_archivo, tamaño_bytes)
+    """
+    # Preparar datos para múltiples hojas
+    main_data = []
+    results_data = []
+    steps_data = [] if include_steps else None
+    
+    for calc in calculations:
+        # Hoja principal con datos generales
+        main_row = {
+            'ID': str(calc.id),
+            'Tipo de Cálculo': calc.get_calculation_type_display(),
+            'Fecha': calc.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            'Usuario': calc.user.username if calc.user else 'Anónimo',
+            'Temperatura (°C)': calc.temperature,
+            'Fuerza Iónica': calc.ionic_strength or 0,
+            'Tiempo de Cálculo (ms)': calc.calculation_time_ms,
+        }
+        
+        # Agregar datos de entrada
+        if calc.input_data:
+            main_row.update({
+                'Valor de Entrada': calc.input_data.get('input_value', ''),
+                'Tipo de Entrada': calc.input_data.get('input_type', ''),
+                'Incluye Actividad': 'Sí' if calc.input_data.get('include_activity', False) else 'No',
+            })
+        
+        # Agregar warnings si se solicita
+        if include_warnings and calc.warnings:
+            main_row['Advertencias'] = '; '.join(calc.warnings)
+        
+        main_data.append(main_row)
+        
+        # Hoja de resultados detallados
+        if calc.results:
+            results_row = {
+                'ID': str(calc.id),
+                'pH': calc.results.get('ph', ''),
+                'pOH': calc.results.get('poh', ''),
+                '[H+] (M)': calc.results.get('h_concentration', ''),
+                '[OH-] (M)': calc.results.get('oh_concentration', ''),
+                'γ(H+)': calc.results.get('activity_coefficient_h', ''),
+                'γ(OH-)': calc.results.get('activity_coefficient_oh', ''),
+                'Kw corregido': calc.results.get('corrected_kw', ''),
+                'Capacidad Buffer': calc.results.get('buffer_capacity', ''),
+            }
+            results_data.append(results_row)
+        
+        # Hoja de pasos detallados
+        if include_steps and calc.calculation_steps:
+            for i, step in enumerate(calc.calculation_steps, 1):
+                steps_data.append({
+                    'ID': str(calc.id),
+                    'Paso': i,
+                    'Descripción': step
+                })
+    
+    # Crear archivo Excel con múltiples hojas
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f'ph_calculations_{timestamp}.xlsx'
+    file_path = os.path.join(settings.MEDIA_ROOT, 'exports', filename)
+    
+    # Asegurar que el directorio existe
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    
+    # Crear Excel con pandas
+    with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+        # Hoja principal
+        df_main = pd.DataFrame(main_data)
+        df_main.to_excel(writer, sheet_name='Cálculos', index=False)
+        
+        # Hoja de resultados
+        if results_data:
+            df_results = pd.DataFrame(results_data)
+            df_results.to_excel(writer, sheet_name='Resultados', index=False)
+        
+        # Hoja de pasos si se incluyen
+        if steps_data:
+            df_steps = pd.DataFrame(steps_data)
+            df_steps.to_excel(writer, sheet_name='Pasos Detallados', index=False)
+        
+        # Hoja de resumen estadístico
+        summary_data = [
+            {'Métrica': 'Total de Cálculos', 'Valor': len(main_data)},
+            {'Métrica': 'Fecha de Generación', 'Valor': datetime.now().strftime('%Y-%m-%d %H:%M:%S')},
+            {'Métrica': 'Incluye Pasos', 'Valor': 'Sí' if include_steps else 'No'},
+            {'Métrica': 'Incluye Advertencias', 'Valor': 'Sí' if include_warnings else 'No'},
+        ]
+        df_summary = pd.DataFrame(summary_data)
+        df_summary.to_excel(writer, sheet_name='Resumen', index=False)
+        
+        # Ajustar anchos de columna automáticamente
+        for sheet_name in writer.sheets:
+            worksheet = writer.sheets[sheet_name]
+            for column in worksheet.columns:
+                max_length = 0
+                column_letter = column[0].column_letter
+                for cell in column:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = min(max_length + 2, 50)
+                worksheet.column_dimensions[column_letter].width = adjusted_width
+    
+    # Obtener tamaño del archivo
+    file_size = os.path.getsize(file_path)
+    
+    return file_path, file_size
+
+
 def export_to_json(calculations, include_steps=True, include_warnings=True) -> Tuple[str, int]:
     """
     Exporta cálculos a formato JSON estructurado.
@@ -251,12 +373,17 @@ def create_download_url(file_path: str, expires_in_hours: int = 24) -> Tuple[str
     Returns:
         Tuple[str, datetime]: (url_descarga, fecha_expiracion)
     """
-    # Obtener nombre del archivo
-    filename = os.path.basename(file_path)
-    
-    # Crear URL relativa al MEDIA_URL
+    # Obtener la ruta relativa desde MEDIA_ROOT
     relative_path = os.path.relpath(file_path, settings.MEDIA_ROOT)
-    download_url = f"/media/exports/{filename}"
+    
+    # Normalizar la ruta para usar forward slashes (importante para URLs)
+    relative_path = relative_path.replace('\\', '/')
+    
+    # Crear URL usando MEDIA_URL de settings
+    download_url = f"{settings.MEDIA_URL}{relative_path}"
+    
+    # Si necesitamos una URL absoluta (por ejemplo para API)
+    # podemos usar request.build_absolute_uri() en la view
     
     # Calcular fecha de expiración
     expires_at = timezone.now() + timedelta(hours=expires_in_hours)

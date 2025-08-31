@@ -1,0 +1,61 @@
+{
+  "export_info": {
+    "generated_at": "2025-08-31T16:59:58.436213+00:00",
+    "total_calculations": 1,
+    "includes_steps": true,
+    "includes_warnings": true,
+    "format_version": "1.0"
+  },
+  "calculations": [
+    {
+      "id": "f22c1c4c-2d6e-4217-8577-f4fb543660fd",
+      "calculation_type": "buffer_calculation",
+      "calculation_type_display": "Cálculo de buffer",
+      "created_at": "2025-08-31T02:43:02.901910+00:00",
+      "user": "Pingo",
+      "input_data": {
+        "target_ph": 7.0,
+        "input_type": "ph",
+        "show_steps": false,
+        "input_value": 7.0,
+        "temperature": 25.0,
+        "ionic_strength": 0.0,
+        "calculation_type": "buffer_calculation",
+        "include_activity": false,
+        "buffer_components": [
+          {
+            "pka": 4.76,
+            "compound": "CH3COOH",
+            "concentration": 0.1
+          },
+          {
+            "compound": "CH3COONa",
+            "concentration": 0.1
+          }
+        ]
+      },
+      "results": {
+        "ph": 7.0,
+        "poh": 6.997,
+        "temperature": 25.0,
+        "corrected_kw": 1.008e-14,
+        "ionic_strength": 0.0,
+        "buffer_capacity": 0.001311,
+        "h_concentration": 1e-07,
+        "oh_concentration": 1.008e-07,
+        "activity_coefficient_h": 1.0,
+        "activity_coefficient_oh": 1.0
+      },
+      "temperature": 25.0,
+      "ionic_strength": 0.0,
+      "calculation_time_ms": 0,
+      "calculation_steps": [
+        "Paso 1: Identificación del sistema buffer\n• Ácido débil: CH3COOH (0.100 M)\n• Base conjugada: CH3COONa (0.100 M)\n• pKa del sistema = 4.76\n• pH objetivo = 7.00\n• Temperatura = 25.0°C",
+        "Paso 2: Aplicación de la ecuación de Henderson-Hasselbalch\n• Fórmula: pH = pKa + log₁₀([A⁻]/[HA])\n• pH = 4.76 + log₁₀(0.100/0.100)\n• pH = 4.76 + log₁₀(1.000)\n• pH = 4.76 + 0.000\n• pH = 4.76",
+        "Paso 3: Cálculo de la capacidad buffer (β)\n• Concentración total = 0.200 M\n• Fracción disociada (α) = 0.500\n• Fórmula: β = 2.303 × α × (1-α) × C_total\n• β = 2.303 × 0.500 × 0.500 × 0.200\n• β = 0.1152 mol/L/pH",
+        "Paso 4: Evaluación de la eficacia del buffer\n• Distancia del pKa: |4.76 - 4.76| = 0.00\n• Eficacia: EXCELENTE (pH dentro de ±1 unidad del pKa)\n• Rango de trabajo óptimo: pH 3.76 a 5.76",
+        "Paso 5: Distribución de especies en equilibrio\n• Fracción de CH3COOH: 50.0%\n• Fracción de CH3COONa: 50.0%\n• [H⁺] = 1.7378e-05 M\n• [OH⁻] = 5.7544e-10 M"
+      ]
+    }
+  ]
+}

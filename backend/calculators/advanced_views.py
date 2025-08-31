@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from django.http import HttpResponse
-from django.db.models import Q, Avg, Count
+from django.db.models import Q, Avg, Count, Min, Max
 from django.utils import timezone
 from datetime import timedelta
 import time
@@ -26,6 +26,7 @@ from .export_utils import (
     export_to_csv,
     export_to_pdf,
     export_to_json,
+    export_to_xlsx,
     create_download_url
 )
 from .utils import (
@@ -130,12 +131,14 @@ class AdvancedPHCalculatorView(APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class PHCalculationHistoryViewSet(viewsets.ReadOnlyModelViewSet):
+class PHCalculationHistoryViewSet(viewsets.ModelViewSet):
     """
-    ViewSet para consultar el historial de cálculos de pH del usuario.
+    ViewSet para consultar y gestionar el historial de cálculos de pH del usuario.
+    Permite operaciones de lectura y eliminación.
     """
     serializer_class = PHCalculationHistorySerializer
     permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'delete', 'head', 'options']  # Solo permitir GET y DELETE
     
     def get_queryset(self):
         """Devuelve solo los cálculos del usuario autenticado."""
@@ -176,6 +179,31 @@ class PHCalculationHistoryViewSet(viewsets.ReadOnlyModelViewSet):
         if ordering in allowed_orderings:
             return [ordering]
         return ['-created_at']
+    
+    def destroy(self, request, *args, **kwargs):
+        """
+        Elimina un cálculo del historial.
+        Solo permite eliminar cálculos propios del usuario.
+        """
+        instance = self.get_object()
+        
+        # Verificar que el cálculo pertenece al usuario
+        if instance.user != request.user:
+            return Response(
+                {'error': 'No tienes permiso para eliminar este cálculo'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # Log de la eliminación
+        logger.info(f"Usuario {request.user.username} eliminó cálculo {instance.id}")
+        
+        # Eliminar el cálculo
+        instance.delete()
+        
+        return Response(
+            {'message': 'Cálculo eliminado exitosamente'},
+            status=status.HTTP_204_NO_CONTENT
+        )
 
     @action(detail=False, methods=['get'])
     def summary(self, request):
@@ -283,6 +311,8 @@ class ExportPHCalculationsView(APIView):
                 file_path, file_size = export_to_pdf(calculations, include_steps, include_warnings)
             elif export_format == 'json':
                 file_path, file_size = export_to_json(calculations, include_steps, include_warnings)
+            elif export_format == 'xlsx' or export_format == 'excel':
+                file_path, file_size = export_to_xlsx(calculations, include_steps, include_warnings)
             else:
                 return Response({
                     'success': False,

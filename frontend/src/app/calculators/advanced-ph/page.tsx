@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { Layout, Row, Col, Tabs, Breadcrumb, Typography, FloatButton, Card } from 'antd';
+import React, { useState, useCallback, useRef } from 'react';
+import { Layout, Row, Col, Tabs, Breadcrumb, Typography, FloatButton, Card, message, Segmented } from 'antd';
 import { HomeOutlined, ExperimentOutlined, HistoryOutlined, BarChartOutlined, QuestionCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { BeakerIcon } from '@heroicons/react/24/outline';
 
@@ -12,6 +12,9 @@ import PHPresets from '../../../components/calculators/PHPresets';
 import PHHistory from '../../../components/calculators/PHHistory';
 import PHStats from '../../../components/calculators/PHStats';
 import BufferDesigner from '../../../components/calculators/BufferDesigner';
+import { useAppDispatch } from '../../../store/hooks';
+import { calculateAdvancedPH } from '../../../store/advancedPHSlice';
+import { CalculationType, InputType, CalculationInput } from '../../../types/advancedPH';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -28,7 +31,156 @@ const mockVisualizationData = [{
 }];
 
 const AdvancedPHCalculatorPage: React.FC = () => {
-    const [activeTab, setActiveTab] = React.useState('calculator');
+    const [activeTab, setActiveTab] = useState('calculator');
+    const [selectedPresetData, setSelectedPresetData] = useState<CalculationInput | null>(null);
+    const [calculationResults, setCalculationResults] = useState<any[]>([]);
+    const [lastCalculationId, setLastCalculationId] = useState<string | null>(null);
+    const [visualizationType, setVisualizationType] = useState<'bar' | 'line' | 'radial' | 'comparison'>('bar');
+    const calculationCompleteRef = useRef<boolean>(false);
+    const visualizationSectionRef = useRef<HTMLDivElement>(null);
+    const dispatch = useAppDispatch();
+
+    const handleBufferDesigned = (buffer: any) => {
+        const payload: CalculationInput = {
+            calculation_type: CalculationType.Buffer,
+            input_type: InputType.PH,
+            input_value: buffer.finalPH,
+            temperature: 25,
+            show_steps: true,
+            buffer_components: [
+                { compound: buffer.acid.formula, concentration: buffer.acid.concentration, pka: buffer.acid.pKa },
+                { compound: buffer.base.formula, concentration: buffer.base.concentration }
+            ]
+        };
+        // Establecer los datos para sincronizar con la calculadora
+        setSelectedPresetData(payload);
+        setActiveTab('calculator');
+    };
+
+    // Manejar cuando se selecciona un preset
+    const handlePresetSelect = useCallback((preset: any) => {
+        console.log('Preset seleccionado:', preset);
+        
+        // Determinar el tipo de cálculo basado en el preset
+        let calculationType = CalculationType.ConcentrationToPH;
+        let inputType = InputType.HConcentration;
+        let inputValue = 0.1;
+        
+        if (preset.values) {
+            // Si el preset tiene estructura de valores específica
+            if (preset.values.mode === 'concentration_to_ph') {
+                calculationType = CalculationType.ConcentrationToPH;
+                inputType = preset.values.solute?.includes('OH') ? InputType.OHConcentration : InputType.HConcentration;
+                inputValue = preset.values.concentration || 0.1;
+            } else if (preset.values.mode === 'ph_to_all') {
+                calculationType = CalculationType.PHToAll;
+                inputType = preset.values.inputType === 'pOH' ? InputType.POH : InputType.PH;
+                inputValue = preset.values.inputValue || 7.0;
+            } else if (preset.values.mode === 'buffer') {
+                calculationType = CalculationType.Buffer;
+                inputType = InputType.PH;
+                inputValue = preset.values.targetPH || 7.0;
+            }
+        } else {
+            // Estructura simple de preset
+            if (preset.type === 'acid') {
+                inputType = InputType.HConcentration;
+            } else if (preset.type === 'base') {
+                inputType = InputType.OHConcentration;
+            }
+            inputValue = preset.concentration || 0.1;
+        }
+        
+        // Convertir el preset a CalculationInput
+        const calculationInput: CalculationInput = {
+            calculation_type: calculationType,
+            input_type: inputType,
+            input_value: inputValue,
+            temperature: preset.values?.temperature || preset.temperature || 25,
+            show_steps: true,
+        };
+
+        // Si es un buffer, agregar los componentes
+        if (preset.values?.buffer) {
+            calculationInput.buffer_components = [
+                {
+                    compound: preset.values.buffer.acidName || 'CH3COOH',
+                    concentration: preset.values.buffer.acidConcentration || 0.1,
+                    pka: preset.values.buffer.pka || 4.76
+                },
+                {
+                    compound: preset.values.buffer.baseName || 'CH3COO-',
+                    concentration: preset.values.buffer.baseConcentration || 0.1
+                }
+            ];
+        } else if (preset.buffer_components) {
+            calculationInput.buffer_components = preset.buffer_components;
+        }
+
+        setSelectedPresetData(calculationInput);
+        message.success(`Preset "${preset.name}" aplicado a la calculadora`);
+    }, []);
+
+    // Manejar duplicación de cálculo desde el historial
+    const handleDuplicateCalculation = useCallback((calculation: any) => {
+        console.log('Duplicando cálculo:', calculation);
+        
+        // Extraer los datos de entrada del cálculo original
+        const inputData = calculation.input_data || calculation.inputData || {};
+        const calcType = calculation.calculation_type || calculation.calculationType || CalculationType.ConcentrationToPH;
+        
+        // Crear el objeto CalculationInput desde los datos del historial
+        const duplicatedInput: CalculationInput = {
+            calculation_type: calcType,
+            input_type: inputData.input_type || InputType.PH,
+            input_value: inputData.input_value || 7.0,
+            temperature: inputData.temperature || 25,
+            show_steps: true,
+            ionic_strength: inputData.ionic_strength,
+            include_activity: inputData.include_activity,
+            buffer_components: inputData.buffer_components
+        };
+        
+        // Establecer los datos duplicados en la calculadora
+        setSelectedPresetData(duplicatedInput);
+        message.success('Cálculo duplicado en la calculadora');
+    }, []);
+
+    // Manejar cuando se completa un cálculo
+    const handleCalculationComplete = useCallback((result: any) => {
+        // Evitar loops verificando si ya procesamos este resultado
+        const resultId = result?.metadata?.calculation_id || result?.timestamp || Date.now().toString();
+        
+        if (result && result.results && resultId !== lastCalculationId) {
+            setLastCalculationId(resultId);
+            
+            // Agregar el resultado a la lista para visualización
+            const newDataPoint = {
+                id: resultId,
+                name: `Cálculo ${calculationResults.length + 1}`,
+                ph: result.results.ph,
+                poh: result.results.poh,
+                h_concentration: result.results.h_concentration,
+                oh_concentration: result.results.oh_concentration,
+                is_acid: result.results.ph < 7,
+                timestamp: new Date().toISOString(),
+                calculation_type: result.calculation_type,
+                temperature: result.temperature || 25,
+                warnings: result.warnings,
+                ...result.results
+            };
+            
+            setCalculationResults(prev => {
+                // Evitar duplicados
+                if (prev.some(item => item.id === resultId)) {
+                    return prev;
+                }
+                return [...prev, newDataPoint];
+            });
+            
+            message.success('Cálculo completado y agregado a la visualización');
+        }
+    }, [lastCalculationId, calculationResults.length]);
 
     const renderCalculatorLayout = () => (
         <Row justify="center">
@@ -37,18 +189,56 @@ const AdvancedPHCalculatorPage: React.FC = () => {
                 <Row gutter={[24, 24]}>
                     {/* --- Sección Principal: Calculadora y Presets --- */}
                     <Col span={24}>
-                        <AdvancedPHCalculator />
+                        <AdvancedPHCalculator 
+                            initialData={selectedPresetData}
+                            onCalculationComplete={handleCalculationComplete}
+                            onViewGraphs={() => {
+                                // Hacer scroll a la sección de visualización
+                                if (visualizationSectionRef.current) {
+                                    visualizationSectionRef.current.scrollIntoView({ 
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                    message.info('Desplazándose a la sección de visualización');
+                                }
+                            }}
+                        />
                     </Col>
                     <Col span={24}>
-                        <PHPresets onPresetSelect={(preset) => console.log('Preset selected:', preset)} />
+                        <PHPresets onPresetSelect={handlePresetSelect} />
                     </Col>
 
                     {/* --- Sección Secundaria: Visualización e Historial --- */}
                     <Col span={24}>
-                        <PHVisualization data={mockVisualizationData} />
+                        <div ref={visualizationSectionRef}>
+                        <Card 
+                            title="Visualización de Resultados"
+                            extra={
+                                <Segmented
+                                    value={visualizationType}
+                                    onChange={(value) => setVisualizationType(value as any)}
+                                    options={[
+                                        { label: 'Barras', value: 'bar' },
+                                        { label: 'Líneas', value: 'line' },
+                                        { label: 'Radial', value: 'radial' },
+                                        { label: 'Comparación', value: 'comparison', disabled: calculationResults.length < 2 }
+                                    ]}
+                                />
+                            }
+                        >
+                            <PHVisualization 
+                                data={calculationResults.length > 0 ? calculationResults : mockVisualizationData} 
+                                chartType={visualizationType}
+                                key={`viz-${calculationResults.length}-${visualizationType}`}
+                            />
+                        </Card>
+                        </div>
                     </Col>
                     <Col span={24}>
-                         <PHHistory userId="mock-user-123" />
+                         <PHHistory 
+                            userId="mock-user-123" 
+                            onDuplicateCalculation={handleDuplicateCalculation}
+                         />
                     </Col>
                 </Row>
             </Col>
@@ -61,10 +251,10 @@ const AdvancedPHCalculatorPage: React.FC = () => {
             label: (<span><ExperimentOutlined /> Calculadora</span>),
             children: renderCalculatorLayout()
         },
-        {
+{
             key: 'buffer_designer',
             label: (<span><BeakerIcon className="h-4 w-4 inline-block mr-1" /> Diseñador de Buffer</span>),
-            children: <BufferDesigner onBufferDesigned={(buffer) => console.log(buffer)} />
+            children: <BufferDesigner onBufferDesigned={handleBufferDesigned} />
         },
         {
             key: 'stats',

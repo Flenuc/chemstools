@@ -8,6 +8,7 @@ import quizReducer from './quizSlice';
 import chemWordleReducer from './chemWordleSlice';
 import memoryReducer from './memorySlice';
 import balanceChallengeReducer from './balanceChallengeSlice';
+import advancedPHReducer from './advancedPHSlice';
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     chemWordle: chemWordleReducer,
     memory: memoryReducer,
     balanceChallenge: balanceChallengeReducer,
+    advancedPH: advancedPHReducer,
   },
 });
 

@@ -1,0 +1,24 @@
+﻿ID,Tipo_Calculo,Fecha,Usuario,Temperatura_C,Fuerza_Ionica,Tiempo_Calculo_ms,pH,pOH,Concentracion_H,Concentracion_OH,Coef_Actividad_H,Coef_Actividad_OH,Kw_Corregido,Capacidad_Buffer,Valor_Entrada,Tipo_Entrada,Incluye_Actividad,Pasos_Calculo
+f22c1c4c-2d6e-4217-8577-f4fb543660fd,Cálculo de buffer,2025-08-31 02:43:02,Pingo,25.0,N/A,0,7.0,6.997,1e-07,1.008e-07,1.0,1.0,1.008e-14,0.001311,7.0,ph,False,"Paso 1: Identificación del sistema buffer
+• Ácido débil: CH3COOH (0.100 M)
+• Base conjugada: CH3COONa (0.100 M)
+• pKa del sistema = 4.76
+• pH objetivo = 7.00
+• Temperatura = 25.0°C; Paso 2: Aplicación de la ecuación de Henderson-Hasselbalch
+• Fórmula: pH = pKa + log₁₀([A⁻]/[HA])
+• pH = 4.76 + log₁₀(0.100/0.100)
+• pH = 4.76 + log₁₀(1.000)
+• pH = 4.76 + 0.000
+• pH = 4.76; Paso 3: Cálculo de la capacidad buffer (β)
+• Concentración total = 0.200 M
+• Fracción disociada (α) = 0.500
+• Fórmula: β = 2.303 × α × (1-α) × C_total
+• β = 2.303 × 0.500 × 0.500 × 0.200
+• β = 0.1152 mol/L/pH; Paso 4: Evaluación de la eficacia del buffer
+• Distancia del pKa: |4.76 - 4.76| = 0.00
+• Eficacia: EXCELENTE (pH dentro de ±1 unidad del pKa)
+• Rango de trabajo óptimo: pH 3.76 a 5.76; Paso 5: Distribución de especies en equilibrio
+• Fracción de CH3COOH: 50.0%
+• Fracción de CH3COONa: 50.0%
+• [H⁺] = 1.7378e-05 M
+• [OH⁻] = 5.7544e-10 M"

@@ -207,3 +207,208 @@ class PHCalculationHistory(BaseModel):
             ).count() 
         
         return stats
+    
+class ChemicalPreset(BaseModel):
+    """
+    Modelo para presets predefinidos de soluciones químicas comunes.
+    """
+    PRESET_CATEGORIES = [
+        ('strong_acid', 'Ácido Fuerte'),
+        ('strong_base', 'Base Fuerte'),
+        ('weak_acid', 'Ácido Débil'),
+        ('weak_base', 'Base Débil'),
+        ('buffer', 'Sistema Buffer'),
+        ('physiological', 'Fisiológico'),
+        ('industrial', 'Industrial'),
+        ('educational', 'Educacional'),
+    ]
+    
+    CALCULATION_TYPES = [
+        ('concentration_to_ph', 'Concentración → pH'),
+        ('ph_to_all', 'pH → Todas las variables'),
+        ('buffer_calculation', 'Cálculo de Buffer'),
+    ]
+    
+    # Identificación
+    code = models.CharField(
+        max_length=50, 
+        unique=True,
+        help_text="Código único del preset (ej: hcl_0.1)"
+    )
+    name = models.CharField(
+        max_length=200,
+        help_text="Nombre descriptivo del preset"
+    )
+    category = models.CharField(
+        max_length=20,
+        choices=PRESET_CATEGORIES,
+        help_text="Categoría del preset"
+    )
+    
+    # Descripción
+    description = models.TextField(
+        help_text="Descripción detallada del preset y su uso"
+    )
+    chemical_formula = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Fórmula química (ej: HCl, NaOH, CH₃COOH)"
+    )
+    
+    # Datos del cálculo
+    calculation_type = models.CharField(
+        max_length=30,
+        choices=CALCULATION_TYPES,
+        help_text="Tipo de cálculo predefinido"
+    )
+    calculation_values = models.JSONField(
+        help_text="Valores predefinidos para el cálculo",
+        default=dict
+    )
+    
+    # Metadata
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Si el preset está activo y disponible"
+    )
+    usage_count = models.IntegerField(
+        default=0,
+        help_text="Contador de veces que se ha usado este preset"
+    )
+    difficulty_level = models.IntegerField(
+        default=1,
+        help_text="Nivel de dificultad (1=Básico, 2=Intermedio, 3=Avanzado)"
+    )
+    tags = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="Tags para búsqueda y categorización"
+    )
+    
+    class Meta:
+        verbose_name = "Preset Químico"
+        verbose_name_plural = "Presets Químicos"
+        ordering = ['category', 'name']
+        indexes = [
+            models.Index(fields=['code']),
+            models.Index(fields=['category']),
+            models.Index(fields=['is_active']),
+        ]
+    
+    def __str__(self):
+        return f"{self.name} ({self.code})"
+    
+    def increment_usage(self):
+        """Incrementa el contador de uso."""
+        self.usage_count += 1
+        self.save(update_fields=['usage_count'])
+    
+    def get_calculation_input(self):
+        """
+        Devuelve los valores formateados para usar en CalculationInput.
+        """
+        base_values = {
+            'calculation_type': self.calculation_type,
+            'temperature': 25.0,
+        }
+        base_values.update(self.calculation_values)
+        return base_values
+    
+
+class BufferSystem(BaseModel):
+    """
+    Modelo para sistemas buffer predefinidos.
+    """
+    # Identificación
+    code = models.CharField(
+        max_length=50,
+        unique=True,
+        help_text="Código único del sistema buffer"
+    )
+    name = models.CharField(
+        max_length=200,
+        help_text="Nombre del sistema buffer"
+    )
+    
+    # Componentes químicos
+    acid_formula = models.CharField(
+        max_length=100,
+        help_text="Fórmula del ácido"
+    )
+    base_formula = models.CharField(
+        max_length=100,
+        help_text="Fórmula de la base conjugada"
+    )
+    pka = models.FloatField(
+        help_text="pKa del ácido"
+    )
+    
+    # Rangos y propiedades
+    effective_ph_min = models.FloatField(
+        help_text="pH mínimo efectivo del buffer"
+    )
+    effective_ph_max = models.FloatField(
+        help_text="pH máximo efectivo del buffer"
+    )
+    optimal_ph = models.FloatField(
+        help_text="pH óptimo del buffer (generalmente igual al pKa)"
+    )
+    
+    # Información adicional
+    common_uses = models.TextField(
+        blank=True,
+        help_text="Usos comunes de este sistema buffer"
+    )
+    preparation_notes = models.TextField(
+        blank=True,
+        help_text="Notas sobre la preparación del buffer"
+    )
+    
+    # Estado
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Si el sistema buffer está activo"
+    )
+    usage_count = models.IntegerField(
+        default=0,
+        help_text="Contador de veces que se ha usado"
+    )
+    
+    class Meta:
+        verbose_name = "Sistema Buffer"
+        verbose_name_plural = "Sistemas Buffer"
+        ordering = ['pka', 'name']
+        indexes = [
+            models.Index(fields=['code']),
+            models.Index(fields=['pka']),
+            models.Index(fields=['is_active']),
+        ]
+    
+    def __str__(self):
+        return f"{self.name} (pKa={self.pka})"
+    
+    def get_effective_range(self):
+        """Devuelve el rango efectivo como tupla."""
+        return (self.effective_ph_min, self.effective_ph_max)
+    
+    def is_suitable_for_ph(self, target_ph):
+        """Verifica si el buffer es adecuado para un pH objetivo."""
+        return self.effective_ph_min <= target_ph <= self.effective_ph_max
+    
+    def get_suitability_score(self, target_ph):
+        """
+        Calcula un puntaje de idoneidad para un pH objetivo.
+        1.0 = óptimo (pH = pKa)
+        0.0 = fuera del rango efectivo
+        """
+        if not self.is_suitable_for_ph(target_ph):
+            return 0.0
+        
+        # Distancia del pH objetivo al pKa
+        distance = abs(target_ph - self.pka)
+        
+        # Score máximo cuando pH = pKa, disminuye con la distancia
+        if distance <= 1.0:
+            return 1.0 - (distance * 0.3)  # Disminuye 30% por unidad de pH
+        else:
+            return 0.4 - (distance - 1.0) * 0.2  # Disminuye más lentamente

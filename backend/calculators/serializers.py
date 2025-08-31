@@ -1,7 +1,13 @@
 from rest_framework import serializers
-from .models import GlossaryTerm, PHCalculationHistory
+from .models import GlossaryTerm, PHCalculationHistory, ChemicalPreset, BufferSystem
 from .validators import validate_ph_input, validate_buffer_input
 from .utils import comprehensive_ph_calculation, calculate_buffer_capacity
+from .calculation_steps import (
+    generate_concentration_to_ph_steps,
+    generate_ph_to_all_steps,
+    generate_buffer_steps,
+    generate_activity_correction_steps
+)
 import time
 import uuid
 
@@ -76,14 +82,38 @@ class AdvancedPHCalculatorSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         """Validación completa usando cerberus."""
-        # Validar con cerberus
+        # Para cálculos de buffer, necesitamos manejar la validación de forma especial
         if attrs['calculation_type'] == 'buffer_calculation':
-            is_valid, normalized_data, warnings = validate_buffer_input(attrs)
+            # Verificar que buffer_components esté presente
+            if 'buffer_components' not in attrs or not attrs['buffer_components']:
+                raise serializers.ValidationError({
+                    'buffer_components': 'Se requieren componentes del buffer para este tipo de cálculo'
+                })
+            
+            # Crear una copia de los datos para validación de buffer
+            buffer_data = {
+                'buffer_components': attrs['buffer_components'],
+                'temperature': attrs.get('temperature', 25.0),
+                'target_ph': attrs.get('input_value')  # Usar input_value como target_ph
+            }
+            
+            is_valid, normalized_buffer_data, warnings = validate_buffer_input(buffer_data)
+            
+            if not is_valid:
+                raise serializers.ValidationError("Datos del buffer inválidos")
+            
+            # Combinar los datos normalizados
+            normalized_data = attrs.copy()
+            normalized_data.update(normalized_buffer_data)
+            normalized_data['calculation_type'] = attrs['calculation_type']
+            normalized_data['input_type'] = attrs.get('input_type', 'ph')
+            normalized_data['input_value'] = attrs.get('input_value', 7.0)
+            
         else:
             is_valid, normalized_data, warnings = validate_ph_input(attrs)
-        
-        if not is_valid:
-            raise serializers.ValidationError("Datos de entrada inválidos")
+            
+            if not is_valid:
+                raise serializers.ValidationError("Datos de entrada inválidos")
         
         # Guardar warnings para uso posterior
         self._warnings = warnings
@@ -108,10 +138,8 @@ class AdvancedPHCalculatorSerializer(serializers.Serializer):
             # Calcular tiempo de ejecución
             calculation_time_ms = int((time.time() - start_time) * 1000)
             
-            # Generar pasos si se solicita
-            calculation_steps = None
-            if validated_data.get('show_steps', False):
-                calculation_steps = self._generate_calculation_steps(validated_data, results)
+            # Generar pasos si se solicita (siempre generar para tener disponible)
+            calculation_steps = self._generate_detailed_steps(validated_data, results)
             
             return {
                 'success': True,
@@ -171,6 +199,57 @@ class AdvancedPHCalculatorSerializer(serializers.Serializer):
             steps.append(f"8. Capacidad buffer: β = {results['buffer_capacity']:.4f} mol/L/pH")
         
         return steps
+    
+    def _generate_detailed_steps(self, input_data, results):
+        """Genera pasos detallados del cálculo con fórmulas completas."""
+        try:
+            calculation_type = input_data.get('calculation_type')
+            input_type = input_data.get('input_type')
+            input_value = input_data.get('input_value')
+            temperature = input_data.get('temperature', 25.0)
+            
+            # Usar las nuevas funciones de pasos detallados
+            if calculation_type == 'concentration_to_ph':
+                return generate_concentration_to_ph_steps(
+                    input_type=input_type,
+                    input_value=input_value,
+                    temperature=temperature,
+                    include_activity=input_data.get('include_activity', False),
+                    ionic_strength=input_data.get('ionic_strength')
+                )
+            elif calculation_type == 'ph_to_all':
+                # Convert 'ph' to 'pH' and 'poh' to 'pOH' (not all uppercase)
+                if input_type == 'ph':
+                    formatted_input_type = 'pH'
+                elif input_type == 'poh':
+                    formatted_input_type = 'pOH'
+                else:
+                    formatted_input_type = input_type
+                    
+                return generate_ph_to_all_steps(
+                    input_type=formatted_input_type,
+                    input_value=input_value,
+                    temperature=temperature
+                )
+            elif calculation_type == 'buffer_calculation':
+                return generate_buffer_steps(
+                    target_ph=input_value,
+                    buffer_components=input_data.get('buffer_components', []),
+                    temperature=temperature
+                )
+            elif calculation_type == 'activity_correction':
+                ph_initial = results.get('ph', 7.0)
+                return generate_activity_correction_steps(
+                    ph_initial=ph_initial,
+                    ionic_strength=input_data.get('ionic_strength', 0),
+                    temperature=temperature
+                )
+            else:
+                # Fallback al método anterior si no hay tipo específico
+                return self._generate_calculation_steps(input_data, results)
+        except Exception as e:
+            # En caso de error, usar el método anterior
+            return self._generate_calculation_steps(input_data, results)
 
     def _get_methodology_description(self, input_data):
         """Describe la metodología utilizada."""
@@ -345,3 +424,224 @@ class ExportSerializer(serializers.Serializer):
             )
         
         return value
+    
+class ChemicalPresetSerializer(serializers.ModelSerializer):
+    """
+    Serializer para presets químicos.
+    """
+    category_display = serializers.CharField(
+        source='get_category_display',
+        read_only=True
+    )
+    calculation_type_display = serializers.CharField(
+        source='get_calculation_type_display',
+        read_only=True
+    )
+    
+    class Meta:
+        model = ChemicalPreset
+        fields = [
+            'id', 'code', 'name', 'category', 'category_display',
+            'description', 'chemical_formula', 'calculation_type',
+            'calculation_type_display', 'calculation_values',
+            'difficulty_level', 'tags', 'usage_count', 'created_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'usage_count']
+    
+    def to_representation(self, instance):
+        """Personaliza la representación de salida."""
+        data = super().to_representation(instance)
+        
+        # Agregar información de dificultad
+        difficulty_map = {
+            1: 'Básico',
+            2: 'Intermedio',
+            3: 'Avanzado'
+        }
+        data['difficulty_display'] = difficulty_map.get(
+            instance.difficulty_level, 
+            'Desconocido'
+        )
+        
+        # Formatear los valores del cálculo para el frontend
+        if instance.calculation_values:
+            data['formatted_values'] = self._format_calculation_values(
+                instance.calculation_type,
+                instance.calculation_values
+            )
+        
+        return data
+    
+    def _format_calculation_values(self, calc_type, values):
+        """Formatea los valores según el tipo de cálculo."""
+        formatted = {}
+        
+        if calc_type == 'concentration_to_ph':
+            formatted['input_type'] = values.get('input_type', 'h_concentration')
+            formatted['input_value'] = values.get('input_value', 0.1)
+            formatted['compound'] = values.get('compound', '')
+            
+        elif calc_type == 'ph_to_all':
+            formatted['input_type'] = values.get('input_type', 'ph')
+            formatted['input_value'] = values.get('input_value', 7.0)
+            
+        elif calc_type == 'buffer_calculation':
+            formatted['buffer_components'] = values.get('buffer_components', [])
+            formatted['target_ph'] = values.get('target_ph', 7.0)
+        
+        # Agregar temperatura si está presente
+        if 'temperature' in values:
+            formatted['temperature'] = values['temperature']
+        
+        return formatted
+
+
+class BufferSystemSerializer(serializers.ModelSerializer):
+    """
+    Serializer para sistemas buffer.
+    """
+    effective_range = serializers.SerializerMethodField()
+    is_suitable_for_neutral = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = BufferSystem
+        fields = [
+            'id', 'code', 'name', 'acid_formula', 'base_formula',
+            'pka', 'effective_ph_min', 'effective_ph_max', 'optimal_ph',
+            'effective_range', 'common_uses', 'preparation_notes',
+            'is_suitable_for_neutral', 'usage_count', 'created_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'usage_count']
+    
+    def get_effective_range(self, obj):
+        """Devuelve el rango efectivo como lista."""
+        return [obj.effective_ph_min, obj.effective_ph_max]
+    
+    def get_is_suitable_for_neutral(self, obj):
+        """Indica si es adecuado para pH neutro (7.0)."""
+        return obj.is_suitable_for_ph(7.0)
+    
+    def to_representation(self, instance):
+        """Personaliza la representación de salida."""
+        data = super().to_representation(instance)
+        
+        # Agregar componentes formateados para el frontend
+        data['components'] = {
+            'acid': {
+                'formula': instance.acid_formula,
+                'pka': instance.pka
+            },
+            'base': {
+                'formula': instance.base_formula
+            }
+        }
+        
+        # Calcular el rango de trabajo óptimo (pKa ± 1)
+        data['optimal_range'] = [
+            max(0, instance.pka - 1),
+            min(14, instance.pka + 1)
+        ]
+        
+        return data
+
+
+class BufferSuggestionSerializer(serializers.Serializer):
+    """
+    Serializer para sugerencias de sistemas buffer.
+    """
+    buffer_system = BufferSystemSerializer(read_only=True)
+    suitability_score = serializers.FloatField(read_only=True)
+    distance_from_pka = serializers.FloatField(read_only=True)
+    
+    def to_representation(self, instance):
+        """Personaliza la representación de salida."""
+        data = super().to_representation(instance)
+        
+        # Agregar recomendación basada en el score
+        score = instance['suitability_score']
+        if score >= 0.9:
+            data['recommendation'] = 'Excelente'
+            data['recommendation_color'] = 'success'
+        elif score >= 0.7:
+            data['recommendation'] = 'Muy bueno'
+            data['recommendation_color'] = 'success'
+        elif score >= 0.5:
+            data['recommendation'] = 'Bueno'
+            data['recommendation_color'] = 'warning'
+        else:
+            data['recommendation'] = 'Aceptable'
+            data['recommendation_color'] = 'info'
+        
+        # Formatear el score como porcentaje
+        data['suitability_percentage'] = round(score * 100, 1)
+        
+        return data
+
+
+class PresetUsageSerializer(serializers.Serializer):
+    """
+    Serializer para el uso de un preset.
+    """
+    preset_id = serializers.IntegerField(required=True)
+    applied_at = serializers.DateTimeField(read_only=True)
+    calculation_result_id = serializers.UUIDField(
+        read_only=True,
+        allow_null=True
+    )
+
+
+class BufferDesignRequestSerializer(serializers.Serializer):
+    """
+    Serializer para solicitud de diseño de buffer.
+    """
+    target_ph = serializers.FloatField(
+        min_value=0,
+        max_value=14,
+        help_text="pH objetivo del buffer"
+    )
+    buffer_system_id = serializers.IntegerField(
+        required=False,
+        help_text="ID del sistema buffer a usar (opcional)"
+    )
+    total_concentration = serializers.FloatField(
+        min_value=0.001,
+        max_value=5.0,
+        default=0.1,
+        help_text="Concentración total del buffer (M)"
+    )
+    volume = serializers.FloatField(
+        min_value=0.001,
+        max_value=10.0,
+        default=1.0,
+        help_text="Volumen de la solución (L)"
+    )
+    temperature = serializers.FloatField(
+        min_value=0,
+        max_value=100,
+        default=25.0,
+        help_text="Temperatura (°C)"
+    )
+    
+    def validate(self, attrs):
+        """Validación personalizada."""
+        # Si se especifica un sistema buffer, verificar que existe
+        if 'buffer_system_id' in attrs:
+            try:
+                buffer_system = BufferSystem.objects.get(
+                    id=attrs['buffer_system_id'],
+                    is_active=True
+                )
+                # Verificar que el pH objetivo está en el rango del buffer
+                if not buffer_system.is_suitable_for_ph(attrs['target_ph']):
+                    raise serializers.ValidationError(
+                        f"El pH objetivo {attrs['target_ph']} está fuera del "
+                        f"rango efectivo del buffer {buffer_system.name} "
+                        f"({buffer_system.effective_ph_min} - {buffer_system.effective_ph_max})"
+                    )
+                attrs['buffer_system'] = buffer_system
+            except BufferSystem.DoesNotExist:
+                raise serializers.ValidationError(
+                    "Sistema buffer no encontrado o inactivo"
+                )
+        
+        return attrs

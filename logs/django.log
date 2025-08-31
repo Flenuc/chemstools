@@ -1,2 +1,27 @@
 INFO 2025-08-15 23:53:03,414 parallel_computing Initializing ParallelExecutor with 24 workers
 INFO 2025-08-15 23:53:03,516 parallel_computing Parallel operation 'parallel_map' completed: duration=0.10s, items=10, errors=0, throughput=98.0 items/s
+INFO 2025-08-30 20:54:05,843 autoreload Watching for file changes with StatReloader
+INFO 2025-08-30 21:28:24,010 autoreload D:\ChemsTools\chemstools_project\backend\calculators\export_utils.py changed, reloading.
+INFO 2025-08-30 21:28:26,143 autoreload Watching for file changes with StatReloader
+INFO 2025-08-30 21:28:47,099 autoreload D:\ChemsTools\chemstools_project\backend\calculators\advanced_views.py changed, reloading.
+INFO 2025-08-30 21:28:47,954 autoreload Watching for file changes with StatReloader
+INFO 2025-08-30 21:29:02,016 autoreload D:\ChemsTools\chemstools_project\backend\calculators\advanced_views.py changed, reloading.
+INFO 2025-08-30 21:29:02,757 autoreload Watching for file changes with StatReloader
+INFO 2025-08-30 21:51:03,180 autoreload D:\ChemsTools\chemstools_project\backend\calculators\advanced_views.py changed, reloading.
+INFO 2025-08-30 21:51:05,775 autoreload Watching for file changes with StatReloader
+INFO 2025-08-30 21:51:24,558 autoreload D:\ChemsTools\chemstools_project\backend\calculators\advanced_views.py changed, reloading.
+INFO 2025-08-30 21:51:25,366 autoreload Watching for file changes with StatReloader
+INFO 2025-08-30 23:32:30,348 autoreload D:\ChemsTools\chemstools_project\backend\calculators\serializers.py changed, reloading.
+INFO 2025-08-30 23:32:40,080 autoreload Watching for file changes with StatReloader
+INFO 2025-08-30 23:51:42,835 autoreload D:\ChemsTools\chemstools_project\backend\calculators\serializers.py changed, reloading.
+INFO 2025-08-30 23:51:45,001 autoreload Watching for file changes with StatReloader
+INFO 2025-08-31 00:24:22,505 autoreload D:\ChemsTools\chemstools_project\backend\reactions\__init__.py changed, reloading.
+INFO 2025-08-31 00:24:24,666 autoreload Watching for file changes with StatReloader
+INFO 2025-08-31 12:30:45,140 autoreload D:\ChemsTools\chemstools_project\backend\calculators\serializers.py changed, reloading.
+INFO 2025-08-31 12:30:53,613 autoreload Watching for file changes with StatReloader
+INFO 2025-08-31 12:44:27,248 autoreload D:\ChemsTools\chemstools_project\backend\chems_tools\settings.py changed, reloading.
+INFO 2025-08-31 12:44:28,408 autoreload Watching for file changes with StatReloader
+INFO 2025-08-31 12:50:09,602 autoreload D:\ChemsTools\chemstools_project\backend\calculators\views.py changed, reloading.
+INFO 2025-08-31 12:50:12,527 autoreload Watching for file changes with StatReloader
+INFO 2025-08-31 12:51:57,216 autoreload D:\ChemsTools\chemstools_project\backend\calculators\views.py changed, reloading.
+INFO 2025-08-31 12:51:58,271 autoreload Watching for file changes with StatReloader

@@ -20,6 +20,11 @@ const nextConfig = {
         source: '/api/:path*',
         destination: `${backendUrl}/api/:path*`,
       },
+      // Proxy para archivos media (exports, etc.)
+      {
+        source: '/media/:path*',
+        destination: `${backendUrl}/media/:path*`,
+      },
     ];
   },
   // Permitir trailing slashes sin redirección

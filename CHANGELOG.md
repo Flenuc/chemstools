@@ -4,7 +4,55 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
-[1.1.0-beta] - 2025-08-18
+[1.1.0-beta] - 2025-08-31
+
+Fixed
+Frontend: Se han corregido errores de TypeScript en los componentes de la calculadora de pH avanzada:
+- Corregido el error de tipo en PHExport.tsx cambiando el string literal 'csv' por el valor del enum ExportFormat.CSV
+- Actualizado PHHistory.tsx para usar el enum CalculationType importado desde types/advancedPH.ts en lugar de tipos literales de string
+- Agregado el slice advancedPH al store principal de Redux en store/index.ts para resolver errores de estado no definido
+- Asegurada la consistencia de tipos entre los componentes y las definiciones TypeScript centralizadas
+
+Added
+Frontend: Se ha implementado la interfaz completa de la Calculadora de pH/pOH Avanzada con componentes React modernos y funcionalidades profesionales:
+- Página principal (frontend/src/app/calculators/advanced-ph/page.tsx) con diseño responsive y navegación por pestañas
+- Suite completa de componentes en frontend/src/components/calculators/ incluyendo:
+  * PHCalculatorForm: Formulario principal con validación en tiempo real y selección de tipo de cálculo
+  * PHResultDisplay: Visualización profesional de resultados con indicadores de pH y clasificación de solución
+  * PHStepByStep: Vista detallada paso a paso con fórmulas matemáticas renderizadas y explicaciones
+  * PHHistoryTable: Tabla de historial con filtros, búsqueda y acciones de exportación
+  * BufferSystemSelector: Selector inteligente de sistemas buffer con recomendaciones basadas en pH objetivo
+  * PHExportOptions: Panel de opciones de exportación con soporte para múltiples formatos (PDF, CSV, JSON, Excel)
+- Servicio dedicado (frontend/src/services/phCalculatorService.ts) para comunicación con la API backend
+- Estado global con Redux (frontend/src/store/advancedPHSlice.ts) para gestión centralizada del estado
+- Hooks personalizados (frontend/src/store/hooks.ts) para acceso tipado al store de Redux
+- Tipos TypeScript completos (frontend/src/types/advancedPH.ts) para todas las entidades del dominio
+- Utilidad de exportación PDF (frontend/src/utils/pdfExport.ts) con generación de documentos profesionales
+
+Frontend: Se han implementado características avanzadas de UX/UI en la calculadora de pH:
+- Animaciones fluidas con Framer Motion para transiciones y feedback visual
+- Gráficos interactivos con Chart.js para visualización de tendencias y distribuciones
+- Indicador visual de pH con escala de colores y clasificación automática (ácido/neutro/base)
+- Sistema de notificaciones integrado para feedback inmediato al usuario
+- Formularios con validación en tiempo real y mensajes de ayuda contextuales
+- Modo oscuro/claro con persistencia de preferencias del usuario
+- Tooltips informativos con explicaciones químicas para cada campo
+
+Frontend: Se ha desarrollado un sistema completo de gestión del historial de cálculos:
+- Tabla paginada con ordenamiento por múltiples columnas
+- Filtros avanzados por tipo de cálculo, rango de fechas y presencia de warnings
+- Búsqueda en tiempo real con debounce para optimización
+- Acciones batch para exportación y eliminación múltiple
+- Vista de detalle expandible para cada cálculo con pasos completos
+- Integración con el sistema de exportación para generar reportes
+
+Frontend: Se ha implementado un sistema robusto de exportación de datos:
+- Generación de PDFs profesionales con jsPDF incluyendo gráficos y tablas
+- Exportación a CSV con formato optimizado para Excel
+- Exportación JSON estructurada con metadatos completos
+- Exportación Excel (XLSX) con hojas múltiples y formato condicional
+- Preview de exportación antes de descarga
+- Configuración personalizable de campos a incluir
 
 Added
 Backend: Se ha implementado la Calculadora de pH/pOH Avanzada con funcionalidades profesionales, transformando la calculadora básica en una herramienta científica robusta.

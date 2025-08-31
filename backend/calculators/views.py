@@ -1,12 +1,23 @@
+import math
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from .models import GlossaryTerm
-from .serializers import GlossaryTermSerializer
-import math
+from django.db.models import Q, F
+from .models import GlossaryTerm, ChemicalPreset, BufferSystem
+from .serializers import (
+    GlossaryTermSerializer, 
+    ChemicalPresetSerializer, 
+    BufferSystemSerializer, 
+    BufferSuggestionSerializer
+)
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 class GlossaryTermViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -144,3 +155,245 @@ class SolutionCalculatorView(APIView):
             })
         except (ValueError, TypeError) as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+"""
+Views para presets químicos y sistemas buffer.
+"""
+
+class ChemicalPresetViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para consultar presets químicos predefinidos.
+    """
+    serializer_class = ChemicalPresetSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """Devuelve solo los presets activos."""
+        queryset = ChemicalPreset.objects.filter(is_active=True)
+        
+        # Filtrar por categoría si se especifica
+        category = self.request.query_params.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+        
+        # Filtrar por tipo de cálculo
+        calc_type = self.request.query_params.get('calculation_type')
+        if calc_type:
+            queryset = queryset.filter(calculation_type=calc_type)
+        
+        # Filtrar por nivel de dificultad
+        difficulty = self.request.query_params.get('difficulty')
+        if difficulty:
+            queryset = queryset.filter(difficulty_level=difficulty)
+        
+        # Búsqueda por texto
+        search = self.request.query_params.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(description__icontains=search) |
+                Q(chemical_formula__icontains=search) |
+                Q(tags__contains=search)
+            )
+        
+        return queryset.order_by('category', 'name')
+    
+    @action(detail=True, methods=['post'])
+    def use(self, request, pk=None):
+        """
+        Marca un preset como usado e incrementa su contador.
+        """
+        preset = self.get_object()
+        preset.increment_usage()
+        
+        return Response({
+            'success': True,
+            'message': f'Preset {preset.name} marcado como usado',
+            'calculation_input': preset.get_calculation_input()
+        })
+    
+    @action(detail=False, methods=['get'])
+    def popular(self, request):
+        """
+        Devuelve los presets más utilizados.
+        """
+        limit = int(request.query_params.get('limit', 10))
+        popular_presets = ChemicalPreset.objects.filter(
+            is_active=True
+        ).order_by('-usage_count')[:limit]
+        
+        serializer = self.get_serializer(popular_presets, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def categories(self, request):
+        """
+        Devuelve las categorías disponibles con conteo.
+        """
+        categories = []
+        for code, name in ChemicalPreset.PRESET_CATEGORIES:
+            count = ChemicalPreset.objects.filter(
+                category=code,
+                is_active=True
+            ).count()
+            if count > 0:
+                categories.append({
+                    'code': code,
+                    'name': name,
+                    'count': count
+                })
+        
+        return Response(categories)
+
+
+class BufferSystemViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para sistemas buffer predefinidos.
+    """
+    serializer_class = BufferSystemSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """Devuelve sistemas buffer activos."""
+        queryset = BufferSystem.objects.filter(is_active=True)
+        
+        # Filtrar por rango de pH
+        min_ph = self.request.query_params.get('min_ph')
+        max_ph = self.request.query_params.get('max_ph')
+        
+        if min_ph:
+            queryset = queryset.filter(effective_ph_max__gte=float(min_ph))
+        if max_ph:
+            queryset = queryset.filter(effective_ph_min__lte=float(max_ph))
+        
+        # Búsqueda
+        search = self.request.query_params.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(acid_formula__icontains=search) |
+                Q(base_formula__icontains=search)
+            )
+        
+        return queryset.order_by('pka')
+    
+    @action(detail=True, methods=['post'])
+    def use(self, request, pk=None):
+        """
+        Marca un sistema buffer como usado.
+        """
+        buffer_system = self.get_object()
+        buffer_system.usage_count = F('usage_count') + 1
+        buffer_system.save(update_fields=['usage_count'])
+        
+        return Response({
+            'success': True,
+            'message': f'Sistema buffer {buffer_system.name} marcado como usado'
+        })
+
+
+class BufferSuggestionView(APIView):
+    """
+    View para obtener sugerencias de sistemas buffer para un pH objetivo.
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        """
+        Sugiere sistemas buffer adecuados para un pH objetivo.
+        
+        Query params:
+        - target_ph: pH objetivo (requerido)
+        - limit: Número máximo de sugerencias (default: 5)
+        """
+        target_ph = request.query_params.get('target_ph')
+        if not target_ph:
+            return Response({
+                'error': 'Se requiere el parámetro target_ph'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            target_ph = float(target_ph)
+            if not 0 <= target_ph <= 14:
+                raise ValueError("pH fuera de rango")
+        except ValueError:
+            return Response({
+                'error': 'target_ph debe ser un número entre 0 y 14'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        limit = int(request.query_params.get('limit', 5))
+        
+        # Obtener todos los sistemas buffer activos
+        all_buffers = BufferSystem.objects.filter(is_active=True)
+        
+        # Calcular puntuaciones y ordenar
+        buffer_suggestions = []
+        for buffer_system in all_buffers:
+            score = buffer_system.get_suitability_score(target_ph)
+            if score > 0:
+                buffer_suggestions.append({
+                    'buffer_system': buffer_system,
+                    'suitability_score': score,
+                    'distance_from_pka': abs(target_ph - buffer_system.pka)
+                })
+        
+        # Ordenar por puntuación (descendente)
+        buffer_suggestions.sort(key=lambda x: x['suitability_score'], reverse=True)
+        
+        # Limitar resultados
+        buffer_suggestions = buffer_suggestions[:limit]
+        
+        # Serializar
+        serializer = BufferSuggestionSerializer(buffer_suggestions, many=True)
+        
+        return Response({
+            'target_ph': target_ph,
+            'suggestions': serializer.data,
+            'total_found': len(buffer_suggestions)
+        })
+
+
+class PresetSearchView(APIView):
+    """
+    View unificada para búsqueda de presets y buffers.
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        """
+        Búsqueda global de presets y sistemas buffer.
+        """
+        query = request.query_params.get('q', '')
+        if not query:
+            return Response({
+                'chemical_presets': [],
+                'buffer_systems': [],
+                'query': query
+            })
+        
+        # Buscar en presets químicos
+        presets = ChemicalPreset.objects.filter(
+            Q(is_active=True) & (
+                Q(name__icontains=query) |
+                Q(description__icontains=query) |
+                Q(chemical_formula__icontains=query) |
+                Q(tags__contains=query)
+            )
+        )[:10]
+        
+        # Buscar en sistemas buffer
+        buffers = BufferSystem.objects.filter(
+            Q(is_active=True) & (
+                Q(name__icontains=query) |
+                Q(acid_formula__icontains=query) |
+                Q(base_formula__icontains=query) |
+                Q(common_uses__icontains=query)
+            )
+        )[:10]
+        
+        return Response({
+            'chemical_presets': ChemicalPresetSerializer(presets, many=True).data,
+            'buffer_systems': BufferSystemSerializer(buffers, many=True).data,
+            'query': query,
+            'total_results': presets.count() + buffers.count()
+        })
