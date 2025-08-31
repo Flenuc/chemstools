@@ -2,8 +2,6 @@
 'use client';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-
-import PHCalculator from '@/components/features/PHCalculator';
 import SolutionCalculator from '@/components/features/SolutionCalculator';
 
 
@@ -19,10 +17,6 @@ export default function Home() {
               
               <SolutionCalculator />
               
-            </div>
-            <div className="space-y-8">
-              
-              <PHCalculator />
             </div>
           </div>
         ) : (
