@@ -25,3 +25,5 @@ INFO 2025-08-31 12:50:09,602 autoreload D:\ChemsTools\chemstools_project\backend
 INFO 2025-08-31 12:50:12,527 autoreload Watching for file changes with StatReloader
 INFO 2025-08-31 12:51:57,216 autoreload D:\ChemsTools\chemstools_project\backend\calculators\views.py changed, reloading.
 INFO 2025-08-31 12:51:58,271 autoreload Watching for file changes with StatReloader
+INFO 2025-08-31 20:07:54,920 autoreload D:\ChemsTools\chemstools_project\backend\chems_tools\settings.py changed, reloading.
+INFO 2025-08-31 20:08:06,839 autoreload Watching for file changes with StatReloader

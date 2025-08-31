@@ -81,6 +81,9 @@ INSTALLED_APPS = [
     
     # monitoring app for metrics and health checks
     'monitoring',
+    
+    # systems_analysis app for systems analysis
+    'systems_analysis',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'

@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/reactions/', include('reactions.urls')),
     path('api/games/', include('games.urls')),
     path('api/monitoring/', include('monitoring.urls')),
+    path('api/systems/', include('systems_analysis.urls')),
 ]
 
 # Serve media files in development

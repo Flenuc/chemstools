@@ -1,3 +1,4 @@
 {
-  "calculators/tests/test_views.py::CalculatorsAPITests::test_get_glossary_list": true
+  "calculators/tests/test_views.py::CalculatorsAPITests::test_get_glossary_list": true,
+  "systems_analysis/tests/test_system_analysis.py::test_analysis_history": true
 }
