@@ -4,6 +4,110 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[1.2.0-beta] - 2025-08-31
+
+Added
+
+Backend: Se ha implementado la API completa del Laboratorio Virtual de Análisis de Sistemas Químicos en la app systems_analysis, proporcionando capacidades avanzadas de análisis de mezclas químicas y diseño de procesos de separación.
+
+Backend: Se han creado 6 modelos principales para el sistema de análisis:
+- ChemicalSubstance: Gestión de sustancias químicas con propiedades físico-químicas completas (densidad, puntos de fusión/ebullición, solubilidad, susceptibilidad magnética, tamaño de partícula)
+- SystemAnalysis: Análisis de sistemas químicos heterogéneos/homogéneos con detección automática de fases y clasificación
+- SystemComponent: Componentes de sistemas con fracciones másicas/volumétricas y estados físicos
+- SeparationMethod: Catálogo de métodos de separación con criterios de aplicabilidad y eficiencia
+- SeparationProcess: Procesos de separación optimizados con secuencias de pasos y métricas de rendimiento
+- PropertyDatabase: Base de datos extendida de propiedades para cálculos avanzados
+
+Backend: Se ha desarrollado el motor SystemAnalyzer en engines.py con algoritmos inteligentes:
+- analyze_mixture(): Análisis completo de mezclas con detección de fases y clasificación de homogeneidad
+- detect_phases(): Identificación automática de fases presentes (sólido/líquido/gas/coloidal)
+- classify_system_homogeneity(): Clasificación precisa como homogéneo/heterogéneo/coloidal
+- suggest_separation_methods(): Sugerencia inteligente de métodos basada en propiedades físico-químicas
+- calculate_separation_efficiency(): Cálculo de eficiencias esperadas con ajustes por condiciones
+- validate_chemical_compatibility(): Validación de compatibilidad química y detección de reacciones peligrosas
+- Constantes científicas configurables: DENSITY_SEPARATION_THRESHOLD, SIZE_SEPARATION_RATIO, MAGNETIC_SUSCEPTIBILITY_THRESHOLD
+
+Backend: Se han implementado 6 algoritmos especializados de separación en separation_algorithms.py:
+- TamizacionAlgorithm: Separación por tamaño de partícula con ratio mínimo de 10x
+- MagneticSeparationAlgorithm: Separación magnética para susceptibilidad > 1e-6 emu/g
+- FlotationAlgorithm: Separación por densidad con diferencia mínima de 0.1 g/cm³
+- FiltrationAlgorithm: Separación sólido-líquido con eficiencia hasta 99%
+- DistillationAlgorithm: Separación térmica para diferencias de punto de ebullición > 25°C
+- CrystallizationAlgorithm: Separación por solubilidad diferencial > 10 g/L
+- Cada algoritmo incluye: is_applicable(), calculate_efficiency(), estimate_time(), estimate_cost(), get_required_equipment()
+
+Backend: Se han creado 7 endpoints REST principales para la API:
+- POST /api/systems/analyze/: Análisis completo de sistemas químicos con sugerencias de separación
+- GET /api/systems/separation-methods/: Catálogo de métodos disponibles con filtros
+- POST /api/systems/generate-separation-flow/: Generación de diagramas de flujo optimizados
+- GET /api/systems/substance-properties/{id}/: Consulta de propiedades de sustancias
+- GET /api/systems/substances/search/: Búsqueda avanzada con múltiples criterios
+- /api/systems/analysis-history/: ViewSet completo para historial de análisis (CRUD)
+- GET /api/systems/analysis-history/stats/: Estadísticas agregadas por usuario
+
+Backend: Se ha implementado el sistema de generación de diagramas de flujo:
+- Generación automática de secuencias optimizadas de separación
+- Cálculo de nodos y conexiones para visualización interactiva
+- Estimación de eficiencia global del proceso (producto de eficiencias individuales)
+- Predicción de tiempo total y costos relativos
+- Identificación de productos finales con pureza y recuperación estimadas
+- Datos estructurados para renderizado en frontend con librerías de grafos
+
+Backend: Se han desarrollado serializers avanzados con validación completa:
+- ChemicalSubstanceSerializer: Validación de rangos de partículas y propiedades de separación
+- SystemComponentSerializer: Normalización automática de fracciones másicas
+- SystemAnalysisSerializer: Integración con motor de análisis y ejecución automática
+- SeparationProcessSerializer: Generación de diagramas y métricas de proceso
+- SystemAnalysisInputSerializer: Validación de entrada con normalización de componentes
+- SubstanceSearchSerializer: Filtros múltiples por fase, categoría, densidad, magnetismo
+
+Backend: Se ha implementado rate limiting diferenciado en los endpoints:
+- POST /api/systems/analyze/: 20 requests/min para análisis complejos
+- POST /api/systems/generate-separation-flow/: 10 requests/min para generación de diagramas
+- Endpoints de consulta: Sin límite para búsquedas y propiedades
+
+Backend: Se han agregado características avanzadas al motor de análisis:
+- Soporte para sistemas coloidales con detección de partículas < 1 μm
+- Manejo inteligente de propiedades opcionales (solo procesa si están definidas)
+- Clasificación automática de métodos por dificultad (básico/intermedio/avanzado)
+- Cálculo de score de separabilidad (0-1) basado en métodos disponibles
+- Estimación de tiempo total considerando operaciones en paralelo
+- Detección de incompatibilidades químicas (ácido-base, redox)
+
+Infrastructure: Se ha creado documentación técnica completa:
+- systems-readme.md: Guía detallada del módulo con ejemplos de uso
+- Documentación PDF generada: "Documentación de API - Laboratorio Virtual de Análisis de Sistemas.pdf"
+- Docstrings exhaustivos en todas las clases y métodos con parámetros y returns
+- Ejemplos de respuestas JSON para cada endpoint
+
+Changed
+
+Architecture: Se ha adoptado un patrón de arquitectura en capas para systems_analysis:
+- Capa de datos: Modelos Django con relaciones complejas y métodos de negocio
+- Capa de lógica: Motores y algoritmos especializados desacoplados de la presentación
+- Capa de API: Views y serializers que orquestan la lógica y validan datos
+- Separación clara permite testing independiente y mantenibilidad
+
+API Design: Se ha establecido un formato consistente de respuestas para análisis:
+- Campo 'success' booleano para identificación rápida del estado
+- 'analysis_id' UUID para tracking y referencias futuras
+- 'results' con estructura anidada de fases, métodos y métricas
+- Manejo unificado de errores con códigos HTTP apropiados
+
+Performance: Se han implementado optimizaciones en el procesamiento:
+- Índices compuestos en modelos para consultas frecuentes (phase_at_stp + chemical_category)
+- Uso de select_related y prefetch_related en queries complejas
+- Cálculos de propiedades solo cuando son necesarios (lazy evaluation)
+- Estructuras de datos optimizadas para minimizar iteraciones
+
+Fixed
+
+Backend: Se ha corregido el manejo de propiedades opcionales en detect_phases() para evitar KeyErrors cuando particle_size no está definido, usando verificaciones explícitas de existencia.
+
+Backend: Se ha solucionado la clasificación de sistemas coloidales para solo considerar fases con tamaño de partícula definido, evitando comparaciones con float('inf').
+
+Validation: Se han corregido los serializers para manejar correctamente la normalización de fracciones másicas cuando la suma no es exactamente 1.0, aplicando tolerancia de 0.01.
+
 [1.1.0-beta] - 2025-08-31
 
 Fixed
