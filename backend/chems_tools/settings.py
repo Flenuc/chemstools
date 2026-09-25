@@ -11,22 +11,51 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import dj_database_url
 import os 
+import sys
 from pathlib import Path
+from datetime import timedelta
+
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Variables de entorno locales opcionales (backend/.env). En Docker llegan desde
+# el archivo .env de la raíz vía `env_file`; las variables ya definidas no se pisan.
+load_dotenv(BASE_DIR / '.env')
+
+
+def env_bool(name, default=False):
+    return os.environ.get(name, str(default)).strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+def env_list(name, default=''):
+    return [item.strip() for item in os.environ.get(name, default).split(',') if item.strip()]
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'No password'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_bool('DEBUG', False)
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-solo-para-desarrollo-local'
+    else:
+        raise ImproperlyConfigured(
+            'Falta la variable de entorno SECRET_KEY. Copia .env.example a .env '
+            '(o a backend/.env si ejecutas Django fuera de Docker) y define una clave.'
+        )
+
+# Hosts permitidos separados por comas (añade aquí la IP de tu red local si accedes desde otro equipo).
+ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', 'localhost,127.0.0.1,backend')
+
+# Enable APPEND_SLASH for Django REST Framework routers
+APPEND_SLASH = True
 
 
 # Application definition
@@ -41,11 +70,48 @@ INSTALLED_APPS = [
     
     # 3rd Party Apps
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
 
     # Local Apps
     'api',
+    
+    # core app for custom utilities
+    'core',
+    
+    # users app for custom user model
+    'users.apps.UsersConfig',
+    
+    # for API documentation
+    'drf_spectacular',  
+    
+    # molecules app
+    'molecules.apps.MoleculesConfig',
+    
+    # telemetry app for tracking usage
+    'telemetry.apps.TelemetryConfig',
+    
+    # calculators app for chemical calculations
+    'calculators.apps.CalculatorsConfig',
+    
+    # structures app for handling chemical structures
+    'structures',
+    
+    # reactions app for chemical reactions
+    'reactions',
+    
+    # games app for quiz and other games
+    'games.apps.GamesConfig',
+    
+    # monitoring app for metrics and health checks
+    'monitoring',
+    
+    # systems_analysis app for systems analysis
+    'systems_analysis',
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,8 +148,19 @@ WSGI_APPLICATION = 'chems_tools.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'chemstools_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'chemstools_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': int(os.environ.get('POSTGRES_PORT', 5432)),
     }
+}
+
+# If the DATABASE_URL environment variable is set, use it to configure the database.
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 
 # Password validation
@@ -122,6 +199,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -131,4 +212,166 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000", # Permitir peticiones desde frontend
     "http://127.0.0.1:3000",
+    "http://localhost:80",   # Nginx local
+    "http://127.0.0.1:80",   # Nginx local
+    "http://localhost",       # Sin puerto
+    "http://127.0.0.1",       # Sin puerto
 ]
+
+# Función para permitir orígenes dinámicos (útil para IPs de red local)
+def cors_allow_particular_origins(origin):
+    """Permite orígenes de la red local"""
+    allowed_patterns = [
+        r'^http://192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 192.168.x.x
+        r'^http://10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 10.x.x.x
+        r'^http://172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 172.16-31.x.x
+        r'^http://localhost(:\d+)?$',  # localhost con cualquier puerto
+        r'^http://127\.0\.0\.1(:\d+)?$',  # 127.0.0.1 con cualquier puerto
+    ]
+    import re
+    for pattern in allowed_patterns:
+        if re.match(pattern, origin):
+            return True
+    return False
+
+# Usar el callback para verificación dinámica de orígenes
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^http://192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 192.168.x.x
+    r'^http://10\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 10.x.x.x
+    r'^http://172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}(:\d+)?$',  # Red local 172.16-31.x.x
+]
+
+# Permitir credenciales en las peticiones CORS
+CORS_ALLOW_CREDENTIALS = True
+
+# Headers permitidos en las peticiones CORS
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# Métodos HTTP permitidos
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Para desarrollo: permitir todos los orígenes (cambiar en producción)
+# CORS_ALLOW_ALL_ORIGINS = True  # ¡Solo para desarrollo!
+
+# test settings (manage.py test); pytest usa chems_tools.settings_test
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+
+# REST Framework settings
+# Configuración de autenticación JWT
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # Todo endpoint requiere autenticación salvo que la vista declare AllowAny.
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # Rate limiting (configurable por entorno)
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': os.environ.get('THROTTLE_RATE_ANON', '60/min'),  # usuarios anónimos
+        'user': os.environ.get('THROTTLE_RATE_USER', '300/min'),  # usuarios autenticados
+        'auth': os.environ.get('THROTTLE_RATE_AUTH', '10/min'),  # login y registro
+    },
+    # Número de proxies delante de Django (nginx o el proxy de Next.js) para
+    # identificar al cliente por X-Forwarded-For.
+    'NUM_PROXIES': int(os.environ.get('NUM_PROXIES', 1)),
+    # Configuración de paginación
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10 # Número de items por página
+}
+
+SPECTACULAR_SETTINGS = { 'TITLE': 'ChemsTools API' }
+
+# Logging configuration
+# Configuración de logging para registrar información en consola y archivo
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': LOG_DIR / 'django.log',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
+    },
+}
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get('REDIS_URL', 'redis://redis:6379/1'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "chemstools"
+    }
+}
+
+# JWT Settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}

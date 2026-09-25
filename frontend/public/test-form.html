@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Form - Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(to br, #f3e7fc, #fce7f3, #fed7aa);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #9333ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #7e22ce;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c00;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background: #efe;
+            border: 1px solid #cfc;
+            color: #060;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        #debug {
+            background: #f5f5f5;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test de Registro - HTML Puro</h1>
+        
+        <form id="registerForm">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required minlength="3">
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required minlength="8">
+            
+            <label for="confirmPassword">Confirmar Contraseña:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required minlength="8">
+            
+            <button type="submit" id="submitBtn">Registrar</button>
+        </form>
+        
+        <div id="message"></div>
+        
+        <div id="debug">
+            <strong>Debug Log:</strong><br>
+            <div id="debugLog"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registerForm');
+        const messageDiv = document.getElementById('message');
+        const debugLog = document.getElementById('debugLog');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.innerHTML += `[${timestamp}] ${message}<br>`;
+            console.log(message);
+        }
+        
+        log('Página cargada');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            log('Formulario enviado');
+            
+            const formData = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value
+            };
+            
+            log('Datos del formulario: ' + JSON.stringify(formData));
+            
+            // Validar contraseñas
+            if (formData.password !== formData.confirmPassword) {
+                messageDiv.innerHTML = '<div class="error">Las contraseñas no coinciden</div>';
+                log('Error: Contraseñas no coinciden');
+                return;
+            }
+            
+            // Deshabilitar botón
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registrando...';
+            messageDiv.innerHTML = '';
+            
+            try {
+                log('Enviando petición a /api/auth/register/');
+                
+                const response = await fetch('/api/auth/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username: formData.username,
+                        email: formData.email,
+                        password: formData.password
+                    })
+                });
+                
+                log('Respuesta recibida: ' + response.status);
+                
+                const data = await response.json();
+                log('Datos de respuesta: ' + JSON.stringify(data));
+                
+                if (response.ok) {
+                    messageDiv.innerHTML = `<div class="success">¡Registro exitoso! Usuario: ${data.username} (ID: ${data.id})</div>`;
+                    form.reset();
+                    log('Registro exitoso');
+                    
+                    // Redirigir después de 2 segundos
+                    setTimeout(() => {
+                        log('Redirigiendo a /login');
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    let errorMsg = 'Error en el registro';
+                    if (data.username) errorMsg = data.username[0];
+                    else if (data.email) errorMsg = data.email[0];
+                    else if (data.password) errorMsg = data.password[0];
+                    else if (data.detail) errorMsg = data.detail;
+                    
+                    messageDiv.innerHTML = `<div class="error">${errorMsg}</div>`;
+                    log('Error: ' + errorMsg);
+                }
+            } catch (error) {
+                messageDiv.innerHTML = `<div class="error">Error de conexión: ${error.message}</div>`;
+                log('Error de conexión: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Registrar';
+            }
+        });
+        
+        // Log de cambios en los campos
+        ['username', 'email', 'password', 'confirmPassword'].forEach(fieldId => {
+            document.getElementById(fieldId).addEventListener('change', (e) => {
+                log(`Campo ${fieldId} cambiado: ${e.target.value.replace(/./g, '*')}`);
+            });
+        });
+    </script>
+</body>
+</html>

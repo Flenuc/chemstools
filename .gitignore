@@ -36,3 +36,10 @@ docker-compose.override.yml
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs y artefactos generados en tiempo de ejecución
+*.log
+logs/
+.pytest_cache/
+backend/media/
+dump.rdb

@@ -10,17 +10,24 @@ services:
     ports:
       - "5432:5432"
 
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
   backend:
     build: ./backend
     command: gunicorn chems_tools.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ./backend:/app
+      - ./backend/logs:/app/logs
     ports:
       - "8000:8000"
     env_file:
       - ./.env
     depends_on:
       - db
+      - redis
 
   frontend:
     build: ./frontend
@@ -33,6 +40,22 @@ services:
       - "3000:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - DOCKER_ENV=true
+    depends_on:
+      - backend
+
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_logs:/var/log/nginx
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+  nginx_logs:

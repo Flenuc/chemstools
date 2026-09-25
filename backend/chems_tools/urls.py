@@ -1,3 +1,4 @@
+
 """
 URL configuration for chems_tools project.
 
@@ -16,8 +17,30 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include 
+from django.conf import settings
+from django.conf.urls.static import static
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')), 
+    path('api/auth/', include('users.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/molecules/', include('molecules.urls')),
+    path('api/data/', include('data.urls')),
+    path('api/telemetry/', include('telemetry.urls')),
+    path('api/calculators/', include('calculators.urls')),
+    path('api/structures/', include('structures.urls')),
+    path('api/reactions/', include('reactions.urls')),
+    path('api/games/', include('games.urls')),
+    path('api/monitoring/', include('monitoring.urls')),
+    path('api/systems/', include('systems_analysis.urls')),
+    # Health check general y peso molecular (app `api`)
+    path('api/', include('api.urls')),
 ]
+
+# Serve media files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

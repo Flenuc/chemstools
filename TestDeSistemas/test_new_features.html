@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Nuevas Funcionalidades - ChemsTools</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .test-button {
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.2s;
+        }
+        .test-button:hover {
+            transform: scale(1.05);
+        }
+        .test-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .result-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .info {
+            color: #17a2b8;
+            font-weight: bold;
+        }
+        .feature-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #28a745;
+            color: white;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 ChemsTools - Prueba de Nuevas Funcionalidades</h1>
+        <p class="subtitle">Integración con PubChem API y Búsqueda Flexible de Compuestos</p>
+        
+        <div class="test-section">
+            <div class="test-title">🌍 1. Búsqueda Multi-idioma <span class="feature-badge">NUEVO</span></div>
+            <p>Busca compuestos usando nombres en español o inglés:</p>
+            <div class="test-grid">
+                <button class="test-button" onclick="testSearch('agua', 'name')">🇪🇸 Agua</button>
+                <button class="test-button" onclick="testSearch('sal', 'name')">🇪🇸 Sal</button>
+                <button class="test-button" onclick="testSearch('azúcar', 'name')">🇪🇸 Azúcar</button>
+                <button class="test-button" onclick="testSearch('vinagre', 'name')">🇪🇸 Vinagre</button>
+                <button class="test-button" onclick="testSearch('water', 'name')">🇬🇧 Water</button>
+                <button class="test-button" onclick="testSearch('salt', 'name')">🇬🇧 Salt</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">🔬 2. Búsqueda por Fórmula Molecular</div>
+            <p>Genera estructuras usando fórmulas químicas:</p>
+            <div class="test-grid">
+                <button class="test-button" onclick="testGenerate('H2O', 'formula')">H₂O</button>
+                <button class="test-button" onclick="testGenerate('CO2', 'formula')">CO₂</button>
+                <button class="test-button" onclick="testGenerate('NH3', 'formula')">NH₃</button>
+                <button class="test-button" onclick="testGenerate('C6H12O6', 'formula')">C₆H₁₂O₆</button>
+                <button class="test-button" onclick="testGenerate('H2SO4', 'formula')">H₂SO₄</button>
+                <button class="test-button" onclick="testGenerate('NaCl', 'formula')">NaCl</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">🧬 3. Búsqueda por SMILES <span class="feature-badge">NUEVO</span></div>
+            <p>Usa notación SMILES para estructuras complejas:</p>
+            <div class="test-grid">
+                <button class="test-button" onclick="testSearch('O', 'smiles')">O (Agua)</button>
+                <button class="test-button" onclick="testSearch('CCO', 'smiles')">CCO (Etanol)</button>
+                <button class="test-button" onclick="testSearch('CC(=O)C', 'smiles')">CC(=O)C (Acetona)</button>
+                <button class="test-button" onclick="testSearch('c1ccccc1', 'smiles')">c1ccccc1 (Benceno)</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">📊 4. Información desde PubChem <span class="feature-badge">NUEVO</span></div>
+            <p>Obtén información detallada de cualquier compuesto:</p>
+            <div class="test-grid">
+                <button class="test-button" onclick="testSearch('aspirin', 'name')">Aspirina</button>
+                <button class="test-button" onclick="testSearch('caffeine', 'name')">Cafeína</button>
+                <button class="test-button" onclick="testSearch('glucose', 'name')">Glucosa</button>
+                <button class="test-button" onclick="testSearch('penicillin', 'name')">Penicilina</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">🚀 5. Detección Automática <span class="feature-badge">NUEVO</span></div>
+            <p>El sistema detecta automáticamente el tipo de búsqueda:</p>
+            <div class="test-grid">
+                <button class="test-button" onclick="testGenerate('acetone')">acetone (nombre)</button>
+                <button class="test-button" onclick="testGenerate('CH3COCH3')">CH3COCH3 (fórmula)</button>
+                <button class="test-button" onclick="testGenerate('CC(=O)C')">CC(=O)C (SMILES)</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-title">💾 6. Compuestos en Cache</div>
+            <p>Ver compuestos populares almacenados localmente:</p>
+            <div class="test-grid">
+                <button class="test-button" onclick="testCachedCompounds()">Ver Cache</button>
+                <button class="test-button" onclick="testRecentStructures()">Estructuras Recientes</button>
+            </div>
+        </div>
+
+        <div class="result-box" id="result" style="display: none;">
+            <div class="result-title">📋 Resultado:</div>
+            <div id="result-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/structures';
+        
+        function showResult(content, type = 'info') {
+            const resultBox = document.getElementById('result');
+            const resultContent = document.getElementById('result-content');
+            resultBox.style.display = 'block';
+            
+            if (typeof content === 'object') {
+                resultContent.innerHTML = `<pre>${JSON.stringify(content, null, 2)}</pre>`;
+            } else {
+                resultContent.innerHTML = `<div class="${type}">${content}</div>`;
+            }
+        }
+        
+        async function testSearch(query, type = null) {
+            showResult('Buscando... <span class="loading"></span>', 'info');
+            
+            try {
+                const params = new URLSearchParams({ q: query });
+                if (type) params.append('type', type);
+                
+                const response = await fetch(`${API_BASE}/search/?${params}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(data);
+                    console.log('✅ Búsqueda exitosa:', data);
+                } else {
+                    showResult(`Error: ${data.error || 'No encontrado'}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Error de conexión: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testGenerate(query, type = null) {
+            showResult('Generando estructura de Lewis... <span class="loading"></span>', 'info');
+            
+            try {
+                const body = { query };
+                if (type) body.query_type = type;
+                
+                const response = await fetch(`${API_BASE}/lewis-generator/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Mostrar información resumida
+                    const summary = {
+                        formula: data.formula,
+                        source: data.source,
+                        iupac_name: data.iupac_name,
+                        pubchem_cid: data.pubchem_cid,
+                        molecular_weight: data.molecular_weight,
+                        atoms: data.lewis_data?.atoms?.length,
+                        bonds: data.lewis_data?.bonds?.length,
+                        valence_electrons: data.lewis_data?.total_valence_electrons,
+                        common_names: data.common_names?.slice(0, 3)
+                    };
+                    showResult(summary);
+                    console.log('✅ Estructura generada:', data);
+                } else {
+                    showResult(`Error: ${data.error || data.details || 'No se pudo generar'}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Error de conexión: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testCachedCompounds() {
+            showResult('Cargando compuestos en cache... <span class="loading"></span>', 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE}/cached-compounds/?limit=10`);
+                const data = await response.json();
+                
+                if (response.ok && data.length > 0) {
+                    const summary = data.map(c => ({
+                        query: c.query,
+                        formula: c.molecular_formula,
+                        accesos: c.access_count,
+                        iupac: c.iupac_name
+                    }));
+                    showResult(summary);
+                } else if (data.length === 0) {
+                    showResult('No hay compuestos en cache todavía', 'info');
+                } else {
+                    showResult(`Error: ${data.error || 'Error al cargar cache'}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Error de conexión: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testRecentStructures() {
+            showResult('Cargando estructuras recientes... <span class="loading"></span>', 'info');
+            
+            try {
+                const response = await fetch(`${API_BASE}/`);
+                const data = await response.json();
+                
+                if (response.ok && data.length > 0) {
+                    const summary = data.slice(0, 5).map(s => ({
+                        formula: s.formula,
+                        created: new Date(s.created_at).toLocaleString(),
+                        atoms: s.lewis_data?.atoms?.length,
+                        bonds: s.lewis_data?.bonds?.length
+                    }));
+                    showResult(summary);
+                } else if (data.length === 0) {
+                    showResult('No hay estructuras recientes', 'info');
+                } else {
+                    showResult(`Error: ${data.error || 'Error al cargar estructuras'}`, 'error');
+                }
+            } catch (error) {
+                showResult(`Error de conexión: ${error.message}`, 'error');
+            }
+        }
+        
+        // Prueba inicial
+        window.onload = () => {
+            console.log('🚀 Sistema de pruebas cargado');
+            console.log('📍 API Base:', API_BASE);
+            console.log('💡 Usa los botones para probar las nuevas funcionalidades');
+        };
+    </script>
+</body>
+</html>
