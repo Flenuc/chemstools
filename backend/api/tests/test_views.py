@@ -12,3 +12,12 @@ class HealthCheckTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {'status': 'ok'})
+
+
+class MolecularWeightTests(APITestCase):
+    def test_molecular_weight_is_public(self):
+        url = reverse('molecular-weight')
+        response = self.client.post(url, {'formula': 'H2O'}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertAlmostEqual(response.data['molecular_weight'], 18.015, places=2)

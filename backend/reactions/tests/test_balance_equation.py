@@ -87,7 +87,7 @@ class BalanceEquationAPITests(TestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['status'], 'ok')
-        self.assertEqual(response.data['version'], 'Alpha 2.2.0')
+        self.assertEqual(response.data['version'], 'Alpha 2.3.0')
     
     def test_balance_equation_synthesis_success(self):
         """Test exitoso de balanceo - reacción de síntesis"""

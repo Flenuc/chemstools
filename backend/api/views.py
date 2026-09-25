@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rdkit import Chem
 from rdkit.Chem import Descriptors
 
@@ -8,6 +9,8 @@ class HealthCheckView(APIView):
     """
     Endpoint simple para verificar que el servidor está funcionando.
     """
+    permission_classes = [AllowAny]
+
     def get(self, request, *args, **kwargs):
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
 
@@ -15,6 +18,8 @@ class MolecularWeightCalculatorView(APIView):
     """
     Endpoint para calcular el peso molecular de una fórmula química.
     """
+    permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         formula = request.data.get('formula', '')
         if not formula:

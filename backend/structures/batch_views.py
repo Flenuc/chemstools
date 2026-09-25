@@ -17,9 +17,9 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, throttle_classes
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+from rest_framework.throttling import UserRateThrottle
 
 from core.parallel_computing import get_default_executor
 from core.intelligent_cache import get_intelligent_cache
@@ -34,14 +34,9 @@ class BatchProcessingThrottle(UserRateThrottle):
     rate = '100/hour'  # 100 batch requests per hour for authenticated users
 
 
-class AnonymousBatchThrottle(AnonRateThrottle):
-    """Custom throttle for anonymous batch processing"""
-    rate = '10/hour'  # 10 batch requests per hour for anonymous users
-
-
 @api_view(['POST'])
-@permission_classes([AllowAny])
-@throttle_classes([BatchProcessingThrottle, AnonymousBatchThrottle])
+@permission_classes([IsAuthenticated])
+@throttle_classes([BatchProcessingThrottle])
 def batch_generate_structures(request):
     """
     Generate multiple Lewis structures in parallel.
@@ -220,7 +215,7 @@ def batch_generate_structures(request):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 @throttle_classes([BatchProcessingThrottle])
 def batch_validate_structures(request):
     """
@@ -317,7 +312,7 @@ def batch_validate_structures(request):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def stream_batch_generation(request):
     """
     Stream batch generation results as they complete.
@@ -422,7 +417,7 @@ def stream_batch_generation(request):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def get_batch_job_status(request, job_id):
     """
     Get the status of a batch processing job.
@@ -464,7 +459,7 @@ def get_batch_job_status(request, job_id):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def get_performance_metrics(request):
     """
     Get current performance metrics for the batch processing system.

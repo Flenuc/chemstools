@@ -2,7 +2,15 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from django_ratelimit.decorators import ratelimit
 
-from .views import GlossaryTermViewSet, pHCalculatorView, SolutionCalculatorView
+from .views import (
+    GlossaryTermViewSet,
+    pHCalculatorView,
+    SolutionCalculatorView,
+    ChemicalPresetViewSet,
+    BufferSystemViewSet,
+    BufferSuggestionView,
+    PresetSearchView,
+)
 from .advanced_views import (
     AdvancedPHCalculatorView,
     PHCalculationHistoryViewSet,
@@ -15,6 +23,8 @@ from .advanced_views import (
 router = DefaultRouter()
 router.register(r'glossary', GlossaryTermViewSet, basename='glossaryterm')
 router.register(r'ph-calculation-history', PHCalculationHistoryViewSet, basename='ph-calculation-history')
+router.register(r'presets', ChemicalPresetViewSet, basename='chemical-preset')
+router.register(r'buffer-systems', BufferSystemViewSet, basename='buffer-system')
 
 # Aplicar rate limiting a views específicas
 advanced_ph_calculator_view = ratelimit(
@@ -42,7 +52,7 @@ buffer_calculator_view = ratelimit(
 )(BufferCalculatorView.as_view())
 
 urlpatterns = [
-    # URLs del router (incluye glossary y ph-calculation-history)
+    # URLs del router (glossary, ph-calculation-history, presets y buffer-systems)
     path('', include(router.urls)),
     
     # Endpoints básicos existentes (mantener backward compatibility)
@@ -54,6 +64,10 @@ urlpatterns = [
     path('export-ph-calculations/', export_ph_calculations_view, name='export-ph-calculations'),
     path('ph-calculation-stats/', ph_calculation_stats_view, name='ph-calculation-stats'),
     path('buffer-calculator/', buffer_calculator_view, name='buffer-calculator'),
+
+    # Presets químicos y sugerencias de buffers
+    path('buffer-suggestions/', BufferSuggestionView.as_view(), name='buffer-suggestions'),
+    path('preset-search/', PresetSearchView.as_view(), name='preset-search'),
 ]
 
 # URLs con rate limiting específico:

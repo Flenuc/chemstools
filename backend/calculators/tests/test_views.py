@@ -33,7 +33,8 @@ class CalculatorsAPITests(APITestCase):
         expected_term_count = 7
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), expected_term_count)
-        self.assertEqual(response.data[0]['term'], 'Ácido')
+        # El orden alfabético depende de la collation de la base de datos (Á vs B).
+        self.assertIn('Ácido', [item['term'] for item in response.data])
 
     def test_ph_calculator_with_ph(self):
         url = reverse('ph-calculator')
@@ -112,3 +113,39 @@ class CalculatorsAPITests(APITestCase):
         data = {'solute_mass': -10, 'solvent_mass': 90}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PresetAndBufferRoutesTests(APITestCase):
+    """Las rutas de presets y buffers que usa el frontend deben estar registradas."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username='presetuser', password='testpassword123')
+
+    def setUp(self):
+        self.client.force_authenticate(user=self.user)
+
+    def test_presets_list(self):
+        response = self.client.get(reverse('chemical-preset-list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_preset_categories(self):
+        response = self.client.get(reverse('chemical-preset-categories'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_buffer_systems_list(self):
+        response = self.client.get(reverse('buffer-system-list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_buffer_suggestions_requires_target_ph(self):
+        response = self.client.get(reverse('buffer-suggestions'))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_preset_search(self):
+        response = self.client.get(reverse('preset-search'), {'q': 'HCl'})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_presets_require_authentication(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.get(reverse('chemical-preset-list'))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

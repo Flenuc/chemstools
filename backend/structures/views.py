@@ -1,5 +1,6 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def generate_lewis_structure(request):
     """
     Generar estructura de Lewis a partir de una consulta química.
@@ -297,6 +299,7 @@ def generate_lewis_structure(request):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def list_structures(request):
     """
     Listar estructuras de Lewis generadas recientemente.
@@ -337,6 +340,7 @@ def list_structures(request):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_structure(request, structure_id):
     """
     Obtener una estructura de Lewis específica por ID.
@@ -385,6 +389,7 @@ def get_structure(request, structure_id):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def search_compound(request):
     """
     Buscar información de un compuesto químico.
@@ -466,6 +471,7 @@ def search_compound(request):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def list_cached_compounds(request):
     """
     Listar compuestos almacenados en cache.

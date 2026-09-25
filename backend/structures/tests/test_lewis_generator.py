@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -93,6 +94,13 @@ class TestLewisStructureAPI(TestCase):
         self.client = APIClient()
         self.generate_url = reverse('structures:generate_lewis')
         self.list_url = reverse('structures:list_structures')
+
+        # Los tests no deben depender de la red: PubChem simula "no encontrado".
+        patcher = patch('structures.views.PubChemService')
+        mock_service = patcher.start().return_value
+        mock_service.search_multi_language.return_value = None
+        mock_service.search_compound.return_value = None
+        self.addCleanup(patcher.stop)
     
     def test_generate_lewis_structure_post_valid(self):
         """Test POST request with valid formula"""
@@ -106,11 +114,11 @@ class TestLewisStructureAPI(TestCase):
         self.assertEqual(response.data['formula'], 'H2O')
     
     def test_generate_lewis_structure_post_invalid(self):
-        """Test POST request with invalid formula"""
+        """Test POST request with invalid formula (no está en PubChem ni se puede generar)"""
         data = {'formula': 'InvalidFormula123'}
         response = self.client.post(self.generate_url, data, format='json')
         
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn('error', response.data)
     
     def test_generate_lewis_structure_missing_formula(self):

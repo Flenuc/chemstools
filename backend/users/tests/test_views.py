@@ -26,3 +26,24 @@ class UserProfileViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], self.user.username)
 
+
+class AuthSecurityTests(APITestCase):
+    def test_register_is_public(self):
+        response = self.client.post(
+            reverse('auth_register'),
+            {'username': 'nuevo', 'email': 'nuevo@example.com', 'password': 'Clave-Segura-123'},
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_endpoints_require_authentication_by_default(self):
+        response = self.client.get('/api/molecules/')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_login_is_throttled(self):
+        url = reverse('token_obtain_pair')
+        credentials = {'username': 'nadie', 'password': 'incorrecta'}
+        statuses = [self.client.post(url, credentials, format='json').status_code for _ in range(11)]
+
+        self.assertTrue(all(code == status.HTTP_401_UNAUTHORIZED for code in statuses[:10]))
+        self.assertEqual(statuses[-1], status.HTTP_429_TOO_MANY_REQUESTS)

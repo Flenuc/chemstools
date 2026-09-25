@@ -193,7 +193,7 @@ class ChemicalPresetViewSet(viewsets.ReadOnlyModelViewSet):
                 Q(name__icontains=search) |
                 Q(description__icontains=search) |
                 Q(chemical_formula__icontains=search) |
-                Q(tags__contains=search)
+                Q(tags__icontains=search)
             )
         
         return queryset.order_by('category', 'name')
@@ -377,7 +377,7 @@ class PresetSearchView(APIView):
                 Q(name__icontains=query) |
                 Q(description__icontains=query) |
                 Q(chemical_formula__icontains=query) |
-                Q(tags__contains=query)
+                Q(tags__icontains=query)
             )
         )[:10]
         

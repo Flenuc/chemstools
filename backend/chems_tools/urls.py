@@ -36,6 +36,8 @@ urlpatterns = [
     path('api/games/', include('games.urls')),
     path('api/monitoring/', include('monitoring.urls')),
     path('api/systems/', include('systems_analysis.urls')),
+    # Health check general y peso molecular (app `api`)
+    path('api/', include('api.urls')),
 ]
 
 # Serve media files in development

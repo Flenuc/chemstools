@@ -15,20 +15,44 @@ import sys
 from pathlib import Path
 from datetime import timedelta
 
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Variables de entorno locales opcionales (backend/.env). En Docker llegan desde
+# el archivo .env de la raíz vía `env_file`; las variables ya definidas no se pisan.
+load_dotenv(BASE_DIR / '.env')
+
+
+def env_bool(name, default=False):
+    return os.environ.get(name, str(default)).strip().lower() in ('1', 'true', 'yes', 'on')
+
+
+def env_list(name, default=''):
+    return [item.strip() for item in os.environ.get(name, default).split(',') if item.strip()]
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ap11g%4tgv50-cf3bl(6+u8x2$e7s=jax4gxo^@j+nj-9)zqty'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_bool('DEBUG', False)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', '*']  # '*' permite cualquier host (cambiar en producción)
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-solo-para-desarrollo-local'
+    else:
+        raise ImproperlyConfigured(
+            'Falta la variable de entorno SECRET_KEY. Copia .env.example a .env '
+            '(o a backend/.env si ejecutas Django fuera de Docker) y define una clave.'
+        )
+
+# Hosts permitidos separados por comas (añade aquí la IP de tu red local si accedes desde otro equipo).
+ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', 'localhost,127.0.0.1,backend')
 
 # Enable APPEND_SLASH for Django REST Framework routers
 APPEND_SLASH = True
@@ -126,11 +150,11 @@ WSGI_APPLICATION = 'chems_tools.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'chemstools_db',
-        'USER': 'chemstools_user',
-        'PASSWORD': 'chemstools_password',
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'NAME': os.environ.get('POSTGRES_DB', 'chemstools_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'chemstools_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': int(os.environ.get('POSTGRES_PORT', 5432)),
     }
 }
 
@@ -246,7 +270,7 @@ CORS_ALLOW_METHODS = [
 # Para desarrollo: permitir todos los orígenes (cambiar en producción)
 # CORS_ALLOW_ALL_ORIGINS = True  # ¡Solo para desarrollo!
 
-# test settings 
+# test settings (manage.py test); pytest usa chems_tools.settings_test
 if 'test' in sys.argv:
     DATABASES = {
         'default': {
@@ -261,21 +285,26 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    # Todo endpoint requiere autenticación salvo que la vista declare AllowAny.
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'EXCEPTION_HANDLER': 'core.exceptions.custom_exception_handler',
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    # Añadir esta nueva sección para el rate limiting
-    # TEMPORALMENTE DESACTIVADO PARA PRUEBAS
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.AnonRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle'
-    # ],
-    # # Configuración de los límites de rate limiting
-    # # Límite de peticiones por día para usuarios anónimos y autenticados
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'anon': '100/day', # Límite para usuarios anónimos
-    #     'user': '1000/day', # Límite para usuarios autenticados
-    #     'auth': '5/min', # Límite estricto para login/registro
-    # },
+    # Rate limiting (configurable por entorno)
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': os.environ.get('THROTTLE_RATE_ANON', '60/min'),  # usuarios anónimos
+        'user': os.environ.get('THROTTLE_RATE_USER', '300/min'),  # usuarios autenticados
+        'auth': os.environ.get('THROTTLE_RATE_AUTH', '10/min'),  # login y registro
+    },
+    # Número de proxies delante de Django (nginx o el proxy de Next.js) para
+    # identificar al cliente por X-Forwarded-For.
+    'NUM_PROXIES': int(os.environ.get('NUM_PROXIES', 1)),
     # Configuración de paginación
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10 # Número de items por página
@@ -285,6 +314,9 @@ SPECTACULAR_SETTINGS = { 'TITLE': 'ChemsTools API' }
 
 # Logging configuration
 # Configuración de logging para registrar información en consola y archivo
+LOG_DIR = BASE_DIR / 'logs'
+LOG_DIR.mkdir(exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -302,7 +334,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'logs/django.log',
+            'filename': LOG_DIR / 'django.log',
             'formatter': 'verbose',
         },
     },
@@ -319,7 +351,7 @@ X_FRAME_OPTIONS = 'DENY'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/1",
+        "LOCATION": os.environ.get('REDIS_URL', 'redis://redis:6379/1'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
