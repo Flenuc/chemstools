@@ -4,6 +4,54 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en Keep a Changelog (https://keepachangelog.com/en/1.0.0/), 
 y este proyecto se adhiere al Versionamiento Semántico (https://semver.org/spec/v2.0.0.html).
 
+[Unreleased]
+
+Added
+
+Backend: Se han registrado las rutas de presets químicos y sistemas buffer que ya usaba el frontend: /api/calculators/presets/ (con popular, categories y use), /api/calculators/buffer-systems/ (con use), /api/calculators/buffer-suggestions/ y /api/calculators/preset-search/.
+
+Backend: Se ha incluido la app api en las URLs raíz, habilitando /api/health/ y /api/calculate/molecular-weight/.
+
+Tests: Nuevos tests para las rutas de presets y buffers, el endpoint de peso molecular, el registro público, la autenticación por defecto y el límite de intentos de login.
+
+CI: El workflow se ejecuta también en las ramas de versión (v*), corre los tests del backend sobre PostgreSQL, comprueba migraciones pendientes y en el frontend ejecuta lint, tests y build de producción.
+
+Changed
+
+Frontend: Actualizado a Next.js 15.5.26 y React 19, antd 5.29 (con @ant-design/v5-patch-for-react-19), jsPDF 4, jspdf-autotable 5.0.8, axios 1.20 y lodash 4.18. npm audit pasa de 26 vulnerabilidades (4 críticas) a 0.
+
+Frontend: ESLint 9 con configuración plana (next/core-web-vitals y next/typescript); no-explicit-any queda como aviso. Los scripts son npm run lint (eslint .), npm test (jest, sin modo watch), npm run test:watch y npm run typecheck.
+
+Backend: SECRET_KEY, DEBUG, ALLOWED_HOSTS, credenciales de la base de datos y REDIS_URL se leen de variables de entorno (.env). DEBUG es False por defecto y sin SECRET_KEY el servidor no arranca salvo en modo DEBUG.
+
+Backend: Todos los endpoints requieren autenticación por defecto (DEFAULT_PERMISSION_CLASSES = IsAuthenticated). Siguen siendo públicos, de forma explícita: registro, login, health checks, peso molecular, estructuras de Lewis, reacciones y documentación de la API.
+
+Backend: Rate limiting activado (anon 60/min, user 300/min y 10/min para login y registro, configurable por entorno). Los endpoints de procesamiento por lotes de estructuras ahora requieren autenticación.
+
+Backend: pytest usa chems_tools.settings_test (sqlite en memoria y caché local, o PostgreSQL si se define TEST_DATABASE_URL) y vacía la caché entre tests.
+
+Monitoring: La contraseña de Grafana y las credenciales de PostgreSQL se toman del .env en lugar de estar escritas en docker-compose.monitoring.yml y en el datasource.
+
+Fixed
+
+Frontend: Corregidos los errores de TypeScript que impedían next build (componentes de UI, formularios, calculadoras de pH, SolutionCalculator, LoginFormEnhanced, demo-hybrid y la ruta de diagnóstico).
+
+Frontend: La exportación PDF de la calculadora de pH usaba siempre 25 °C; ahora toma la temperatura del resultado.
+
+Frontend: HealthCheck y MolecularWeightCalculator usan rutas relativas (/api/...) en lugar de http://localhost:8000.
+
+Frontend: Corregidos errores de ESLint (enlaces con next/link, claves en listas, entidades sin escapar).
+
+Backend: Resuelto el conflicto entre los módulos tests.py y los paquetes tests/ que interrumpía pytest al recolectar tests; actualizados tres tests desactualizados (versión del health check de reactions, orden del glosario dependiente de la base de datos y el test de Lewis, que ahora simula PubChem en lugar de salir a la red).
+
+Backend: La búsqueda de presets por tags usa icontains, compatible con cualquier base de datos.
+
+Removed
+
+Frontend: Eliminada la página legada src/pages/quiz.tsx (duplicado de /games sin Provider de Redux, rompía el build).
+
+Repositorio: Dejan de versionarse logs, .pytest_cache, exportaciones de media/, backup/package.json, debug_coordinates.py y setup_instructions.txt (vacío); se añaden al .gitignore.
+
 [1.2.0-beta] - 2025-08-31
 
 Added

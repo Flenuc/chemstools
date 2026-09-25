@@ -31,7 +31,11 @@ services:
       - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=chemstools_admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?Define GRAFANA_ADMIN_PASSWORD en .env}
+      # Credenciales que usa el datasource de PostgreSQL (provisioning/datasources.yml)
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - GF_INSTALL_PLUGINS=redis-datasource,redis-app
       - GF_SERVER_ROOT_URL=http://localhost:3001
       - GF_ANALYTICS_REPORTING_ENABLED=false
@@ -80,7 +84,7 @@ services:
     image: prometheuscommunity/postgres-exporter:latest
     container_name: chemstools_postgres_exporter
     environment:
-      - DATA_SOURCE_NAME=postgresql://chemstools_user:chemstools_password@chemstools_project-db-1:5432/chemstools_db?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@chemstools_project-db-1:5432/${POSTGRES_DB}?sslmode=disable
     ports:
       - "9187:9187"
     networks:

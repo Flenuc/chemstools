@@ -31,10 +31,10 @@ datasources:
     type: postgres
     access: proxy
     url: db:5432
-    database: chemstools_db
-    user: chemstools_user
+    database: $POSTGRES_DB
+    user: $POSTGRES_USER
     secureJsonData:
-      password: "chemstools_password"
+      password: $POSTGRES_PASSWORD
     jsonData:
       sslmode: "disable"
       maxOpenConns: 0

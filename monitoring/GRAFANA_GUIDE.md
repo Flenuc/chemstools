@@ -4,7 +4,7 @@
 
 - **URL**: http://localhost:3001
 - **Usuario**: `admin`
-- **Contraseña**: `admin123`
+- **Contraseña**: el valor de `GRAFANA_ADMIN_PASSWORD` en tu archivo `.env`
 
 ## 📊 Dashboards Disponibles
 
@@ -38,7 +38,7 @@ Este dashboard muestra:
 
 ### 1. Acceder al Dashboard Principal
 1. Abre tu navegador y ve a http://localhost:3001
-2. Ingresa las credenciales (admin/admin123)
+2. Ingresa las credenciales (usuario `admin` y la contraseña definida en `GRAFANA_ADMIN_PASSWORD`)
 3. En el menú lateral, selecciona "Dashboards"
 4. Haz clic en "ChemsTools Performance Dashboard"
 
