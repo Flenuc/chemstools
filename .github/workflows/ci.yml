@@ -2,54 +2,68 @@ name: ChemsTools CI
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main", "develop", "v*" ]
   pull_request:
     branches: [ "main", "develop" ]
 
 jobs:
   test-backend:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: chemstools_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DJANGO_SETTINGS_MODULE: chems_tools.settings_test
+      TEST_DATABASE_URL: postgres://ci:ci@localhost:5432/chemstools_ci
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+        cache: pip
+        cache-dependency-path: backend/requirements.txt
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
+        pip install -r requirements.txt
+    - name: Check migrations
+      run: python manage.py makemigrations --check --dry-run
     - name: Run Tests
-      working-directory: ./backend
-      run: |
-        pytest .
+      run: pytest
 
-  lint-frontend:
+  frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
-        run: npm install
-        working-directory: ./frontend
+        run: npm ci
       - name: Run linter
         run: npm run lint
-        working-directory: ./frontend
-
-  test-frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./frontend
       - name: Run tests
-        run: npm test
-        working-directory: ./frontend
+        run: npm test -- --ci
+      - name: Build
+        run: npm run build
