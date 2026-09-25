@@ -5,6 +5,10 @@ import type { ColumnsType } from 'antd/es/table';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchPHHistory, deleteCalculation } from '../../store/advancedPHSlice';
 import { ExportFormat, HistoryFilters, CalculationType } from '../../types/advancedPH';
+import type { PHCalculationHistory, PHCalculationHistoryAPI } from '../../types/advancedPH';
+
+// El store puede contener registros en el formato del backend (snake_case) o en el del frontend (camelCase).
+type RawHistoryRecord = Partial<PHCalculationHistory> & Partial<PHCalculationHistoryAPI>;
 import PHExport from './PHExport';
 
 // --- Tipos de Datos ---
@@ -95,14 +99,15 @@ const PHHistory: React.FC<PHHistoryProps> = ({ userId, limit = 10, onCalculation
             return [];
         }
         
-        return calculationHistory.map(calc => {
+        return calculationHistory.map(item => {
             // Manejar diferentes estructuras posibles de los datos
+            const calc = item as RawHistoryRecord;
             const id = calc.key || calc.id || calc.calculation_id || '';
             const calcType = calc.calculationType || calc.calculation_type || '';
             const inputData = calc.inputSummary || calc.input_data || {};
-            const results = calc.result || calc.results || {};
-            const warnings = calc.warnings || results.warnings || [];
-            const steps = calc.calculation_steps || results.calculation_steps || [];
+            const results: Record<string, any> = calc.results || calc.result?.results || {};
+            const warnings = calc.warnings || calc.result?.warnings || results.warnings || [];
+            const steps = calc.calculation_steps || calc.result?.calculation_steps || results.calculation_steps || [];
             
             // Generar resumen de entrada si no existe
             let inputSummary = calc.inputSummary;

@@ -57,7 +57,7 @@ interface NavigationCategory {
 
 const NavigationSidebar: React.FC = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 

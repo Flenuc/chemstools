@@ -4,6 +4,7 @@ import { setTokens, logout } from '@/store/authSlice';
 let store: any;
 const getStore = () => {
   if (!store) {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports -- import diferido para evitar la dependencia circular con el store
     store = require('@/store').store;
   }
   return store;

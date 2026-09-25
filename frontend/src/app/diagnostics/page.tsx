@@ -163,9 +163,9 @@ export default function DiagnosticsPage() {
     try {
       const originalError = console.error;
       let errorCount = 0;
-      console.error = function() {
+      console.error = (...args: unknown[]) => {
         errorCount++;
-        originalError.apply(console, arguments as any);
+        originalError(...args);
       };
       
       // Restore after a moment
@@ -273,7 +273,7 @@ export default function DiagnosticsPage() {
 
           {results.length === 0 && !testing && (
             <div className="text-center py-8 text-gray-500">
-              Haz clic en "Ejecutar Diagnóstico" para comenzar
+              Haz clic en &quot;Ejecutar Diagnóstico&quot; para comenzar
             </div>
           )}
 

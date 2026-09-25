@@ -73,7 +73,7 @@ const SolutionCalculator = () => {
               name="soluteMass"
               label="Masa del Soluto (g)"
             >
-              <InputNumber
+              <InputNumber<number>
                 placeholder="e.g., 10"
                 style={{ width: '100%' }}
                 onChange={(value) => handleInputChange('soluteMass', value)}
@@ -83,7 +83,7 @@ const SolutionCalculator = () => {
               name="solventMass"
               label="Masa del Disolvente (g)"
             >
-              <InputNumber
+              <InputNumber<number>
                 placeholder="e.g., 90"
                 style={{ width: '100%' }}
                 onChange={(value) => handleInputChange('solventMass', value)}
@@ -93,7 +93,7 @@ const SolutionCalculator = () => {
               name="solutionVolume"
               label="Volumen de la Disolución (mL)"
             >
-              <InputNumber
+              <InputNumber<number>
                 placeholder="e.g., 100"
                 style={{ width: '100%' }}
                 onChange={(value) => handleInputChange('solutionVolume', value)}
@@ -103,7 +103,7 @@ const SolutionCalculator = () => {
               name="density"
               label="Densidad de la Disolución (g/mL)"
             >
-              <InputNumber
+              <InputNumber<number>
                 placeholder="e.g., 1.1"
                 style={{ width: '100%' }}
                 onChange={(value) => handleInputChange('density', value)}

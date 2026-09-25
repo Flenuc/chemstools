@@ -266,10 +266,10 @@ const AdvancedPHCalculatorPage: React.FC = () => {
             label: (<span><QuestionCircleOutlined /> Ayuda</span>),
             children: (
                 <Card title="Guía de Uso">
-                    <p>Utiliza el formulario en la pestaña 'Calculadora' para introducir los datos de tu cálculo.</p>
+                    <p>Utiliza el formulario en la pestaña &apos;Calculadora&apos; para introducir los datos de tu cálculo.</p>
                     <p>Puedes usar los presets para cargar rápidamente soluciones comunes.</p>
                     <p>Los resultados, gráficos y el historial completo aparecerán debajo del formulario principal.</p>
-                    <p>Usa la pestaña 'Diseñador de Buffer' para crear soluciones tampón personalizadas.</p>
+                    <p>Usa la pestaña &apos;Diseñador de Buffer&apos; para crear soluciones tampón personalizadas.</p>
                 </Card>
             )
         }

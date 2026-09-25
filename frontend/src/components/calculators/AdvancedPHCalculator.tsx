@@ -553,8 +553,8 @@ interface AdvancedPHCalculatorProps {
                                                             if (finalResult && finalResult.results) {
                                                                 exportPHResultsToPDF({
                                                                     ...finalResult.results,
-                                                                    temperature: finalResult.temperature || 25,
-                                                                    calculation_type: finalResult.calculation_type,
+                                                                    temperature: finalResult.results.temperature ?? form.getFieldValue('temperature') ?? 25,
+                                                                    calculation_type: form.getFieldValue('calculation_type'),
                                                                     warnings: finalResult.warnings,
                                                                     calculation_steps: finalResult.calculation_steps
                                                                 });

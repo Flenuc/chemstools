@@ -6,7 +6,7 @@ import { RootState } from '@/store';
 import { logout } from '@/store/authSlice';
 
 export default function Header() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 

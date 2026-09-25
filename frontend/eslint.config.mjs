@@ -10,7 +10,16 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: [".next/**", "node_modules/**", "out/**", "coverage/**", "next-env.d.ts"],
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      // Hay muchos `any` heredados; se reportan como aviso hasta tiparlos poco a poco.
+      "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
 ];
 
 export default eslintConfig;

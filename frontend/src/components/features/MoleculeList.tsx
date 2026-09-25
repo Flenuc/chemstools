@@ -62,8 +62,8 @@ export default function MoleculeList() {
         renderItem={(mol: Molecule) => (
           <List.Item
             actions={[
-              <Button type="link" onClick={() => showEditModal(mol)}>Editar</Button>,
-              <Popconfirm title="¿Seguro de eliminar?" onConfirm={() => handleDelete(mol.id)}>
+              <Button key="edit" type="link" onClick={() => showEditModal(mol)}>Editar</Button>,
+              <Popconfirm key="delete" title="¿Seguro de eliminar?" onConfirm={() => handleDelete(mol.id)}>
                 <Button type="link" danger>Eliminar</Button>
               </Popconfirm>,
             ]}

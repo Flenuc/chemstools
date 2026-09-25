@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
-import { message } from 'antd';
+import { message, Input as AntInput } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { setTokens, setUser } from '@/store/authSlice';
 import { api } from '@/services/api';
@@ -119,7 +119,7 @@ export default function LoginFormEnhanced() {
             animation="slideIn"
             delay={0.4}
           >
-            <Input.Password
+            <AntInput.Password
               prefix={<LockOutlined />}
               placeholder="Ingresa tu contraseña"
               size="large"
@@ -134,9 +134,9 @@ export default function LoginFormEnhanced() {
             className="space-y-4"
           >
             <Button
-              type="submit"
+              htmlType="submit"
               variant="primary"
-              size="lg"
+              size="large"
               loading={loading}
               className="w-full"
             >

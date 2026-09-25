@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 
@@ -15,12 +16,12 @@ export default function MoleculesPage() {
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Acceso Requerido</h2>
             <p className="text-gray-600 mb-6">Debes iniciar sesión para acceder al generador de moléculas.</p>
-            <a
+            <Link
               href="/"
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors"
             >
               Ir al Login
-            </a>
+            </Link>
           </div>
         </div>
       </div>

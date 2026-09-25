@@ -302,7 +302,7 @@ export default function DemoHybrid() {
             
             <Modal
               open={showModal}
-              onClose={() => setShowModal(false)}
+              onCancel={() => setShowModal(false)}
               title="Modal con Animaciones"
               footer={
                 <div className="flex gap-2 justify-end">

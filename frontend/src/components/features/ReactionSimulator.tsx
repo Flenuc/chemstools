@@ -206,7 +206,7 @@ const ReactionSimulator: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="equation" className="block text-sm font-medium text-gray-700 mb-2">
-              Ecuación Química (usa '-' y '&gt;' para separar reactivos y productos)
+              Ecuación Química (usa &apos;-&apos; y &apos;&gt;&apos; para separar reactivos y productos)
             </label>
             <input
               id="equation"

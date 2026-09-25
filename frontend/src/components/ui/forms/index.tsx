@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Button } from '../index';
 import { CloudUploadOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import type { FormInstance, FormItemProps, InputProps, SelectProps, TextAreaProps } from 'antd';
+import type { FormInstance, FormItemProps, InputProps, SelectProps } from 'antd';
+import type { TextAreaProps } from 'antd/es/input';
 
 const { TextArea: AntTextArea } = AntInput;
 const { Option } = AntSelect;

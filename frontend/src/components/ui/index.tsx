@@ -31,9 +31,9 @@ import type {
 import { cn } from '@/lib/utils';
 
 // Enhanced Button Component
-export interface ButtonProps extends Omit<AntButtonProps, 'className'> {
+export interface ButtonProps extends Omit<AntButtonProps, 'className' | 'variant'> {
   className?: string;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'link' | 'danger';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'link' | 'danger' | 'success';
   fullWidth?: boolean;
   isLoading?: boolean; // Custom loading prop
 }
@@ -43,20 +43,24 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variantMap = {
       primary: 'primary',
       secondary: 'default',
-      ghost: 'ghost',
+      outline: 'default',
+      ghost: 'default',
       link: 'link',
       danger: 'primary',
+      success: 'primary',
     } as const;
 
     return (
       <AntButton
         ref={ref}
         type={variantMap[variant]}
+        ghost={variant === 'ghost'}
         danger={variant === 'danger'}
         loading={isLoading} // Map isLoading to the correct Ant Design prop
         className={cn(
           'transition-all duration-200',
           fullWidth && 'w-full',
+          variant === 'success' && '!bg-green-600 hover:!bg-green-500 !border-green-600',
           className
         )}
         {...props}
@@ -92,7 +96,7 @@ export const Input = forwardRef<any, InputProps>(
 Input.displayName = 'Input';
 
 // Enhanced Card Component
-export interface CardProps extends Omit<AntCardProps, 'className'> {
+export interface CardProps extends Omit<AntCardProps, 'className' | 'variant'> {
   className?: string;
   variant?: 'default' | 'bordered' | 'shadow';
 }
@@ -352,10 +356,10 @@ export const notification = antNotification;
 
 // Type exports
 export type {
-  SpaceProps,
-  DividerProps,
-  BadgeProps,
-  TagProps,
-  TooltipProps,
-  AlertProps,
+  AntSpaceProps as SpaceProps,
+  AntDividerProps as DividerProps,
+  AntBadgeProps as BadgeProps,
+  AntTagProps as TagProps,
+  AntTooltipProps as TooltipProps,
+  AntAlertProps as AlertProps,
 };

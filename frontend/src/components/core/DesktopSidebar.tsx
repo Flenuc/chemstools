@@ -39,7 +39,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
   onCollapse 
 }) => {
   const [localCollapsed, setLocalCollapsed] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
   
   // Use controlled or local state
   const collapsed = controlledCollapsed !== undefined ? controlledCollapsed : localCollapsed;

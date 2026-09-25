@@ -91,6 +91,24 @@ export interface PHCalculationHistory {
     calculationTimeMs: number;
 }
 
+// Registro de historial tal como lo devuelve el backend (snake_case).
+export interface PHCalculationHistoryAPI {
+    id: string;
+    calculation_id?: string;
+    calculation_type: CalculationType;
+    calculation_type_display?: string;
+    input_data: Partial<CalculationInput> | string;
+    results: PHCalculationResult['results'];
+    calculation_steps?: any[];
+    warnings?: any[];
+    has_warnings?: boolean;
+    temperature?: number;
+    ionic_strength?: number;
+    calculation_time_ms: number;
+    created_at: string;
+    updated_at?: string;
+}
+
 export interface ChemicalPreset {
     id: string;
     name: string;

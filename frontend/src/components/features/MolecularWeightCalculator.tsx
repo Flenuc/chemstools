@@ -15,7 +15,7 @@ export default function MolecularWeightCalculator() {
     setResult(null);
 
     try {
-      const response = await fetch('http://localhost:8000/api/calculate/molecular-weight/', {
+      const response = await fetch('/api/calculate/molecular-weight/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

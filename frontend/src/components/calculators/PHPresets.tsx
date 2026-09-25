@@ -3,16 +3,26 @@ import { Card, Typography, AutoComplete, Tooltip, Tabs } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
 import { StarIcon as StarOutline, BeakerIcon, HeartIcon, BuildingOffice2Icon } from '@heroicons/react/24/outline';
-// Asumiendo que CalculationInput se exporta desde AdvancedPHCalculator o un archivo de tipos compartido
- import { CalculationInput } from './AdvancedPHCalculator';
+import type { BufferComponent } from '../../types/advancedPH';
 
 // --- Tipos de Datos ---
+// Valores de un preset; la página de pH los traduce a un CalculationInput según `mode`.
+export interface PresetValues {
+    mode: 'concentration_to_ph' | 'ph_to_all' | 'buffer';
+    solute?: string;
+    concentration?: number;
+    inputType?: 'pH' | 'pOH';
+    inputValue?: number;
+    targetPH?: number;
+    buffer?: BufferComponent;
+}
+
 export interface ChemicalPreset {
     id: string;
     name: string;
     category: 'strong_acid' | 'strong_base' | 'buffer' | 'physiological' | 'industrial';
     description: string;
-    values: Partial<CalculationInput>; 
+    values: PresetValues;
 }
 
 interface PHPresetsProps {

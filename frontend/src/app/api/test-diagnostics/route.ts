@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({
       message: 'Diagnostic test completed',
-      telemetry_test: telemetryTest.ok ? 'SUCCESS' : 'FAILED',
+      telemetry_test: telemetryTest instanceof Response && telemetryTest.ok ? 'SUCCESS' : 'FAILED',
       received_data: body
     });
   } catch (error: any) {

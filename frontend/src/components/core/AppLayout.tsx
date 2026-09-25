@@ -14,7 +14,7 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname() ?? '';
   
   // Check if we should show navigation (not on login/register pages)
   const showNavigation = !['/login', '/register', '/register-debug', '/test-register'].includes(pathname);
