@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '@/lib/config';
 import { setTokens, logout } from '@/store/authSlice';
 
 // Lazy import del store para evitar dependencias circulares
@@ -15,8 +16,8 @@ const getStore = () => {
 // Si accedemos por el puerto 3000 (desarrollo directo), usar localhost:8000
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') {
-    // Cliente - siempre usar rutas relativas para que Next.js maneje el proxy
-    return '/api';
+    // Cliente - rutas relativas (proxy de Next.js/nginx) o NEXT_PUBLIC_API_URL si está definida
+    return API_BASE_URL;
   }
   // Servidor (SSR) - usar la URL del backend directamente
   return process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000/api';

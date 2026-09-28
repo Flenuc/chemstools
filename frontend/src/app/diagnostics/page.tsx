@@ -1,4 +1,6 @@
 'use client';
+import Link from 'next/link';
+import { apiUrl, BASE_PATH } from '@/lib/config';
 
 import { useState, useEffect } from 'react';
 import { Button, Card, Tag, Alert, Space, Divider } from 'antd';
@@ -56,7 +58,7 @@ export default function DiagnosticsPage() {
 
     // Test 3: Check fetch API
     try {
-      const response = await fetch('/api/auth/register/', {
+      const response = await fetch(apiUrl('auth/register/'), {
         method: 'GET'
       });
       newResults.push({
@@ -128,7 +130,7 @@ export default function DiagnosticsPage() {
         password: 'TestPass123!'
       };
       
-      const response = await fetch('/api/auth/register/', {
+      const response = await fetch(apiUrl('auth/register/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -299,9 +301,9 @@ export default function DiagnosticsPage() {
             message="Enlaces útiles"
             description={
               <ul className="mt-2">
-                <li>• <a href="/register" className="text-blue-600">Formulario de Registro</a></li>
-                <li>• <a href="/test-form.html" className="text-blue-600">Formulario HTML Simple</a></li>
-                <li>• <a href="/test-register" className="text-blue-600">Formulario de Test React</a></li>
+                <li>• <Link href="/register" className="text-blue-600">Formulario de Registro</Link></li>
+                <li>• <a href={`${BASE_PATH}/test-form.html`} className="text-blue-600">Formulario HTML Simple</a></li>
+                <li>• <Link href="/test-register" className="text-blue-600">Formulario de Test React</Link></li>
               </ul>
             }
             type="info"

@@ -1,5 +1,6 @@
 // components/features/ReactionSimulator.tsx
 'use client';
+import { apiUrl } from '@/lib/config';
 
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -90,7 +91,7 @@ const ReactionSimulator: React.FC = () => {
       };
 
       const response = await axios.post<BalanceEquationResponse>(
-        '/api/reactions/balance-equation/',
+        apiUrl('reactions/balance-equation/'),
         requestData,
         {
           headers: {

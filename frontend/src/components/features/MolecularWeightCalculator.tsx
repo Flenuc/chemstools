@@ -1,4 +1,5 @@
 'use client';
+import { apiUrl } from '@/lib/config';
 import { useState } from 'react';
 
 export default function MolecularWeightCalculator() {
@@ -15,7 +16,7 @@ export default function MolecularWeightCalculator() {
     setResult(null);
 
     try {
-      const response = await fetch('/api/calculate/molecular-weight/', {
+      const response = await fetch(apiUrl('calculate/molecular-weight/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

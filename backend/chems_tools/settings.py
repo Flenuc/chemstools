@@ -217,6 +217,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost",       # Sin puerto
     "http://127.0.0.1",       # Sin puerto
 ]
+# Orígenes adicionales separados por comas, p. ej. el frontend en GitHub Pages:
+# CORS_EXTRA_ORIGINS=https://flenuc.github.io
+CORS_ALLOWED_ORIGINS += env_list('CORS_EXTRA_ORIGINS')
 
 # Función para permitir orígenes dinámicos (útil para IPs de red local)
 def cors_allow_particular_origins(origin):

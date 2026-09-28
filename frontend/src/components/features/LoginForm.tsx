@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
@@ -179,9 +180,9 @@ export default function LoginForm() {
               <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
                 ¿Olvidaste tu contraseña?
               </a>
-              <a href="/register" className="text-blue-600 hover:text-blue-700 transition-colors">
+              <Link href="/register" className="text-blue-600 hover:text-blue-700 transition-colors">
                 Crear cuenta
-              </a>
+              </Link>
             </Space>
           </motion.div>
         </Form>

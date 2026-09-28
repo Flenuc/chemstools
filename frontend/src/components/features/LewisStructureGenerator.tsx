@@ -1,4 +1,5 @@
 "use client";
+import { API_BASE_URL } from '@/lib/config';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
@@ -16,6 +17,10 @@ const MotionDiv = motion.div;
 
 // Helper function to get the correct API URL
 const getApiUrl = () => {
+  // Backend configurado explícitamente (p. ej. despliegue estático en GitHub Pages)
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return API_BASE_URL;
+  }
   if (typeof window !== 'undefined') {
     const port = window.location.port;
     // Si estamos en el puerto 80 (o sin puerto) o cualquier otro puerto que no sea 3000

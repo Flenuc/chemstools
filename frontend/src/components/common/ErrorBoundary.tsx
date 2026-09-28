@@ -1,3 +1,4 @@
+import { BASE_PATH } from '@/lib/config';
 import React, { Component, ReactNode } from 'react';
 import { Result, Button, Typography, Collapse } from 'antd';
 import { ExclamationCircleOutlined, BugOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -76,7 +77,7 @@ class ErrorBoundary extends Component<Props, State> {
                         </Button>,
                         <Button 
                             key="home" 
-                            onClick={() => window.location.href = '/'}
+                            onClick={() => window.location.href = `${BASE_PATH}/`}
                         >
                             Ir al Inicio
                         </Button>,

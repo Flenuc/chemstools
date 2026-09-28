@@ -1,5 +1,6 @@
 // frontend/src/app/page.tsx
 'use client';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import SolutionCalculator from '@/components/features/SolutionCalculator';
@@ -27,18 +28,18 @@ export default function Home() {
                 Herramientas químicas integradas para cálculos y visualización molecular
               </p>
               <div className="flex gap-4 justify-center">
-                <a
+                <Link
                   href="/login"
                   className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   Iniciar Sesión
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/register"
                   className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                 >
                   Registrarse
-                </a>
+                </Link>
               </div>
             </div>
           </div>

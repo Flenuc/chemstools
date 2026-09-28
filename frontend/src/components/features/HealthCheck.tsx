@@ -1,4 +1,5 @@
 'use client';
+import { apiUrl } from '@/lib/config';
 import { useState, useEffect } from 'react';
 
 export default function HealthCheck() {
@@ -7,7 +8,7 @@ export default function HealthCheck() {
   useEffect(() => {
     const checkStatus = async () => {
       try {
-        const response = await fetch('/api/health/');
+        const response = await fetch(apiUrl('health/'));
         if (response.ok) {
           const data = await response.json();
           setBackendStatus(data.status);

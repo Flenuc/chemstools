@@ -1,4 +1,6 @@
 'use client';
+import Link from 'next/link';
+import { BASE_PATH } from '@/lib/config';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input, Button, Alert, Progress, Tooltip } from 'antd';
@@ -84,7 +86,7 @@ export default function RegisterForm() {
       
       // Redirect to login after 2 seconds
       setTimeout(() => {
-        window.location.href = '/login';
+        window.location.href = `${BASE_PATH}/login`;
       }, 2000);
     } catch (err: any) {
       console.error('Error en registro:', err);
@@ -352,9 +354,9 @@ export default function RegisterForm() {
           >
             <p className="text-sm text-gray-600">
               ¿Ya tienes una cuenta?{' '}
-              <a href="/login" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
+              <Link href="/login" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
                 Inicia sesión
-              </a>
+              </Link>
             </p>
           </motion.div>
         </Form>

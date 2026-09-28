@@ -1,4 +1,5 @@
 'use client';
+import { apiUrl } from '@/lib/config';
 
 import { useState } from 'react';
 import { ConfigProvider } from 'antd';
@@ -36,7 +37,7 @@ export default function TestRegisterPage() {
         throw new Error('Las contraseñas no coinciden');
       }
 
-      const res = await fetch('/api/auth/register/', {
+      const res = await fetch(apiUrl('auth/register/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+import { apiUrl } from '@/lib/config';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 interface Card {
@@ -70,7 +71,7 @@ const initialState: MemoryState = {
 export const startMemoryGame = createAsyncThunk(
   'memory/startGame',
   async (params: { difficulty: string; total_pairs: number }, { getState }) => {
-    const response = await fetch('/api/games/memory/start_game/', {
+    const response = await fetch(apiUrl('games/memory/start_game/'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +91,7 @@ export const startMemoryGame = createAsyncThunk(
 export const revealCard = createAsyncThunk(
   'memory/revealCard',
   async (params: { game_id: number; card_position: number }) => {
-    const response = await fetch('/api/games/memory/reveal_card/', {
+    const response = await fetch(apiUrl('games/memory/reveal_card/'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,7 +111,7 @@ export const revealCard = createAsyncThunk(
 export const hideCards = createAsyncThunk(
   'memory/hideCards',
   async (game_id: number) => {
-    const response = await fetch('/api/games/memory/hide_cards/', {
+    const response = await fetch(apiUrl('games/memory/hide_cards/'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ export const hideCards = createAsyncThunk(
 export const loadCurrentGame = createAsyncThunk(
   'memory/loadCurrentGame',
   async () => {
-    const response = await fetch('/api/games/memory/current_game/', {
+    const response = await fetch(apiUrl('games/memory/current_game/'), {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -147,7 +148,7 @@ export const loadCurrentGame = createAsyncThunk(
 export const loadMemoryStats = createAsyncThunk(
   'memory/loadStats',
   async () => {
-    const response = await fetch('/api/games/memory/stats/', {
+    const response = await fetch(apiUrl('games/memory/stats/'), {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -164,7 +165,7 @@ export const loadMemoryStats = createAsyncThunk(
 export const loadLeaderboard = createAsyncThunk(
   'memory/loadLeaderboard',
   async () => {
-    const response = await fetch('/api/games/memory/leaderboard/', {
+    const response = await fetch(apiUrl('games/memory/leaderboard/'), {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -181,7 +182,7 @@ export const loadLeaderboard = createAsyncThunk(
 export const endGame = createAsyncThunk(
   'memory/endGame',
   async () => {
-    const response = await fetch('/api/games/memory/end_game/', {
+    const response = await fetch(apiUrl('games/memory/end_game/'), {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`

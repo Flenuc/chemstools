@@ -1,4 +1,6 @@
 'use client';
+import Link from 'next/link';
+import { apiUrl } from '@/lib/config';
 import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
@@ -81,7 +83,7 @@ export default function RegisterFormFixed() {
       console.log('Enviando petición a /api/auth/register/');
       
       // Hacer la petición directamente con fetch
-      const response = await fetch('/api/auth/register/', {
+      const response = await fetch(apiUrl('auth/register/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -334,9 +336,9 @@ export default function RegisterFormFixed() {
           <div className="text-center pt-4">
             <p className="text-sm text-gray-600">
               ¿Ya tienes una cuenta?{' '}
-              <a href="/login" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
+              <Link href="/login" className="text-purple-600 hover:text-purple-700 font-medium transition-colors">
                 Inicia sesión
-              </a>
+              </Link>
             </p>
           </div>
         </Form>
